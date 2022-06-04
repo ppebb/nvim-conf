@@ -1,0 +1,136 @@
+local M = {}
+
+function M.load()
+    require("mapx").setup({
+        global = true,
+    })
+
+    nnoremap("gel", function() vim.diagnostic.open_float() end, "silent")
+    nnoremap("geN", function() vim.diagnostic.get_next() end, "silent")
+    nnoremap("geP", function() vim.diagnostic.get_prev() end, "silent")
+
+    nnoremap("gen", function() vim.diagnostic.goto_next() end, "silent")
+    nnoremap("gep", function() vim.diagnostic.goto_prev() end, "silent")
+    nnoremap("gea", function() vim.diagnostic.get() end, "silent")
+
+    local blsp = vim.lsp.buf
+    nnoremap("<leader><Space>", function() blsp.signature_help(nil, { focus = false, border = "single" }) end, "silent")
+    nnoremap("<leader>h", function() blsp.hover() end)
+
+    nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
+    nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
+    nnoremap("<F2>", function() blsp.rename() end, "silent")
+    nnoremap("<F8>", function() blsp.type_definition() end, "silent")
+    nnoremap("<F9>", function() blsp.implementation() end, "silent")
+    nnoremap("<F10>", function() blsp.references() end, "silent")
+    nnoremap("<F11>", function() blsp.code_action() end, "silent")
+    nnoremap("<F12>", function() blsp.definition() end, "silent")
+
+    local gotopreview = require("goto-preview")
+    nnoremap("gpd", function() gotopreview.goto_preview_definition() end, "silent")
+    nnoremap("gpi", function() gotopreview.goto_preview_implementation() end, "silent")
+    nnoremap("gP", function() gotopreview.close_all_win() end, "silent")
+    nnoremap("gpr", function() gotopreview.goto_preview_references() end, "silent")
+
+    noremap("<leader>y", [["+y]], "silent")
+    noremap("<leader>p", [["+p]], "silent")
+
+    xnoremap("<", "<gv")
+    xnoremap(">", ">gv")
+
+    nnoremap("j", "gj")
+    nnoremap("k", "gk")
+    nnoremap("<up>", "<nop>")
+    nnoremap("<down>", "<nop>")
+    nnoremap("<left>", "<nop>")
+    nnoremap("<right>", "<nop>")
+
+    nnoremap("<leader><leader>", "<c-^>")
+
+    function get_winid(qftype)
+        local winid
+        if qftype == "l" then
+            winid = vim.fn.getloclist(0, { winid = 0 }).winid
+        else
+            winid = vim.fn.getqflist({ winid = 0 }).winid
+        end
+        if winid == 0 then
+            return nil
+        else
+            return winid
+        end
+    end
+
+    function is_open(qftype)
+        return get_winid(qftype) ~= nil
+    end
+
+    function close(qftype)
+        if is_open(qftype) then
+            vim.cmd(qftype .. "close")
+        end
+    end
+
+    local yabs = require("yabs")
+    nnoremap("<F17>", function() yabs:run_task("run") end, "silent")
+    nnoremap("bnr", function() yabs:run_task("build") end, "silent")
+    nnoremap("bar", function() yabs:run_task("build_and_run") end, "silent")
+    nmap("<F15>", "<Plug>VimspectorStop", "silent")
+    nmap("<F16>", "<Plug>VimspectorRestart", "silent")
+    nmap("<F18>", "<Plug>VimspectorPause", "silent")
+    nmap("<F21>", "<Plug>VimspectorToggleBreakpoint", "silent")
+    nmap("<leader><F21>", "<Plug>VimspectorToggleConditionalBreakpoint")
+    nmap("<F20>", "<Plug>VimspectorRunToCursor", "silent")
+    nmap("<F22>", "<Plug>VimspectorStepOver", "silent")
+    nmap("<F23>", "<Plug>VimspectorStepInto", "silent")
+    nmap("<F24>", "<Plug>VimspectorStepOut", "silent")
+    nnoremap("<leader>r", [[:call vimspector#Reset() | :lua close("c")<CR>]])
+
+    function is_attached(bufnr)
+      local lsp = rawget(vim, 'lsp')
+      if lsp then
+        for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
+          return true
+        end
+      end
+      return false
+    end
+
+    vim.cmd[[
+    augroup highlight_yank
+        autocmd!
+        autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000}
+    augroup END
+
+    augroup bindings
+        autocmd!
+        au CursorHold * silent! lua if is_attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, {focus = false, focusable = false}) end end
+    augroup END
+
+    augroup vimspector
+        autocmd!
+        au VimEnter * silent! VimspectorLoadSession
+        au VimLeave * silent! VimspectorMkSession
+    augroup END
+    ]]
+
+    vim.diagnostic.config { virtual_text = false, focus = false }
+
+    local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+    function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or 'single'
+        return orig_util_open_floating_preview(contents, syntax, opts, ...)
+    end
+
+    local Terminal = require('toggleterm.terminal').Terminal
+    local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true, direction = 'float', float_opts = { border = 'single' } })
+
+    local function _lazygit_toggle()
+        lazygit:toggle()
+    end
+
+    nnoremap("<leader>g", function() _lazygit_toggle() end, "silent")
+end
+
+return M
