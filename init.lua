@@ -36,6 +36,7 @@ vim.o.cursorcolumn = true
 
 vim.o.foldmethod = "marker"
 vim.o.foldtext=[[getline(v:foldstart).'...'.trim(getline(v:foldend))]]
+vim.o.guifont="MesloLGS NF:style=Regular"
 
 vim.o.termguicolors = true
 vim.g.cursorhold_updatetime = 1000

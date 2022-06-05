@@ -8,7 +8,7 @@ function M.load()
         use "ntpeters/vim-better-whitespace" -- Whitespace highlighting
         use {
             "glepnir/dashboard-nvim", -- Dashboard
-            config = function() require("dashboard").config() end,
+            config = function() require("dashboard-config").config() end,
         }
         use "puremourning/vimspector" -- Debugger
         use "airblade/vim-gitgutter" -- Git diff in sign column
@@ -19,7 +19,7 @@ function M.load()
         })
         use {
             "kyazdani42/nvim-tree.lua", -- Filetree
-            config = function() require("nvimtree").config() end,
+            config = function() require("nvim-tree-config").config() end,
             requires = { "kyazdani42/nvim-web-devicons" }, -- Icons
         }
         use {
@@ -36,12 +36,12 @@ function M.load()
         }
         use {
             "ms-jpq/coq.thirdparty", -- Extras
-            config = function() require("3p").config() end,
+            config = function() require("3p-config").config() end,
             branch = "3p",
         }
         use {
             "ray-x/lsp_signature.nvim", -- Sig help
-            config = function() require("signature").config() end,
+            config = function() require("signature-config").config() end,
         }
         use {
             "nvim-treesitter/nvim-treesitter", -- Treesitter, duh
@@ -58,11 +58,11 @@ function M.load()
         use "mbbill/undotree" -- Undo window
         use {
             "lukas-reineke/indent-blankline.nvim", -- Show tabs and spaces
-            config = function() require("indentblankline").config() end,
+            config = function() require("indent-blankline-config").config() end,
         }
         use {
             "windwp/nvim-autopairs", -- Delimiter helper
-            config = function() require("autopairs").config() end,
+            config = function() require("autopairs-config").config() end,
         }
         use {
             "nvim-lualine/lualine.nvim", -- Statusline
@@ -89,7 +89,7 @@ function M.load()
         }
         use {
             "simrat39/symbols-outline.nvim", -- Treelike view for symbols
-            config = function() require("symbolsoutline").config() end,
+            config = function() require("symbolsoutline-config").config() end,
         }
         use {
             "rmagatti/goto-preview", -- Show definitions in preview windows
