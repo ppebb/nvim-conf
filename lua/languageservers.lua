@@ -11,7 +11,6 @@ function M.config()
             ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
         cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
-        --...
     })
 
     -- TS
@@ -66,10 +65,6 @@ function M.config()
 
     -- Bash
     lspconfig.bashls.setup({})
-
-    --Yamlls
-    local yamllscfg = require("yaml-companion").setup({})
-    lspconfig.yamlls.setup({yamllscfg})
 end
 
 return M

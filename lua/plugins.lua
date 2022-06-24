@@ -11,7 +11,10 @@ function M.load()
             config = function() require("dashboard-config").config() end,
         }
         use "puremourning/vimspector" -- Debugger
-        use "airblade/vim-gitgutter" -- Git diff in sign column
+        use {
+            "lewis6991/gitsigns.nvim",
+            config = function() require("gitsigns-config").config() end,
+        }
         use({
             "catppuccin/nvim", -- Catppuccin colorscheme
             config = function() require("catppuccin-config").config() end,
@@ -119,10 +122,6 @@ function M.load()
         use "mfussenegger/nvim-jdtls" -- Full jdtls support
         use "https://bitbucket.org/sw-samuraj/vim-gradle.git" -- Gradle file extension, syntax highlighting, and folding
         use "antoinemadec/FixCursorHold.nvim" -- Cursorhold performance fix
-        use {
-            "someone-stole-my-name/yaml-companion.nvim", -- Yaml lsp companion
-            config = function() require("telescope").load_extension("yaml_schema") end,
-        }
         use "rcarriga/nvim-notify" -- Notification manager
         use "b0o/mapx.nvim"
         use "RRethy/nvim-treesitter-endwise"
@@ -140,6 +139,12 @@ function M.load()
             "norcalli/nvim-colorizer.lua",
             config = function() require("colorizer").setup() end,
         }
+        use {
+            "nathom/filetype.nvim",
+            config = function() require("filetype-config").config() end,
+        }
+        use "JoosepAlviste/nvim-ts-context-commentstring"
+        use "tpope/vim-commentary"
     end)
 end
 

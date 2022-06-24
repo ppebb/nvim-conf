@@ -14,8 +14,8 @@ function M.load()
     nnoremap("gea", function() vim.diagnostic.get() end, "silent")
 
     local blsp = vim.lsp.buf
-    nnoremap("<leader><Space>", function() blsp.signature_help(nil, { focus = false, border = "single" }) end, "silent")
-    nnoremap("<leader>h", function() blsp.hover() end)
+    nnoremap("<leader><Space>", function() blsp.signature_help(nil, { focus = false, focusable = false, border = "single" }) end, "silent")
+    nnoremap("<leader>h", function() blsp.hover(nil, { focus = false, focusable = false, border = "single" }) end, "silent")
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
@@ -84,6 +84,7 @@ function M.load()
     nmap("<F22>", "<Plug>VimspectorStepOver", "silent")
     nmap("<F23>", "<Plug>VimspectorStepInto", "silent")
     nmap("<F24>", "<Plug>VimspectorStepOut", "silent")
+    nmap("di", "<Plug>VimspectorBalloonEval", "silent")
     nnoremap("<leader>r", [[:call vimspector#Reset() | :lua close("c")<CR>]])
 
     function is_attached(bufnr)
@@ -104,17 +105,17 @@ function M.load()
 
     augroup bindings
         autocmd!
-        au CursorHold * silent! lua if is_attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, {focus = false, focusable = false}) end end
+        au CursorHold * silent! lua if is_attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, focusable = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, {focus = false, focusable = false}) end end
     augroup END
 
     augroup vimspector
         autocmd!
-        au VimEnter * silent! VimspectorLoadSession
-        au VimLeave * silent! VimspectorMkSession
+        au VimEnter * silent! VimspectorLoadSession ~/.cache/vimspector.session
+        au VimLeave * silent! VimspectorMkSession ~/.cache/vimspector.session
     augroup END
     ]]
 
-    vim.diagnostic.config { virtual_text = false, focus = false }
+    vim.diagnostic.config { virtual_text = false, focusble = false, focus = false }
 
     local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
     function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)

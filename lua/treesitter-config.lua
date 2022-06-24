@@ -11,7 +11,13 @@ function M.config()
         },
         autotag = {
             enable = true,
-        }
+        },
+        context_commentstring = {
+            enable = true,
+            config = {
+                cs = { __default = "// %s", __multiline = "/* %S */" },
+            },
+        },
     })
 
     require("nvim-treesitter.highlight").set_custom_captures({
