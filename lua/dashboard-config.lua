@@ -72,7 +72,7 @@ function M.config()
             icon = "  ",
             desc = "Recently opened files                 ",
             shortcut = "SPC f h",
-            action = "DashboardFindHistory",
+            action = "Telescope oldfiles",
         },
         {
             icon = "  ",
@@ -96,7 +96,7 @@ function M.config()
             icon = "  ",
             desc = "File browser                          ",
             shortcut = "SPC f w",
-            action = "Telescope file_browser",
+            action = "Telescope find_files",
         },
         {
             icon = "  ",
