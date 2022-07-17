@@ -123,28 +123,34 @@ function M.load()
         use "https://bitbucket.org/sw-samuraj/vim-gradle.git" -- Gradle file extension, syntax highlighting, and folding
         use "antoinemadec/FixCursorHold.nvim" -- Cursorhold performance fix
         use "rcarriga/nvim-notify" -- Notification manager
-        use "b0o/mapx.nvim"
-        use "RRethy/nvim-treesitter-endwise"
+        use "b0o/mapx.nvim" -- Easier keybinds in lua
+        use "RRethy/nvim-treesitter-endwise" -- Automatically insert end
         use {
-            "~/gitclone/haste-nvim",
+            "~/gitclone/haste-nvim", -- Upload current buffer to haste
             config = function() require("haste").setup({ setclip = true }) end,
         }
         use {
-            "iamcco/markdown-preview.nvim",
+            "iamcco/markdown-preview.nvim", -- Markdown preview in browser
             run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" },
             config = function() vim.g.mkdp_auto_start = 0 end,
         }
         use "windwp/nvim-ts-autotag" -- Html/tsx autotags
         use {
-            "norcalli/nvim-colorizer.lua",
+            "norcalli/nvim-colorizer.lua", -- Highlight colors
             config = function() require("colorizer").setup() end,
         }
         use {
-            "nathom/filetype.nvim",
+            "nathom/filetype.nvim", -- Support more filetypes faster
             config = function() require("filetype-config").config() end,
         }
-        use "JoosepAlviste/nvim-ts-context-commentstring"
-        use "tpope/vim-commentary"
+        use "JoosepAlviste/nvim-ts-context-commentstring" -- Sets comment string basted on cursor position
+        use "tpope/vim-commentary" -- Comment keybinds
+        use {
+            "amrbashir/nvim-docs-view", -- Hover documents in side panel
+            opt = true,
+            cmd = { "DocsViewToggle" },
+            config = function() require("docs-view-config").config() end,
+        }
     end)
 end
 

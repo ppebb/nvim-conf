@@ -65,6 +65,8 @@ function M.config()
 
     -- Bash
     lspconfig.bashls.setup({})
+
+    lspconfig.teal_ls.setup({})
 end
 
 return M
