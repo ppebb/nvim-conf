@@ -36,8 +36,8 @@
 ;; (catch_declaration (identifier) @keyword)
 
 ;; Switch
-(switch_statement (identifier) @keyword)
-(switch_expression (identifier) @keyword)
+(switch_statement (identifier) @variable)
+(switch_expression (identifier) @variable)
 
 ;; Lock statement
 ;; (lock_statement (identifier) @keyword)

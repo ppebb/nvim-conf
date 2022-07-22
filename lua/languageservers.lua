@@ -66,7 +66,11 @@ function M.config()
     -- Bash
     lspconfig.bashls.setup({})
 
+    -- Teal
     lspconfig.teal_ls.setup({})
+
+    -- Docker
+    lspconfig.dockerls.setup({})
 end
 
 return M

@@ -20,6 +20,7 @@ function M.load()
             config = function() require("catppuccin-config").config() end,
             as = "catppuccin",
         })
+        use("rebelot/kanagawa.nvim")
         use({
             "kyazdani42/nvim-tree.lua", -- Filetree
             config = function() require("nvim-tree-config").config() end,
