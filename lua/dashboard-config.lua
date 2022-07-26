@@ -96,7 +96,7 @@ end
 
 -- Stolen from nvim-startuptime
 function startuptime()
-    local startup_file = "/tmp/nvim-startuptime"
+    local startup_file = "/tmp/startuptime"
     local startup_time_pattern = "([%d.]+)  [%d.]+: [-]+ NVIM STARTED [-]+"
 
     local startup_time_file = io.open(startup_file) and io.open(startup_file):read "*all" or nil
