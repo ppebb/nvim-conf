@@ -24,7 +24,6 @@ function M.config()
             run = {
                 command = "call vimspector#Continue()",
                 type = "vim",
-                condition = require("yabs.conditions").file_exists(".vimspector.json"),
             },
             build_and_run = {
                 command = function()

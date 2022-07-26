@@ -19,6 +19,7 @@ function M.load()
             "catppuccin/nvim", -- Catppuccin colorscheme
             config = function() require("catppuccin-config").config() end,
             as = "catppuccin",
+            run = ":CatppuccinCompile",
         })
         use("rebelot/kanagawa.nvim")
         use({
@@ -43,10 +44,7 @@ function M.load()
             config = function() require("3p-config").config() end,
             branch = "3p",
         })
-        use({
-            "ray-x/lsp_signature.nvim", -- Sig help
-            config = function() require("signature-config").config() end,
-        })
+        use("Issafalcon/lsp-overloads.nvim")
         use({
             "nvim-treesitter/nvim-treesitter", -- Treesitter, duh
             config = function() require("treesitter-config").config() end,
@@ -85,10 +83,13 @@ function M.load()
         })
         use({
             "anuvyklack/pretty-fold.nvim", -- Foldtext custmization and preview
-            requires = { "anuvyklack/nvim-keymap-amend" },
+            requires = {
+                "anuvyklack/keymap-amend.nvim",
+                "anuvyklack/fold-preview.nvim"
+            },
             config = function()
                 require("pretty-fold").setup({})
-                require("pretty-fold.preview").setup()
+                require("fold-preview").setup()
             end,
         })
         use({
@@ -152,6 +153,20 @@ function M.load()
             cmd = { "DocsViewToggle" },
             config = function() require("docs-view-config").config() end,
         })
+        use({
+            "mfussenegger/nvim-lint", -- Linter management
+            config = function() require("nvim-lint-config").config() end,
+        })
+        use({
+            "petertriho/nvim-scrollbar", -- Scrollbar
+            config = function() require("nvim-scrollbar-config").config() end,
+            requires = { "kevinhwang91/nvim-hlslens" },
+        })
+        use({
+            "kylechui/nvim-surround", -- Surround delimiters
+            config = function() require("nvim-surround").setup() end,
+        })
+        use("dstein64/vim-startuptime") -- Startuptime view
     end)
 end
 

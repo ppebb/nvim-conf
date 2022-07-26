@@ -103,11 +103,14 @@ function startuptime()
 
     local startup_time = startup_file and tonumber(startup_time_file:match(startup_time_pattern)) or nil
 
+    io.open(startup_file, "w"):close()
+
     if startup_time ~= nil then
         return startup_time
     else
         return "unknown"
     end
+
 end
 
 return M

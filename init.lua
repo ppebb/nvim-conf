@@ -40,6 +40,8 @@ vim.o.guifont="MesloLGS NF:style=Regular"
 vim.o.termguicolors = true
 vim.g.cursorhold_updatetime = 1000
 
+vim.o.shell = "/bin/bash"
+
 vim.notify = require("notify")
 vim.g.indentLine_fileTypeExclude = { "dashboard" }
 vim.g.better_whitespace_filetypes_blacklist = { "dashboard", "packer" }

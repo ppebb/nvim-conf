@@ -2,11 +2,13 @@ local M = {}
 
 function M.config()
     local cfg = {
+        compile = {
+            enabled = true,
+        },
         integrations = {
             nvimtree = {
                 enabled = false,
             },
-            gitgutter = true,
         },
     }
 

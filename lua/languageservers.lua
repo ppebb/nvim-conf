@@ -3,6 +3,16 @@ local M = {}
 function M.config()
     local lspconfig = require("lspconfig")
 
+    local overrideattach = function(client)
+        if client.server_capabilities.signatureHelpProvider then
+            require("lsp-overloads").setup(client, {
+                ui = {
+                    border = "single",
+                },
+            })
+        end
+    end
+
     -- C#
     local pid = vim.fn.getpid()
     local omnisharp_bin = "/bin/omnisharp"
@@ -10,11 +20,15 @@ function M.config()
         handlers = {
             ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
-        cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
+        cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+
+        on_attach = overrideattach,
     })
 
     -- TS
-    lspconfig.tsserver.setup({})
+    lspconfig.tsserver.setup({
+        on_attach = overrideattach,
+    })
 
     -- HTML
     local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -22,26 +36,40 @@ function M.config()
 
     lspconfig.html.setup({
         capabilities = capabilities,
+
+        on_attach = overrideattach,
     })
 
     -- Vimscript
-    lspconfig.vimls.setup({})
+    lspconfig.vimls.setup({
+        on_attach = overrideattach,
+    })
 
     -- Rust(:rocket:)
-    lspconfig.rust_analyzer.setup({})
+    lspconfig.rust_analyzer.setup({
+        on_attach = overrideattach,
+    })
 
     -- Zig
-    lspconfig.zls.setup({})
+    lspconfig.zls.setup({
+        on_attach = overrideattach,
+    })
     vim.g.zig_fmt_autosave = false
 
     -- C, C++, ObjC
-    lspconfig.clangd.setup({})
+    lspconfig.clangd.setup({
+        on_attach = overrideattach,
+    })
 
     -- Crystal
-    lspconfig.crystalline.setup({})
+    lspconfig.crystalline.setup({
+        on_attach = overrideattach,
+    })
 
     -- Python
-    lspconfig.pylsp.setup({})
+    lspconfig.pylsp.setup({
+        on_attach = overrideattach,
+    })
 
     -- Lua
     lspconfig.sumneko_lua.setup({
@@ -61,16 +89,24 @@ function M.config()
                 },
             },
         },
+
+        on_attach = overrideattach,
     })
 
     -- Bash
-    lspconfig.bashls.setup({})
+    lspconfig.bashls.setup({
+        on_attach = overrideattach,
+    })
 
     -- Teal
-    lspconfig.teal_ls.setup({})
+    lspconfig.teal_ls.setup({
+        on_attach = overrideattach,
+    })
 
     -- Docker
-    lspconfig.dockerls.setup({})
+    lspconfig.dockerls.setup({
+        on_attach = overrideattach,
+    })
 end
 
 return M
