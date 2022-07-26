@@ -96,21 +96,20 @@ end
 
 -- Stolen from nvim-startuptime
 function startuptime()
-    local startup_file = "/tmp/startuptime"
+    local startup_file_path = "/tmp/startuptime"
     local startup_time_pattern = "([%d.]+)  [%d.]+: [-]+ NVIM STARTED [-]+"
 
-    local startup_time_file = io.open(startup_file) and io.open(startup_file):read "*all" or nil
+    local startup_time_file = io.open(startup_file_path) and io.open(startup_file_path):read "*all" or nil
 
-    local startup_time = startup_file and tonumber(startup_time_file:match(startup_time_pattern)) or nil
+    local startup_time = startup_file_path and tonumber(startup_time_file:match(startup_time_pattern)) or nil
 
-    io.open(startup_file, "w"):close()
+    io.open(startup_file_path, "w"):close()
 
     if startup_time ~= nil then
         return startup_time
     else
         return "unknown"
     end
-
 end
 
 return M

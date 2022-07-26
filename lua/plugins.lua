@@ -166,7 +166,6 @@ function M.load()
             "kylechui/nvim-surround", -- Surround delimiters
             config = function() require("nvim-surround").setup() end,
         })
-        use("dstein64/vim-startuptime") -- Startuptime view
     end)
 end
 

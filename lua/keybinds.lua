@@ -115,6 +115,7 @@ function M.load()
     augroup END
     ]]
 
+
     vim.diagnostic.config { virtual_text = false, focusble = false, focus = false }
 
     local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
