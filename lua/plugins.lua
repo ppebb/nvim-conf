@@ -166,6 +166,10 @@ function M.load()
             "kylechui/nvim-surround", -- Surround delimiters
             config = function() require("nvim-surround").setup() end,
         })
+        use({
+            "danymat/neogen", -- Easy annotations
+            config = function() require("neogen").setup() end,
+        })
     end)
 end
 

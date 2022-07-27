@@ -1,5 +1,6 @@
 require("plugins").load()
 require("keybinds").load()
+require("autocmds").load()
 
 vim.o.number = true
 vim.o.encoding = "utf-8"
@@ -33,8 +34,11 @@ vim.o.confirm = true
 vim.o.cursorline = true
 vim.o.cursorcolumn = true
 
-vim.o.foldmethod = "marker"
+vim.o.foldmethod = "expr"
+vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")
 vim.o.foldtext=[[getline(v:foldstart).'...'.trim(getline(v:foldend))]]
+vim.o.foldlevelstart=99
+
 vim.o.guifont="MesloLGS NF:style=Regular"
 
 vim.o.termguicolors = true
