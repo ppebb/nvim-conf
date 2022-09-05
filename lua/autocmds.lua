@@ -7,15 +7,21 @@ function M.load()
             autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000}
         augroup END
 
-        augroup bindings
+        augroup hover
             autocmd!
             au CursorHold * silent! lua if is_attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, focusable = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, {focus = false, focusable = false}) end end
         augroup END
 
-        augroup vimspector
+        augroup Vimspector
             autocmd!
-            au VimEnter * silent! VimspectorLoadSession ~/.cache/vimspector.session
-            au VimLeave * silent! VimspectorMkSession ~/.cache/vimspector.session
+            au VimEnter * :VimspectorLoadSession ~/.cache/vimspector
+            au VimLeave * :VimspectorMkSession ~/.cache/vimspector
+        augroup END
+
+        " auto_start in settings broke for some reason
+        augroup coq
+            autocmd!
+            au VimEnter * :COQnow --shut-up
         augroup END
     ]]
 end

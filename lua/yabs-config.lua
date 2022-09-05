@@ -36,7 +36,6 @@ function M.config()
                     })
                 end,
                 type = "lua",
-                condition = require("yabs.conditions").file_exists(".vimspector.json"),
             },
         },
     }

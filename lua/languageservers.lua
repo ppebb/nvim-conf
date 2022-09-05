@@ -2,6 +2,7 @@ local M = {}
 
 function M.config()
     local lspconfig = require("lspconfig")
+    local servers = { "tsserver", "vimls", "rust_analyzer", "zls", "clangd", "crystalline", "pylsp", "bashls", "teal_ls", "dockerls", "astro" }
 
     local overrideattach = function(client)
         if client.server_capabilities.signatureHelpProvider then
@@ -13,66 +14,50 @@ function M.config()
         end
     end
 
+    local ensure_capabilities = function(cfg)
+        return require("coq").lsp_ensure_capabilities(cfg)
+    end
+
+    for _, lsp in ipairs(servers) do
+        lspconfig[lsp].setup(ensure_capabilities({
+            on_attach = overrideattach,
+        }))
+    end
+
     -- C#
     local pid = vim.fn.getpid()
-    local omnisharp_bin = "/bin/omnisharp"
-    lspconfig.omnisharp.setup({
+    local omnisharp_bin = "omnisharp"
+    lspconfig.omnisharp.setup(ensure_capabilities({
         handlers = {
             ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
         cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
 
         on_attach = overrideattach,
-    })
-
-    -- TS
-    lspconfig.tsserver.setup({
-        on_attach = overrideattach,
-    })
+    }))
 
     -- HTML
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-    lspconfig.html.setup({
+    lspconfig.html.setup(ensure_capabilities({
         capabilities = capabilities,
 
         on_attach = overrideattach,
-    })
+    }))
 
-    -- Vimscript
-    lspconfig.vimls.setup({
-        on_attach = overrideattach,
-    })
+    -- Json
+    lspconfig.jsonls.setup(ensure_capabilities({
+        capabilities = capabilities,
 
-    -- Rust(:rocket:)
-    lspconfig.rust_analyzer.setup({
         on_attach = overrideattach,
-    })
+    }))
 
-    -- Zig
-    lspconfig.zls.setup({
-        on_attach = overrideattach,
-    })
+    -- Zls setting
     vim.g.zig_fmt_autosave = false
 
-    -- C, C++, ObjC
-    lspconfig.clangd.setup({
-        on_attach = overrideattach,
-    })
-
-    -- Crystal
-    lspconfig.crystalline.setup({
-        on_attach = overrideattach,
-    })
-
-    -- Python
-    lspconfig.pylsp.setup({
-        on_attach = overrideattach,
-    })
-
     -- Lua
-    lspconfig.sumneko_lua.setup({
+    lspconfig.sumneko_lua.setup(ensure_capabilities({
         settings = {
             Lua = {
                 runtime = {
@@ -91,22 +76,7 @@ function M.config()
         },
 
         on_attach = overrideattach,
-    })
-
-    -- Bash
-    lspconfig.bashls.setup({
-        on_attach = overrideattach,
-    })
-
-    -- Teal
-    lspconfig.teal_ls.setup({
-        on_attach = overrideattach,
-    })
-
-    -- Docker
-    lspconfig.dockerls.setup({
-        on_attach = overrideattach,
-    })
+    }))
 end
 
 return M

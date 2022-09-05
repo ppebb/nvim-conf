@@ -3,6 +3,23 @@ local M = {}
 function M.load()
     return require("packer").startup(function(use)
         use("wbthomason/packer.nvim") -- Packer
+        use({
+            "williamboman/mason.nvim", -- Package manager for tools
+            config = function()
+                require("mason").setup()
+                require("mason-lspconfig").setup()
+            end,
+            requires = { "williamboman/mason-lspconfig.nvim" },
+        })
+        use({
+            "neovim/nvim-lspconfig", -- LSP Config
+            config = function() require("languageservers").config() end,
+        })
+        use("puremourning/vimspector")
+        use({
+            "mfussenegger/nvim-lint", -- Linter management
+            config = function() require("nvim-lint-config").config() end,
+        })
         use("tpope/vim-sensible") -- Sensible defaults
         use("tpope/vim-sleuth") -- Automatic indent settings
         use("ntpeters/vim-better-whitespace") -- Whitespace highlighting
@@ -10,7 +27,6 @@ function M.load()
             "glepnir/dashboard-nvim", -- Dashboard
             config = function() require("dashboard-config").config() end,
         })
-        use("puremourning/vimspector") -- Debugger
         use({
             "lewis6991/gitsigns.nvim",
             config = function() require("gitsigns-config").config() end,
@@ -28,10 +44,6 @@ function M.load()
             requires = { "kyazdani42/nvim-web-devicons" }, -- Icons
         })
         use({
-            "neovim/nvim-lspconfig", -- LSP Config
-            config = function() require("languageservers").config() end,
-        })
-        use({
             "ms-jpq/coq_nvim", -- Completions
             config = function() require("coq-config").config() end,
         })
@@ -44,7 +56,7 @@ function M.load()
             config = function() require("3p-config").config() end,
             branch = "3p",
         })
-        use("Issafalcon/lsp-overloads.nvim")
+        use("Issafalcon/lsp-overloads.nvim") -- Sig help
         use({
             "nvim-treesitter/nvim-treesitter", -- Treesitter, duh
             config = function() require("treesitter-config").config() end,
@@ -154,10 +166,6 @@ function M.load()
             config = function() require("docs-view-config").config() end,
         })
         use({
-            "mfussenegger/nvim-lint", -- Linter management
-            config = function() require("nvim-lint-config").config() end,
-        })
-        use({
             "petertriho/nvim-scrollbar", -- Scrollbar
             config = function() require("nvim-scrollbar-config").config() end,
             requires = { "kevinhwang91/nvim-hlslens" },
@@ -170,6 +178,7 @@ function M.load()
             "danymat/neogen", -- Easy annotations
             config = function() require("neogen").setup() end,
         })
+        use("jbyuki/one-small-step-for-vimkind") -- Debug neovim plugins
     end)
 end
 
