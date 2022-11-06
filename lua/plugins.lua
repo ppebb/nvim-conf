@@ -178,7 +178,10 @@ function M.load()
             "danymat/neogen", -- Easy annotations
             config = function() require("neogen").setup() end,
         })
-        use("jbyuki/one-small-step-for-vimkind") -- Debug neovim plugins
+        use({
+            "lewis6991/spellsitter.nvim",
+            config = function() require("spellsitter").setup({ enable = true, }) end,
+        })
     end)
 end
 

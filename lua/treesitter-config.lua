@@ -23,23 +23,72 @@ function M.config()
         },
     })
 
-    require("nvim-treesitter.highlight").set_custom_captures({
-        ["type.builtin"] = "TSKeyword",
-        ["constant.builtin"] = "TSKeyword",
-        ["keyword"] = "TSKeyword",
-        ["conditional"] = "TSKeyword",
-        ["repeat"] = "TSKeyword",
-        ["keyword.function"] = "TSKeyword",
-        ["keyword.operator"] = "TSKeyword",
-        ["keyword.return"] = "TSKeyword",
-        ["exception"] = "TSKeyword",
-        ["include"] = "TSKeyword",
-        ["variable"] = "TSField",
-        ["type"] = "Type",
-        ["punctuation.delimiter"] = "TSPunctBracket",
-        ["vairable.builtin"] = "TSKeyword",
-        ["boolean"] = "TSKeyword",
-    })
+    local highlights = {
+        {
+            capture = "@type.builtin",
+            group = "TSKeyword",
+        },
+        {
+            capture = "constant.builtin",
+            group = "TSKeyword",
+        },
+        {
+            capture = "keyword",
+            group = "TSKeyword",
+        },
+        {
+            capture = "conditional",
+            group = "TSKeyword",
+        },
+        {
+            capture = "repeat",
+            group = "TSKeyword",
+        },
+        {
+            capture = "keword.function",
+            group = "TSKeyword",
+        },
+        {
+            capture = "keyword.operator",
+            group = "TSKeyword",
+        },
+        {
+            capture = "keyword.return",
+            group = "TSKeyword",
+        },
+        {
+            capture = "exception",
+            group = "TSKeyword",
+        },
+        {
+            capture = "include",
+            group = "TSKeyword",
+        },
+        {
+            capture = "variable",
+            group = "TSField",
+        },
+        {
+            capture = "type",
+            group = "Type",
+        },
+        {
+            capture = "punctuation.delimiter",
+            group = "TSPunctBracket",
+        },
+        {
+            capture = "variable.builtin",
+            group = "TSKeyword",
+        },
+        {
+            capture = "boolean",
+            group = "TSKeyword",
+        },
+    }
+
+    for _, highlight in pairs(highlights) do
+        vim.api.nvim_set_hl(0, highlight.capture, { link = highlight.group })
+    end
 
     vim.cmd[[hi link TreeSitterContext Normal]]
 end

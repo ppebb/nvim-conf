@@ -2,7 +2,7 @@ local M = {}
 
 function M.config()
     local lspconfig = require("lspconfig")
-    local servers = { "tsserver", "vimls", "rust_analyzer", "zls", "clangd", "crystalline", "pylsp", "bashls", "teal_ls", "dockerls", "astro" }
+    local servers = { "tsserver", "vimls", "rust_analyzer", "zls", "ccls", "crystalline", "pylsp", "bashls", "teal_ls", "dockerls", "astro" }
 
     local overrideattach = function(client)
         if client.server_capabilities.signatureHelpProvider then

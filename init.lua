@@ -46,7 +46,7 @@ vim.g.cursorhold_updatetime = 1000
 
 vim.o.shell = "/bin/zsh"
 
-vim.notify = require("notify")
+-- vim.notify = require("notify")
 vim.g.indentLine_fileTypeExclude = { "dashboard" }
 vim.g.better_whitespace_filetypes_blacklist = { "dashboard", "packer" }
 vim.g.vimspector_base_dir='/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector'
