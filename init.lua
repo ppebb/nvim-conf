@@ -4,7 +4,7 @@ require("autocmds").load()
 
 vim.o.number = true
 vim.o.encoding = "utf-8"
-vim.cmd[[syntax off]]
+vim.cmd("syntax off")
 
 vim.o.backspace = "indent,eol,start"
 vim.o.autoindent = true
