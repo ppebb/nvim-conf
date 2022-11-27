@@ -134,8 +134,8 @@ function M.load()
         })
         use("Hoffs/omnisharp-extended-lsp.nvim") -- Omnisharp extensions
         use("mfussenegger/nvim-jdtls") -- Full jdtls support
-        use("https://bitbucket.org/sw-samuraj/vim-gradle.git") -- Gradle file extension, syntax highlighting, and folding
         use("antoinemadec/FixCursorHold.nvim") -- Cursorhold performance fix
+        use("https://bitbucket.org/sw-samuraj/vim-gradle.git") -- Gradle file extension, syntax highlighting, and folding
         use("rcarriga/nvim-notify") -- Notification manager
         use("b0o/mapx.nvim") -- Easier keybinds in lua
         use("RRethy/nvim-treesitter-endwise") -- Automatically insert end

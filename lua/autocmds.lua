@@ -36,13 +36,14 @@ function M.load()
             au ColorScheme * highlight clear @keyword.return | highlight link @keyword.return Identifier
             au ColorScheme * highlight clear @keyword.function | highlight link @keyword.function Identifier
             au ColorScheme * highlight link @conditional Identifier
-            au ColorScheme * highlight clear @storageclass | highlight link @storageclass Identifier
+            au ColorScheme * highlight clear StorageClass | highlight link StorageClass Identifier
             au ColorScheme * highlight clear @type.builtin | highlight link @type.builtin Identifier
             au ColorScheme * highlight clear @type.qualifier | highlight link @type.qualifier Identifier
             au ColorScheme * highlight clear @constant.builtin | highlight link @constant.builtin Identifier
             au ColorScheme * highlight link @operator Identifier
             au ColorScheme * highlight link @character @string
             au ColorScheme * highlight clear @variable | highlight link @variable @property
+            au ColorScheme * highlight clear @constructor | highlight link @constructor @type
             au ColorScheme * :highlight @include gui=italic cterm=italic
         augroup END
     ]]
