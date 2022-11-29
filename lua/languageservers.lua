@@ -4,13 +4,16 @@ function M.config()
     local lspconfig = require("lspconfig")
     local servers = { "tsserver", "vimls", "rust_analyzer", "zls", "ccls", "crystalline", "pylsp", "bashls", "teal_ls", "dockerls", "astro" }
 
+    require("neodev").setup()
+    require("neoconf").setup()
+
     vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
         config = config or { border = "single", focus = false, focusable = false }
         config.focus_id = ctx.method
         if not (result and result.contents) then
             return
         end
-        local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+        local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents, {})
         markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
         if vim.tbl_isempty(markdown_lines) then
             return
@@ -84,14 +87,8 @@ function M.config()
                 runtime = {
                     version = "LuaJIT",
                 },
-                diagnostics = {
-                    globals = {
-                        "vim",
-                        "nnoremap",
-                        "nmap",
-                        "xnoremap",
-                        "noremap",
-                    },
+                completion = {
+                    callSnippet = "Replace",
                 },
             },
         },

@@ -17,8 +17,8 @@ function M.load()
         })
         use("puremourning/vimspector")
         use({
-            "mfussenegger/nvim-lint", -- Linter management
-            config = function() require("nvim-lint-config").config() end,
+            "jose-elias-alvarez/null-ls.nvim", -- Linter management
+            config = function() require("null-ls-config").config() end,
         })
         use("tpope/vim-sensible") -- Sensible defaults
         use("tpope/vim-sleuth") -- Automatic indent settings
@@ -145,8 +145,10 @@ function M.load()
         })
         use({
             "iamcco/markdown-preview.nvim", -- Markdown preview in browser
-            run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" },
-            config = function() vim.g.mkdp_auto_start = 0 end,
+            run = "cd app && npm install",
+            setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+            ft = { "markdown" },
+            config = function() vim.g.mkdp_auto_start = 1 end,
         })
         use("windwp/nvim-ts-autotag")-- Html/tsx autotags
         use({
@@ -159,12 +161,6 @@ function M.load()
         })
         use("JoosepAlviste/nvim-ts-context-commentstring") -- Sets comment string basted on cursor position
         use("tpope/vim-commentary") -- Comment keybinds
-        use({
-            "amrbashir/nvim-docs-view", -- Hover documents in side panel
-            opt = true,
-            cmd = { "DocsViewToggle" },
-            config = function() require("docs-view-config").config() end,
-        })
         use({
             "petertriho/nvim-scrollbar", -- Scrollbar
             config = function() require("nvim-scrollbar-config").config() end,
@@ -179,9 +175,12 @@ function M.load()
             config = function() require("neogen").setup() end,
         })
         use({
-            "lewis6991/spellsitter.nvim",
+            "lewis6991/spellsitter.nvim", -- Spellchecking
             config = function() require("spellsitter").setup({ enable = true, }) end,
         })
+        use("nvim-neotest/neotest") -- Testing framework
+        use("folke/neodev.nvim") -- Lua lsp config for nvim
+        use("folke/neoconf.nvim") -- Lua lsp config manager
     end)
 end
 

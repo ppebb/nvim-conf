@@ -89,13 +89,13 @@ function M.config()
         },
     }
     db.custom_footer = {
-        "Neovim started in " .. startuptime() .. " ms",
+        "Neovim started in " .. Startup_Time() .. " ms",
         "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins"
     }
 end
 
 -- Stolen from nvim-startuptime
-function startuptime()
+function Startup_Time()
     local startup_file_path = "/tmp/startuptime"
     local startup_time_pattern = "([%d.]+)  [%d.]+: [-]+ NVIM STARTED [-]+"
 

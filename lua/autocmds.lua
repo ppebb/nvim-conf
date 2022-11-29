@@ -24,11 +24,6 @@ function M.load()
             au VimEnter * :COQnow --shut-up
         augroup END
 
-        augroup lint
-            autocmd!
-            au BufWritePost * lua require("lint").try_lint()
-        augroup END
-
         augroup italics
             autocmd!
             au ColorScheme * highlight Identifier gui=italic cterm=italic guifg=#cba6f7

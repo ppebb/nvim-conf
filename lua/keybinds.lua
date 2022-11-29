@@ -47,7 +47,7 @@ function M.load()
 
     nnoremap("<leader><leader>", "<c-^>")
 
-    function get_winid(qftype)
+    function Get_Winid(qftype)
         local winid
         if qftype == "l" then
             winid = vim.fn.getloclist(0, { winid = 0 }).winid
@@ -61,12 +61,12 @@ function M.load()
         end
     end
 
-    function is_open(qftype)
-        return get_winid(qftype) ~= nil
+    function Is_Open(qftype)
+        return Get_Winid(qftype) ~= nil
     end
 
-    function close(qftype)
-        if is_open(qftype) then
+    function Close(qftype)
+        if Is_Open(qftype) then
             vim.cmd(qftype .. "close")
         end
     end
@@ -87,7 +87,7 @@ function M.load()
     nmap("di", "<Plug>VimspectorBalloonEval", "silent")
     nnoremap("<leader>r", [[:call vimspector#Reset() | :lua close("c")<CR>]])
 
-    function is_attached(bufnr)
+    function Is_Attached(bufnr)
       local lsp = rawget(vim, 'lsp')
       if lsp then
         for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
