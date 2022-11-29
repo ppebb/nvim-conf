@@ -90,7 +90,7 @@ function M.config()
     }
     db.custom_footer = {
         "Neovim started in " .. Startup_Time() .. " ms",
-        "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins"
+        "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins",
     }
 end
 
@@ -99,7 +99,7 @@ function Startup_Time()
     local startup_file_path = "/tmp/startuptime"
     local startup_time_pattern = "([%d.]+)  [%d.]+: [-]+ NVIM STARTED [-]+"
 
-    local startup_time_file = io.open(startup_file_path) and io.open(startup_file_path):read "*all" or nil
+    local startup_time_file = io.open(startup_file_path) and io.open(startup_file_path):read("*all") or nil
 
     local startup_time = startup_file_path and tonumber(startup_time_file:match(startup_time_pattern)) or nil
 

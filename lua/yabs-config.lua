@@ -3,23 +3,23 @@ local M = {}
 function M.config()
     local cfg = {
         languages = {
-                cs = {
-                    tasks = {
-                        build = {
-                            command = "dotnet build",
-                            output = "quickfix",
-                        },
-                    },
-                },
-                rust = {
-                    tasks = {
-                        build = {
-                            command = "cargo build",
-                            output = "quickfix",
-                        },
+            cs = {
+                tasks = {
+                    build = {
+                        command = "dotnet build",
+                        output = "quickfix",
                     },
                 },
             },
+            rust = {
+                tasks = {
+                    build = {
+                        command = "cargo build",
+                        output = "quickfix",
+                    },
+                },
+            },
+        },
         tasks = {
             run = {
                 command = "call vimspector#Continue()",

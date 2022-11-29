@@ -97,7 +97,7 @@ function M.load()
             "anuvyklack/pretty-fold.nvim", -- Foldtext custmization and preview
             requires = {
                 "anuvyklack/keymap-amend.nvim",
-                "anuvyklack/fold-preview.nvim"
+                "anuvyklack/fold-preview.nvim",
             },
             config = function()
                 require("pretty-fold").setup({})
@@ -150,7 +150,7 @@ function M.load()
             ft = { "markdown" },
             config = function() vim.g.mkdp_auto_start = 1 end,
         })
-        use("windwp/nvim-ts-autotag")-- Html/tsx autotags
+        use("windwp/nvim-ts-autotag") -- Html/tsx autotags
         use({
             "norcalli/nvim-colorizer.lua", -- Highlight colors
             config = function() require("colorizer").setup() end,
@@ -176,7 +176,7 @@ function M.load()
         })
         use({
             "lewis6991/spellsitter.nvim", -- Spellchecking
-            config = function() require("spellsitter").setup({ enable = true, }) end,
+            config = function() require("spellsitter").setup({ enable = true }) end,
         })
         use("nvim-neotest/neotest") -- Testing framework
         use("folke/neodev.nvim") -- Lua lsp config for nvim

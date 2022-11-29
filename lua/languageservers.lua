@@ -2,7 +2,19 @@ local M = {}
 
 function M.config()
     local lspconfig = require("lspconfig")
-    local servers = { "tsserver", "vimls", "rust_analyzer", "zls", "ccls", "crystalline", "pylsp", "bashls", "teal_ls", "dockerls", "astro" }
+    local servers = {
+        "tsserver",
+        "vimls",
+        "rust_analyzer",
+        "zls",
+        "ccls",
+        "crystalline",
+        "pylsp",
+        "bashls",
+        "teal_ls",
+        "dockerls",
+        "astro",
+    }
 
     require("neodev").setup()
     require("neoconf").setup()
@@ -31,9 +43,7 @@ function M.config()
         end
     end
 
-    local ensure_capabilities = function(cfg)
-        return require("coq").lsp_ensure_capabilities(cfg)
-    end
+    local ensure_capabilities = function(cfg) return require("coq").lsp_ensure_capabilities(cfg) end
 
     for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup(ensure_capabilities({
@@ -48,7 +58,7 @@ function M.config()
         handlers = {
             ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
-        cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+        cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
 
         on_attach = overrideattach,
     }))

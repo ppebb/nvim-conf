@@ -2,9 +2,7 @@ local M = {}
 
 function M.config()
     local conditions = {
-        buffer_not_empty = function ()
-            return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-        end
+        buffer_not_empty = function() return vim.fn.empty(vim.fn.expand("%:t")) ~= 1 end,
     }
 
     local cfg = {
@@ -13,17 +11,13 @@ function M.config()
             lualine_x = {},
         },
         options = {
-            theme = "catppuccin"
+            theme = "catppuccin",
         },
     }
 
-    local function ins_left(component)
-        table.insert(cfg.sections.lualine_c, component)
-    end
+    local function ins_left(component) table.insert(cfg.sections.lualine_c, component) end
 
-    local function ins_right(component)
-        table.insert(cfg.sections.lualine_x, component)
-    end
+    local function ins_right(component) table.insert(cfg.sections.lualine_x, component) end
 
     ins_left({
         "filename",

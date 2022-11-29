@@ -8,7 +8,7 @@ vim.cmd("syntax off")
 
 vim.o.backspace = "indent,eol,start"
 vim.o.autoindent = true
-vim.cmd[[filetype plugin indent on]]
+vim.cmd([[filetype plugin indent on]])
 vim.o.textwidth = 0
 vim.o.title = true
 
@@ -36,10 +36,10 @@ vim.o.cursorcolumn = true
 
 vim.o.foldmethod = "expr"
 vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")
-vim.o.foldtext=[[getline(v:foldstart).'...'.trim(getline(v:foldend))]]
-vim.o.foldlevelstart=99
+vim.o.foldtext = [[getline(v:foldstart).'...'.trim(getline(v:foldend))]]
+vim.o.foldlevelstart = 99
 
-vim.o.guifont="MesloLGS NF:style=Regular"
+vim.o.guifont = "MesloLGS NF:style=Regular"
 
 vim.o.termguicolors = true
 vim.g.cursorhold_updatetime = 1000
@@ -49,4 +49,4 @@ vim.o.shell = "/bin/zsh"
 -- vim.notify = require("notify")
 vim.g.indentLine_fileTypeExclude = { "dashboard" }
 vim.g.better_whitespace_filetypes_blacklist = { "dashboard", "packer" }
-vim.g.vimspector_base_dir='/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector'
+vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector"

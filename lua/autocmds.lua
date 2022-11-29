@@ -1,7 +1,59 @@
 local M = {}
 
+local uv = vim.loop
+
+local function notifywrap(message)
+    vim.schedule(function() vim.notify(message) end)
+end
+
+function Kill_EslintD()
+    local stdout = uv.new_pipe()
+    local stderr = uv.new_pipe()
+    local handle, pid
+    handle, pid = uv.spawn(
+        "pkill",
+        {
+            args = {
+                "eslint_d",
+            },
+            stdio = { nil, stdout, stderr },
+        },
+        vim.schedule_wrap(function()
+            stdout:read_stop()
+            stderr:read_stop()
+            stdout:close()
+            stderr:close()
+            handle:close()
+        end)
+    )
+
+    if not handle then
+        notifywrap(string.format(" Kill_EslintD: Failed to spawn curl (%s)", pid))
+    end
+
+    local function onstdout(err, data)
+        if err then
+            notifywrap(string.format(" Kill_EslintD: stdout - err: %s", err))
+        elseif data then
+            notifywrap(string.format(" Kill_EslintD: stdout - data: %s", data))
+        end
+    end
+
+    local function onstderr(err, data)
+        if err then
+            notifywrap(string.format(" Kill_EslintD: stderr - err: %s", err))
+            -- elseif data then
+            -- notifywrap(string.format(" Haste: stderr - data: %s", data))
+        end
+    end
+
+    uv.read_start(stdout, onstdout)
+
+    uv.read_start(stderr, onstderr)
+end
+
 function M.load()
-    vim.cmd[[
+    vim.cmd([[
         augroup highlight_yank
             autocmd!
             au TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000}
@@ -41,7 +93,12 @@ function M.load()
             au ColorScheme * highlight clear @constructor | highlight link @constructor @type
             au ColorScheme * :highlight @include gui=italic cterm=italic
         augroup END
-    ]]
+
+        augroup eslintd
+            autocmd!
+            au VimLeave * lua Kill_EslintD()
+        augroup END
+    ]])
 end
 
 return M

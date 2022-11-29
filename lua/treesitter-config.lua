@@ -90,7 +90,7 @@ function M.config()
         vim.api.nvim_set_hl(0, highlight.capture, { link = highlight.group })
     end
 
-    vim.cmd[[hi link TreeSitterContext Normal]]
+    vim.cmd([[hi link TreeSitterContext Normal]])
 end
 
 return M

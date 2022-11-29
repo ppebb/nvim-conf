@@ -10,12 +10,12 @@ function M.config()
         max_width = 150,
 
         handler_opts = {
-            border = "single"
+            border = "single",
         },
 
         always_trigger = true,
 
-        padding = ' ',
+        padding = " ",
     }
 
     require("lsp_signature").setup(cfg)

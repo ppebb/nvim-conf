@@ -14,8 +14,16 @@ function M.load()
     nnoremap("gea", function() vim.diagnostic.get() end, "silent")
 
     local blsp = vim.lsp.buf
-    nnoremap("<leader><Space>", function() blsp.signature_help(nil, { focus = false, focusable = false, border = "single" }) end, "silent")
-    nnoremap("<leader>h", function() blsp.hover(nil, { focus = false, focusable = false, border = "single" }) end, "silent")
+    nnoremap(
+        "<leader><Space>",
+        function() blsp.signature_help(nil, { focus = false, focusable = false, border = "single" }) end,
+        "silent"
+    )
+    nnoremap(
+        "<leader>h",
+        function() blsp.hover(nil, { focus = false, focusable = false, border = "single" }) end,
+        "silent"
+    )
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
@@ -61,9 +69,7 @@ function M.load()
         end
     end
 
-    function Is_Open(qftype)
-        return Get_Winid(qftype) ~= nil
-    end
+    function Is_Open(qftype) return Get_Winid(qftype) ~= nil end
 
     function Close(qftype)
         if Is_Open(qftype) then
@@ -88,30 +94,29 @@ function M.load()
     nnoremap("<leader>r", [[:call vimspector#Reset() | :lua close("c")<CR>]])
 
     function Is_Attached(bufnr)
-      local lsp = rawget(vim, 'lsp')
-      if lsp then
-        for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
-          return true
+        local lsp = rawget(vim, "lsp")
+        if lsp then
+            for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
+                return true
+            end
         end
-      end
-      return false
+        return false
     end
 
-    vim.diagnostic.config { virtual_text = false, focusble = false, focus = false }
+    vim.diagnostic.config({ virtual_text = false, focusble = false, focus = false })
 
     local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
     function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
         opts = opts or {}
-        opts.border = opts.border or 'single'
+        opts.border = opts.border or "single"
         return orig_util_open_floating_preview(contents, syntax, opts, ...)
     end
 
-    local Terminal = require('toggleterm.terminal').Terminal
-    local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true, direction = 'float', float_opts = { border = 'single' } })
+    local Terminal = require("toggleterm.terminal").Terminal
+    local lazygit =
+        Terminal:new({ cmd = "lazygit", hidden = true, direction = "float", float_opts = { border = "single" } })
 
-    local function _lazygit_toggle()
-        lazygit:toggle()
-    end
+    local function _lazygit_toggle() lazygit:toggle() end
 
     nnoremap("<leader>g", function() _lazygit_toggle() end, "silent")
 end
