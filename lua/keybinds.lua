@@ -91,7 +91,7 @@ function M.load()
     nmap("<F23>", "<Plug>VimspectorStepInto", "silent")
     nmap("<F24>", "<Plug>VimspectorStepOut", "silent")
     nmap("di", "<Plug>VimspectorBalloonEval", "silent")
-    nnoremap("<leader>r", [[:call vimspector#Reset() | :lua close("c")<CR>]])
+    nnoremap("<leader>r", [[:call vimspector#Reset() | :lua Close("c")<CR>]], "silent")
 
     function Is_Attached(bufnr)
         local lsp = rawget(vim, "lsp")
@@ -119,6 +119,8 @@ function M.load()
     local function _lazygit_toggle() lazygit:toggle() end
 
     nnoremap("<leader>g", function() _lazygit_toggle() end, "silent")
+
+    nnoremap("cts", function() vim.cmd([[ set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab ]]) end, "silent")
 end
 
 return M

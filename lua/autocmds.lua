@@ -1,55 +1,12 @@
 local M = {}
 
-local uv = vim.loop
-
-local function notifywrap(message)
-    vim.schedule(function() vim.notify(message) end)
-end
+local job = require("plenary.job")
 
 function Kill_EslintD()
-    local stdout = uv.new_pipe()
-    local stderr = uv.new_pipe()
-    local handle, pid
-    handle, pid = uv.spawn(
-        "pkill",
-        {
-            args = {
-                "eslint_d",
-            },
-            stdio = { nil, stdout, stderr },
-        },
-        vim.schedule_wrap(function()
-            stdout:read_stop()
-            stderr:read_stop()
-            stdout:close()
-            stderr:close()
-            handle:close()
-        end)
-    )
-
-    if not handle then
-        notifywrap(string.format(" Kill_EslintD: Failed to spawn curl (%s)", pid))
-    end
-
-    local function onstdout(err, data)
-        if err then
-            notifywrap(string.format(" Kill_EslintD: stdout - err: %s", err))
-        elseif data then
-            notifywrap(string.format(" Kill_EslintD: stdout - data: %s", data))
-        end
-    end
-
-    local function onstderr(err, data)
-        if err then
-            notifywrap(string.format(" Kill_EslintD: stderr - err: %s", err))
-            -- elseif data then
-            -- notifywrap(string.format(" Haste: stderr - data: %s", data))
-        end
-    end
-
-    uv.read_start(stdout, onstdout)
-
-    uv.read_start(stderr, onstderr)
+    job:new({
+        command = "pkill",
+        args = { "eslint_d" },
+    }):start()
 end
 
 function M.load()
@@ -91,7 +48,9 @@ function M.load()
             au ColorScheme * highlight link @character @string
             au ColorScheme * highlight clear @variable | highlight link @variable @property
             au ColorScheme * highlight clear @constructor | highlight link @constructor @type
+            au ColorScheme * highlight clear @function.macro | highlight link @function.macro @function
             au ColorScheme * :highlight @include gui=italic cterm=italic
+            au ColorScheme * highlight clear jsonBoolean | highlight link jsonBoolean @keyword
         augroup END
 
         augroup eslintd
