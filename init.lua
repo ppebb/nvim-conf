@@ -46,6 +46,7 @@ vim.o.termguicolors = true
 vim.g.cursorhold_updatetime = 1000
 
 vim.o.shell = "/bin/zsh"
+vim.filetype.add({ extension = { csproj = "xml", targets = "xml" } })
 
 -- vim.notify = require("notify")
 vim.g.indentLine_fileTypeExclude = { "dashboard" }

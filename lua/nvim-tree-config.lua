@@ -5,7 +5,6 @@ function M.config()
         open_on_tab = true,
         auto_reload_on_write = true,
         reload_on_bufenter = true,
-        create_in_closed_folder = true,
         hijack_cursor = true,
         diagnostics = {
             enable = true,
