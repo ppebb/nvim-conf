@@ -109,8 +109,8 @@ function M.load()
             config = function() require("symbolsoutline-config").config() end,
         })
         use({
-            "rmagatti/goto-preview", -- Show definitions in preview windows
-            config = function() require("goto-preview").setup({}) end,
+            "DNLHC/glance.nvim", -- Show definitions in preview windows
+            config = function() require("glance").setup({}) end,
         })
         use({
             "folke/todo-comments.nvim", -- Show todo comments in a project
