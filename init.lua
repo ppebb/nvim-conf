@@ -30,6 +30,7 @@ vim.o.startofline = true
 vim.o.errorbells = false
 vim.o.swapfile = false
 vim.o.mouse = "a"
+vim.o.mousemodel = "extend"
 vim.o.confirm = true
 
 vim.o.cursorline = true
@@ -52,3 +53,8 @@ vim.filetype.add({ extension = { csproj = "xml", targets = "xml" } })
 vim.g.indentLine_fileTypeExclude = { "dashboard" }
 vim.g.better_whitespace_filetypes_blacklist = { "dashboard", "packer" }
 vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector"
+
+vim.o.autoread = true
+vim.o.scrolloff = 1
+vim.o.sidescroll = 1
+vim.o.sidescrolloff = 2

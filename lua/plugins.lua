@@ -20,7 +20,6 @@ function M.load()
             "jose-elias-alvarez/null-ls.nvim", -- Linter management
             config = function() require("null-ls-config").config() end,
         })
-        use("tpope/vim-sensible") -- Sensible defaults
         use("tpope/vim-sleuth") -- Automatic indent settings
         use("ntpeters/vim-better-whitespace") -- Whitespace highlighting
         use({
