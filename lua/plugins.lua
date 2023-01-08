@@ -180,6 +180,10 @@ function M.load()
         use("nvim-neotest/neotest") -- Testing framework
         use("folke/neodev.nvim") -- Lua lsp config for nvim
         use("folke/neoconf.nvim") -- Lua lsp config manager
+        use({
+            "asiryk/auto-hlsearch.nvim",
+            config = function() require("auto-hlsearch").setup() end,
+        })
     end)
 end
 
