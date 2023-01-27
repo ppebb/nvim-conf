@@ -14,6 +14,7 @@ function M.config()
         "teal_ls",
         "dockerls",
         "astro",
+        "sourcekit",
     }
 
     require("neodev").setup()

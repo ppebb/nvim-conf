@@ -23,10 +23,6 @@ function M.load()
         use("tpope/vim-sleuth") -- Automatic indent settings
         use("ntpeters/vim-better-whitespace") -- Whitespace highlighting
         use({
-            "glepnir/dashboard-nvim", -- Dashboard
-            config = function() require("dashboard-config").config() end,
-        })
-        use({
             "lewis6991/gitsigns.nvim",
             config = function() require("gitsigns-config").config() end,
         })
@@ -133,7 +129,6 @@ function M.load()
         })
         use("Hoffs/omnisharp-extended-lsp.nvim") -- Omnisharp extensions
         use("mfussenegger/nvim-jdtls") -- Full jdtls support
-        use("antoinemadec/FixCursorHold.nvim") -- Cursorhold performance fix
         use("https://bitbucket.org/sw-samuraj/vim-gradle.git") -- Gradle file extension, syntax highlighting, and folding
         use("rcarriga/nvim-notify") -- Notification manager
         use("b0o/mapx.nvim") -- Easier keybinds in lua
@@ -181,8 +176,12 @@ function M.load()
         use("folke/neodev.nvim") -- Lua lsp config for nvim
         use("folke/neoconf.nvim") -- Lua lsp config manager
         use({
-            "asiryk/auto-hlsearch.nvim",
+            "asiryk/auto-hlsearch.nvim", -- Clear search highlight
             config = function() require("auto-hlsearch").setup() end,
+        })
+        use({
+            "chipsenkbeil/distant.nvim", -- Remote editing
+            config = function() require("distant-config").config() end,
         })
     end)
 end
