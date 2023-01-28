@@ -31,11 +31,6 @@ function M.load()
             au CursorHold * silent! lua if Is_Attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, focusable = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, { focus = false, focusable = false }) end end
         augroup END
 
-        augroup coq
-            autocmd!
-            au VimEnter * COQnow --shut-up
-        augroup END
-
         augroup session
             autocmd!
             au VimEnter * silent! VimspectorLoadSession ~/.cache/vimspector

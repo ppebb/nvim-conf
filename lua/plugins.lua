@@ -39,17 +39,17 @@ function M.load()
             requires = { "kyazdani42/nvim-web-devicons" }, -- Icons
         })
         use({
-            "ms-jpq/coq_nvim", -- Completions
-            config = function() require("coq-config").config() end,
-        })
-        use({
-            "ms-jpq/coq.artifacts", -- Snippets
-            branch = "artifacts",
-        })
-        use({
-            "ms-jpq/coq.thirdparty", -- Extras
-            config = function() require("3p-config").config() end,
-            branch = "3p",
+            "hrsh7th/nvim-cmp",
+            config = function() require("cmp-config").config() end,
+            requires = {
+                "L3MON4D3/LuaSnip",
+                "saadparwaiz1/cmp_luasnip",
+                "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-buffer",
+                "hrsh7th/cmp-path",
+                "hrsh7th/cmp-nvim-lua",
+                "onsails/lspkind.nvim",
+            },
         })
         use("Issafalcon/lsp-overloads.nvim") -- Sig help
         use({

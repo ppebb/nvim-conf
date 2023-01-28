@@ -15,6 +15,9 @@ function M.config()
         "dockerls",
         "astro",
         "sourcekit",
+        "html",
+        "cssls",
+        "jsonls",
     }
 
     require("neodev").setup()
@@ -44,55 +47,34 @@ function M.config()
         end
     end
 
-    local ensure_capabilities = function(cfg) return require("coq").lsp_ensure_capabilities(cfg) end
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
 
     for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup(ensure_capabilities({
+        lspconfig[lsp].setup({
             on_attach = overrideattach,
-        }))
+            capabilities = capabilities,
+        })
     end
 
     -- C#
     local pid = vim.fn.getpid()
     local omnisharp_bin = "omnisharp"
-    lspconfig.omnisharp.setup(ensure_capabilities({
+    lspconfig.omnisharp.setup({
         handlers = {
             ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
         cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
 
         on_attach = overrideattach,
-    }))
-
-    -- HTML
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-    lspconfig.html.setup(ensure_capabilities({
         capabilities = capabilities,
-
-        on_attach = overrideattach,
-    }))
-
-    -- CSS
-    lspconfig.cssls.setup(ensure_capabilities({
-        capabilities = capabilities,
-
-        on_attach = overrideattach,
-    }))
-
-    -- Json
-    lspconfig.jsonls.setup(ensure_capabilities({
-        capabilities = capabilities,
-
-        on_attach = overrideattach,
-    }))
+    })
 
     -- Zls setting
     vim.g.zig_fmt_autosave = false
 
     -- Lua
-    lspconfig.sumneko_lua.setup(ensure_capabilities({
+    lspconfig.sumneko_lua.setup({
         settings = {
             Lua = {
                 runtime = {
@@ -105,7 +87,8 @@ function M.config()
         },
 
         on_attach = overrideattach,
-    }))
+        capabilities = capabilities,
+    })
 end
 
 return M
