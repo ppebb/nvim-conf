@@ -9,6 +9,11 @@ function M.config()
             nvimtree = true,
             treesitter = true,
         },
+        dim_inactive = {
+            enabled = true,
+            shade = "dark",
+            percentage = 0.15,
+        },
         custom_highlights = function(colors)
             local identifier = { fg = colors.mauve, style = { "italic" } }
             return {

@@ -73,5 +73,6 @@
         "/home/ppeb/.local/share/nvim/site/pack/packer/start/vim-matchup",
         "/home/ppeb/.local/share/nvim/site/pack/packer/start/yabs.nvim",
         "${3rd}/luassert/library"
-    ]
+    ],
+    "workspace.checkThirdParty": false
 }

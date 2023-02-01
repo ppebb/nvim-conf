@@ -16,6 +16,7 @@ function M.load()
             config = function() require("languageservers").config() end,
         })
         use("puremourning/vimspector")
+        use("jbyuki/one-small-step-for-vimkind")
         use({
             "jose-elias-alvarez/null-ls.nvim", -- Linter management
             config = function() require("null-ls-config").config() end,
@@ -182,6 +183,10 @@ function M.load()
         use({
             "chipsenkbeil/distant.nvim", -- Remote editing
             config = function() require("distant-config").config() end,
+        })
+        use({
+            "~/gitclone/ppebboard",
+            config = function() require("ppebboard-config").config() end,
         })
     end)
 end

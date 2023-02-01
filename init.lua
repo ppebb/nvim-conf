@@ -50,8 +50,7 @@ vim.o.shell = "/bin/zsh"
 vim.filetype.add({ extension = { csproj = "xml", targets = "xml" } })
 
 -- vim.notify = require("notify")
-vim.g.indentLine_fileTypeExclude = { "dashboard" }
-vim.g.better_whitespace_filetypes_blacklist = { "dashboard", "packer" }
+vim.g.better_whitespace_filetypes_blacklist = { "ppebboard", "packer" }
 vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector"
 
 vim.o.autoread = true
