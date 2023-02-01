@@ -185,7 +185,15 @@ function M.load()
             config = function() require("distant-config").config() end,
         })
         use({
-            "~/gitclone/ppebboard",
+            "Shatur/neovim-session-manager", -- Session manager
+            config = function()
+                require("session_manager").setup({
+                    autoload_mode = require("session_manager.config").AutoloadMode.LastSession,
+                })
+            end,
+        })
+        use({
+            "~/gitclone/ppebboard", -- Dashboard
             config = function() require("ppebboard-config").config() end,
         })
     end)
