@@ -52,8 +52,43 @@ vim.filetype.add({ extension = { csproj = "xml", targets = "xml" } })
 -- vim.notify = require("notify")
 vim.g.better_whitespace_filetypes_blacklist = { "ppebboard", "packer" }
 vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector"
+vim.cmd("sign define vimspectorBP text=⬤ texthl=WarningMsg")
 
 vim.o.autoread = true
 vim.o.scrolloff = 1
 vim.o.sidescroll = 1
 vim.o.sidescrolloff = 2
+
+function Get_Signs()
+    local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
+    return vim.tbl_map(
+        function(sign) return vim.fn.sign_getdefined(sign.name)[1] end,
+        vim.fn.sign_getplaced(buf, { group = "*", lnum = vim.v.lnum })[1].signs
+    )
+end
+
+function Column()
+    local sign, git_sign, vimspector_sign
+    for _, s in ipairs(Get_Signs()) do
+        if s.name:find("GitSign") then
+            git_sign = s
+        elseif s.name:find("vimspector") then
+            vimspector_sign = s
+        else
+            sign = s
+        end
+    end
+
+    local components = {
+        git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text:gsub(" ", "") .. "%*") or " ",
+        sign and ("%#" .. sign.texthl .. "#" .. sign.text:gsub(" ", "") .. "%*") or " ",
+        vimspector_sign and ("%#" .. vimspector_sign.texthl .. "#" .. vimspector_sign.text:gsub(" ", "") .. "%*")
+            or " ",
+        [[%=]],
+        [[%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''} ]],
+    }
+
+    return table.concat(components, "")
+end
+
+vim.opt.statuscolumn = [[%!v:lua.Column()]]
