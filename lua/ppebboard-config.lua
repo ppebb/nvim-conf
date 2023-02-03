@@ -54,7 +54,7 @@ function M.config()
                     icon = "  ",
                     text = "Open last session                     ",
                     shortcut = "s l",
-                    action = "SessionManager load_last_session",
+                    action = "SessionManager load_session",
                 },
                 {
                     icon = "  ",

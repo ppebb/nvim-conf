@@ -123,7 +123,6 @@ function M.load()
             config = function() require("luatab").setup({}) end,
         })
         use("kevinhwang91/nvim-bqf") -- Better quickfix window
-        use("gpanders/editorconfig.nvim") -- Use editorconfig files
         use({
             "pianocomposer321/yabs.nvim", -- Build system
             config = function() require("yabs-config").config() end,
@@ -188,7 +187,7 @@ function M.load()
             "Shatur/neovim-session-manager", -- Session manager
             config = function()
                 require("session_manager").setup({
-                    autoload_mode = require("session_manager.config").AutoloadMode.LastSession,
+                    autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
                 })
             end,
         })
@@ -196,6 +195,7 @@ function M.load()
             "~/gitclone/ppebboard", -- Dashboard
             config = function() require("ppebboard-config").config() end,
         })
+        use("~/gitclone/solution-nvim")
     end)
 end
 

@@ -30,12 +30,17 @@ function M.config()
                 ["@repeat"] = identifier,
                 ["@method"] = { fg = colors.blue },
                 ["@method.call"] = { fg = colors.blue },
+                ["@event_name"] = { fg = colors.blue },
                 ["@character"] = { fg = colors.green },
                 ["@namespace"] = { fg = colors.yellow, style = {} },
                 ["@constructor"] = { fg = colors.yellow },
+                ["@class_name"] = { fg = colors.yellow },
                 ["@variable"] = { fg = colors.teal },
                 ["@label"] = { fg = colors.teal },
                 ["@label.json"] = { fg = colors.teal },
+                ["@punctuation"] = { fg = colors.overlay2 },
+                ["@field_name"] = { fg = colors.lavender },
+                ["@local_name"] = { fg = colors.teal },
             }
         end,
     }
