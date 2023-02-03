@@ -79,11 +79,14 @@ function Column()
         end
     end
 
+    local vimspector_text = vimspector_sign
+            and ((sign ~= nil) and vimspector_sign.text:gsub(" ", "") or vimspector_sign.text)
+        or " "
+
     local components = {
         git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text:gsub(" ", "") .. "%*") or " ",
-        sign and ("%#" .. sign.texthl .. "#" .. sign.text:gsub(" ", "") .. "%*") or " ",
-        vimspector_sign and ("%#" .. vimspector_sign.texthl .. "#" .. vimspector_sign.text:gsub(" ", "") .. "%*")
-            or " ",
+        sign and ("%#" .. sign.texthl .. "#" .. sign.text:gsub(" ", "") .. "%*") or "",
+        vimspector_sign and ("%#" .. vimspector_sign.texthl .. "#" .. vimspector_text .. "%*") or " ",
         [[%=]],
         [[%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''} ]],
     }
