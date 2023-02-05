@@ -149,10 +149,6 @@ function M.load()
             "norcalli/nvim-colorizer.lua", -- Highlight colors
             config = function() require("colorizer").setup() end,
         })
-        use({
-            "nathom/filetype.nvim", -- Support more filetypes faster
-            config = function() require("filetype-config").config() end,
-        })
         use("JoosepAlviste/nvim-ts-context-commentstring") -- Sets comment string basted on cursor position
         use("tpope/vim-commentary") -- Comment keybinds
         use({

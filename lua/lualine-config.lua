@@ -40,11 +40,16 @@ function M.config()
                 return msg
             end
 
+            local names = ""
             for _, client in ipairs(clients) do
                 local filetypes = client.config.filetypes
                 if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 and client.name ~= "null-ls" then
-                    return client.name
+                    names = names .. client.name .. " "
                 end
+            end
+
+            if names ~= "" then
+                return names:sub(1, -2)
             end
 
             return msg

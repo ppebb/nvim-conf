@@ -121,6 +121,8 @@ function M.config()
                 },
                 range = true,
             }
+        elseif client.name == "sumneko_lua" then
+            client.server_capabilities.semanticTokensProvider = nil
         end
     end
 
@@ -143,6 +145,13 @@ function M.config()
         },
         cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
 
+        on_attach = overrideattach,
+        capabilities = capabilities,
+    })
+
+    -- Tailwind CSS
+    lspconfig.tailwindcss.setup({
+        root_dir = require("lspconfig.util").root_pattern("tailwind.config.js", "tailwind.config.cjs"),
         on_attach = overrideattach,
         capabilities = capabilities,
     })
