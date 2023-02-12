@@ -121,7 +121,7 @@ function M.config()
                 },
                 range = true,
             }
-        elseif client.name == "sumneko_lua" then
+        elseif client.name == "lua_ls" then
             client.server_capabilities.semanticTokensProvider = nil
         end
     end
@@ -160,7 +160,7 @@ function M.config()
     vim.g.zig_fmt_autosave = false
 
     -- Lua
-    lspconfig.sumneko_lua.setup({
+    lspconfig.lua_ls.setup({
         settings = {
             Lua = {
                 runtime = {
