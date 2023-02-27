@@ -68,25 +68,39 @@ function Get_Signs()
 end
 
 function Column()
-    local sign, git_sign, vimspector_sign
+    local sign, git_sign, vimspector_sign_bp, vimspector_sign_other
     for _, s in ipairs(Get_Signs()) do
         if s.name:find("GitSign") then
             git_sign = s
+        elseif s.name:find("vimspectorBP") then
+            vimspector_sign_bp = s
         elseif s.name:find("vimspector") then
-            vimspector_sign = s
+            vimspector_sign_other = s
         else
             sign = s
         end
     end
 
-    local vimspector_text = vimspector_sign
-            and ((sign ~= nil) and vimspector_sign.text:gsub(" ", "") or vimspector_sign.text)
+    local vimspector_text_bp = vimspector_sign_bp
+            and ((sign or vimspector_sign_other) and vimspector_sign_bp.text:gsub(" ", "") or vimspector_sign_bp.text)
         or " "
+
+    local vimspector_text_other = ""
+    if vimspector_sign_other then
+        if sign and vimspector_sign_bp then
+            vimspector_text_bp = ""
+        elseif not sign and vimspector_sign_bp then
+            vimspector_text_other = vimspector_sign_other.text:gsub(" ", "")
+        else
+            vimspector_text_other = " " .. vimspector_sign_other.text
+        end
+    end
 
     local components = {
         git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text:gsub(" ", "") .. "%*") or " ",
         sign and ("%#" .. sign.texthl .. "#" .. sign.text:gsub(" ", "") .. "%*") or "",
-        vimspector_sign and ("%#" .. vimspector_sign.texthl .. "#" .. vimspector_text .. "%*") or " ",
+        vimspector_sign_bp and ("%#" .. vimspector_sign_bp.texthl .. "#" .. vimspector_text_bp .. "%*") or "",
+        vimspector_sign_other and ("%#" .. vimspector_sign_other.texthl .. "#" .. vimspector_text_other .. "%*") or "",
         [[%=]],
         [[%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''} ]],
     }

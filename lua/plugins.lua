@@ -191,7 +191,15 @@ function M.load()
             "~/gitclone/ppebboard", -- Dashboard
             config = function() require("ppebboard-config").config() end,
         })
-        use("~/gitclone/solution-nvim")
+        use({
+            "~/gitclone/solution-nvim",
+            config = function()
+                require("solution").setup({
+                    width = 40,
+                })
+            end,
+            rocks = { "xml2lua" },
+        })
     end)
 end
 

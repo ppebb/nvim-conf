@@ -26,7 +26,13 @@ function M.load()
     )
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
-    nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
+    nnoremap("<F6>", function()
+        if vim.g.in_solution then
+            require("solution").toggle()
+        else
+            vim.cmd(":NvimTreeToggle")
+        end
+    end, "silent")
     nnoremap("<F2>", function() blsp.rename() end, "silent")
     nnoremap("<F8>", function() blsp.type_definition() end, "silent")
     nnoremap("<F9>", function() blsp.implementation() end, "silent")
