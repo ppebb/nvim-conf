@@ -28,7 +28,7 @@ function M.load()
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", function()
         if vim.g.in_solution then
-            require("solution").toggle()
+            require("solution.explorer").toggle()
         else
             vim.cmd(":NvimTreeToggle")
         end

@@ -17,6 +17,7 @@ function M.config()
         custom_highlights = function(colors)
             local identifier = { fg = colors.mauve, style = { "italic" } }
             return {
+                -- Treesitter / Semantic tokens
                 ["@keyword"] = identifier,
                 ["@keyword.function"] = identifier,
                 ["@keyword.return"] = identifier,
@@ -41,6 +42,9 @@ function M.config()
                 ["@punctuation"] = { fg = colors.overlay2 },
                 ["@field_name"] = { fg = colors.lavender },
                 ["@local_name"] = { fg = colors.teal },
+                -- Solution Explorer
+                ["SolutionExplorerSolution"] = { fg = colors.mauve },
+                ["SolutionExplorerProject"] = { fg = colors.green },
             }
         end,
     }

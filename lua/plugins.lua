@@ -38,6 +38,7 @@ function M.load()
             "kyazdani42/nvim-tree.lua", -- Filetree
             config = function() require("nvim-tree-config").config() end,
             requires = { "kyazdani42/nvim-web-devicons" }, -- Icons
+            after = "solution-nvim",
         })
         use({
             "hrsh7th/nvim-cmp",

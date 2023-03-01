@@ -87,7 +87,13 @@ function Column()
 
     local vimspector_text_other = ""
     if vimspector_sign_other then
-        if sign and vimspector_sign_bp then
+        if vimspector_sign_other.name:find("vimspectorPCBP") then
+            vimspector_text_bp = ""
+            if sign then
+                sign.text = ""
+            end
+            vimspector_text_other = vimspector_sign_other.text
+        elseif sign and vimspector_sign_other then
             vimspector_text_bp = ""
         elseif not sign and vimspector_sign_bp then
             vimspector_text_other = vimspector_sign_other.text:gsub(" ", "")
