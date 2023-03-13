@@ -35,9 +35,9 @@ function M.load()
         })
         use("rebelot/kanagawa.nvim")
         use({
-            "kyazdani42/nvim-tree.lua", -- Filetree
+            "nvim-tree/nvim-tree.lua", -- Filetree
             config = function() require("nvim-tree-config").config() end,
-            requires = { "kyazdani42/nvim-web-devicons" }, -- Icons
+            requires = { "nvim-tree/nvim-web-devicons" }, -- Icons
             after = "solution-nvim",
         })
         use({
@@ -81,11 +81,10 @@ function M.load()
         })
         use({
             "j-hui/fidget.nvim", -- Show lsp load status
-            config = function() require("fidget").setup({}) end,
+            config = function() require("fidget").setup({ window = { blend = 0 } }) end,
         })
         use("nvim-lua/plenary.nvim") -- Lua functions
         use("nvim-telescope/telescope.nvim") -- Fzf replacement
-        use("folke/trouble.nvim") -- List for showing diagnostics
         use({
             "akinsho/toggleterm.nvim", -- Term window manager
             config = function() require("toggleterm").setup({}) end,
@@ -100,10 +99,6 @@ function M.load()
                 require("pretty-fold").setup({})
                 require("fold-preview").setup()
             end,
-        })
-        use({
-            "simrat39/symbols-outline.nvim", -- Treelike view for symbols
-            config = function() require("symbolsoutline-config").config() end,
         })
         use({
             "DNLHC/glance.nvim", -- Show definitions in preview windows
@@ -197,9 +192,17 @@ function M.load()
             config = function()
                 require("solution").setup({
                     width = 40,
+                    icons = {
+                        folder_open = "",
+                        folder_closed = "",
+                        folder_empty_open = "",
+                        folder_empty_closed = "",
+                        folder_symlink = "",
+                        folder_symlink_open = "",
+                    },
                 })
             end,
-            rocks = { "xml2lua" },
+            rocks = { "xml2lua", "Lua-cURL" },
         })
     end)
 end

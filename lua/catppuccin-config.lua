@@ -21,6 +21,7 @@ function M.config()
                 ["@keyword"] = identifier,
                 ["@keyword.function"] = identifier,
                 ["@keyword.return"] = identifier,
+                ["@keyword.operator"] = identifier,
                 ["@constant.builtin"] = identifier,
                 ["@type.builtin"] = identifier,
                 ["@type.qualifier"] = identifier,
@@ -45,6 +46,9 @@ function M.config()
                 -- Solution Explorer
                 ["SolutionExplorerSolution"] = { fg = colors.mauve },
                 ["SolutionExplorerProject"] = { fg = colors.green },
+                ["SolutionExplorerFolder"] = { fg = colors.blue },
+                ["SolutionNugetHeader"] = { fg = colors.base, bg = colors.peach, style = { "bold" } },
+                ["SolutionNugetHighlight"] = { fg = colors.sky },
             }
         end,
     }
