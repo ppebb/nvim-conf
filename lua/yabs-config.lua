@@ -1,5 +1,7 @@
 local M = {}
 
+local yabs = require("yabs")
+
 function M.config()
     local cfg = {
         languages = {
@@ -27,10 +29,10 @@ function M.config()
             },
             build_and_run = {
                 command = function()
-                    require("yabs"):run_task("build", {
-                        on_exit = vim.schedule_wrap(function(Job, exit_code)
+                    yabs:run_task("build", {
+                        on_exit = vim.schedule_wrap(function(_, exit_code)
                             if exit_code == 0 then
-                                require("yabs"):run_task("run")
+                                yabs:run_task("run")
                             end
                         end),
                     })
@@ -40,7 +42,7 @@ function M.config()
         },
     }
 
-    require("yabs"):setup(cfg)
+    yabs:setup(cfg)
 end
 
 return M

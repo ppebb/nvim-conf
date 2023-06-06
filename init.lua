@@ -114,4 +114,4 @@ function Column()
     return table.concat(components, "")
 end
 
-vim.opt.statuscolumn = [[%!v:lua.Column()]]
+-- vim.opt.statuscolumn = [[%!v:lua.Column()]]

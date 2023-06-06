@@ -5,6 +5,9 @@ function M.load()
         global = true,
     })
 
+    map(";;", "A;<ESC>", "silent")
+    imap(";;", "<ESC>A;", "silent")
+
     nnoremap("gel", function() vim.diagnostic.open_float() end, "silent")
     nnoremap("geN", function() vim.diagnostic.get_next() end, "silent")
     nnoremap("geP", function() vim.diagnostic.get_prev() end, "silent")
