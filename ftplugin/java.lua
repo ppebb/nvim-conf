@@ -8,7 +8,7 @@ local config = {
     cmd = {
 
         -- 💀
-        "/usr/lib/jvm/java-18-openjdk/bin/java", -- or '/path/to/java11_or_newer/bin/java'
+        "/usr/lib/jvm/java-17-openjdk/bin/java", -- or '/path/to/java11_or_newer/bin/java'
         -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
@@ -25,14 +25,14 @@ local config = {
 
         -- 💀
         "-jar",
-        "/usr/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+        "/home/ppeb/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
         -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
         -- Must point to the                                                     Change this to
         -- eclipse.jdt.ls installation                                           the actual version
 
         -- 💀
         "-configuration",
-        "/usr/share/java/jdtls/config_linux",
+        "/home/ppeb/.local/share/nvim/mason/packages/jdtls/config_linux",
         -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
         -- Must point to the                      Change to one of `linux`, `win` or `mac`
         -- eclipse.jdt.ls installation            Depending on your system.

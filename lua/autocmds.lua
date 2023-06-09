@@ -1,5 +1,6 @@
 local M = {}
 
+local api = vim.api
 local job = require("plenary.job")
 
 function Kill_EslintD()

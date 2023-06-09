@@ -204,6 +204,8 @@ function M.load()
             end,
             rocks = { "xml2lua", "Lua-cURL" },
         })
+        use("~/gitclone/compproghelper")
+        use("andweeb/presence.nvim")
     end)
 end
 
