@@ -21,8 +21,11 @@ function M.config()
         "jsonls",
     }
 
-    require("neodev").setup()
-    require("neoconf").setup()
+    if not vim.g.setup_neodev then
+        require("neodev").setup()
+        require("neoconf").setup()
+    end
+    vim.g.setup_neodev = 1
 
     vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
         config = config or { border = "single", focus = false, focusable = false }
@@ -38,7 +41,8 @@ function M.config()
         return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
     end
 
-    local overrideattach = function(client)
+    local overrideattach = function(client, bufnr)
+        require("nvim-navic").attach(client, bufnr)
         if client.server_capabilities.signatureHelpProvider then
             require("lsp-overloads").setup(client, {
                 ui = {

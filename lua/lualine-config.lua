@@ -24,10 +24,10 @@ function M.config()
         cond = conditions.buffer_not_empty,
     })
 
-    local gps = require("nvim-gps")
+    local navic = require("nvim-navic")
     ins_left({
-        gps.get_location,
-        cond = gps.is_available,
+        function() return navic.get_location() end,
+        cond = function() return navic.is_available() end,
     })
 
     ins_right({

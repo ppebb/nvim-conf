@@ -62,8 +62,8 @@ function M.load()
         use("nvim-treesitter/playground") -- Check capture groups and view tree
         use("nvim-treesitter/nvim-treesitter-context") -- Show current function or class at top of window
         use({
-            "SmiteshP/nvim-gps", -- Show location in status line
-            config = function() require("nvim-gps").setup() end,
+            "SmiteshP/nvim-navic", -- Show location in status line
+            config = function() require("nvim-navic-config").config() end,
         })
         use("andymass/vim-matchup") -- Better %
         use("mbbill/undotree") -- Undo window
@@ -81,6 +81,7 @@ function M.load()
         })
         use({
             "j-hui/fidget.nvim", -- Show lsp load status
+            tag = "legacy",
             config = function() require("fidget").setup({ window = { blend = 0 } }) end,
         })
         use("nvim-lua/plenary.nvim") -- Lua functions

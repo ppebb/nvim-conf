@@ -29,9 +29,12 @@ function M.load()
     )
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
+    local compproghelper = require("compproghelper")
     nnoremap("<F6>", function()
         if vim.g.in_solution then
-            require("solution.explorer").toggle()
+            require("solution.explorer.window").toggle()
+        elseif compproghelper.in_comp_prog() then
+            compproghelper.toggle()
         else
             vim.cmd(":NvimTreeToggle")
         end
