@@ -30,6 +30,12 @@ function M.config()
             -- Shell
             null_ls.builtins.code_actions.shellcheck,
             null_ls.builtins.diagnostics.shellcheck,
+
+            -- C#
+            null_ls.builtins.formatting.dprint.with({
+                filetypes = { "cs" },
+                extra_args = { "--config", vim.fn.expand("~/.config/dprint.json") },
+            }),
         },
         -- you can reuse a shared lspconfig on_attach callback here
         on_attach = function(client, bufnr)

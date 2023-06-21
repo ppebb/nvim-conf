@@ -40,6 +40,7 @@ function M.config()
                 ["@lsp.type.class_name.cs"] = { fg = colors.yellow },
                 ["@lsp.type.struct_name.cs"] = { fg = colors.yellow },
                 ["@lsp.type.interface_name.cs"] = { fg = colors.yellow },
+                ["@lsp.type.enum_name.cs"] = { fg = colors.yellow },
                 ["@class_name"] = { fg = colors.yellow },
                 ["@variable"] = { fg = colors.teal },
                 ["@label"] = { fg = colors.teal },
