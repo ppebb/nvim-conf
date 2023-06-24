@@ -24,7 +24,7 @@ function M.load()
     )
     nnoremap(
         "<leader>h",
-        function() blsp.hover(nil, { focus = false, focusable = false, border = "single" }) end,
+        function() Open_Float() end,
         "silent"
     )
 

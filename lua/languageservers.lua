@@ -42,7 +42,10 @@ function M.config()
     end
 
     local overrideattach = function(client, bufnr)
-        require("nvim-navic").attach(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+            require("nvim-navic").attach(client, bufnr)
+        end
+
         if client.server_capabilities.signatureHelpProvider then
             require("lsp-overloads").setup(client, {
                 ui = {
@@ -51,7 +54,21 @@ function M.config()
             })
         end
 
+        if client.server_capabilities.documentFormattingProvider or client.name == "omnisharp" then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = vim.api.nvim_create_augroup("lsp_formatting_" .. client.name, { clear = true }),
+                buffer = bufnr,
+                callback = function()
+                    vim.lsp.buf.format({
+                        filter = function(c) return c.name == "null-ls" or c.name == "omnisharp" end,
+                        bufnr = bufnr,
+                    })
+                end,
+            })
+        end
+
         if client.name == "omnisharp" then
+            client.server_capabilities.inlayHintProvider = true
             client.server_capabilities.semanticTokensProvider = {
                 full = vim.empty_dict(),
                 legend = {
@@ -131,8 +148,9 @@ function M.config()
         end
     end
 
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
     for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup({
@@ -180,6 +198,38 @@ function M.config()
         on_attach = overrideattach,
         capabilities = capabilities,
     })
+
+    local null_ls = require("null-ls")
+    local null_ls_cfg = {
+        sources = {
+            -- All
+            null_ls.builtins.diagnostics.editorconfig_checker.with({ command = "editorconfig-checker" }),
+
+            -- JS, TS, React
+            null_ls.builtins.code_actions.eslint_d,
+            null_ls.builtins.diagnostics.eslint_d,
+            null_ls.builtins.formatting.eslint_d,
+
+            -- Lua
+            null_ls.builtins.diagnostics.selene,
+            null_ls.builtins.formatting.stylua,
+
+            -- Rust
+            null_ls.builtins.formatting.rustfmt,
+
+            -- Shell
+            null_ls.builtins.code_actions.shellcheck,
+            null_ls.builtins.diagnostics.shellcheck,
+
+            -- C#
+            -- null_ls.builtins.formatting.dprint.with({
+            --     filetypes = { "cs" },
+            --     extra_args = { "--config", vim.fn.expand("~/.config/dprint.json") },
+            -- }),
+        },
+        on_attach = overrideattach,
+    }
+    null_ls.setup(null_ls_cfg)
 end
 
 return M

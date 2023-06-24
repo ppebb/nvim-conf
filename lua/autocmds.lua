@@ -1,6 +1,5 @@
 local M = {}
 
-local api = vim.api
 local job = require("plenary.job")
 
 function Kill_EslintD()
@@ -20,6 +19,26 @@ function Is_Attached(bufnr)
     return false
 end
 
+function Open_Float()
+    local function is_cursor_above_diagnostic(diagnostics)
+        local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
+        for _, diagnostic in ipairs(diagnostics) do
+            if diagnostic.col <= cursor_col and diagnostic.end_col > cursor_col then
+                return true
+            end
+        end
+    end
+
+    if Is_Attached(0) then
+        local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+        if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
+            vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
+        else
+            vim.lsp.buf.hover(nil, { focus = false, focusable = false })
+        end
+    end
+end
+
 function M.load()
     vim.cmd([[
         augroup highlight_yank
@@ -29,7 +48,7 @@ function M.load()
 
         augroup hover
             autocmd!
-            au CursorHold * silent! lua if Is_Attached(0) then if #vim.diagnostic.get(0) > 0 then vim.diagnostic.open_float(nil, {focus = false, focusable = false, scope = 'cursor'}) else vim.lsp.buf.hover(nil, { focus = false, focusable = false }) end end
+            au CursorHold * silent! lua Open_Float()
         augroup END
 
         augroup session

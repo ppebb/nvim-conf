@@ -11,16 +11,13 @@ function M.load()
             end,
             requires = { "williamboman/mason-lspconfig.nvim" },
         })
+        use("jose-elias-alvarez/null-ls.nvim") -- Linter management
         use({
             "neovim/nvim-lspconfig", -- LSP Config
             config = function() require("languageservers").config() end,
         })
         use("puremourning/vimspector")
         use("jbyuki/one-small-step-for-vimkind")
-        use({
-            "jose-elias-alvarez/null-ls.nvim", -- Linter management
-            config = function() require("null-ls-config").config() end,
-        })
         use("tpope/vim-sleuth") -- Automatic indent settings
         use("ntpeters/vim-better-whitespace") -- Whitespace highlighting
         use({
