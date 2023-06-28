@@ -202,20 +202,20 @@ function M.load()
             end,
             rocks = { "xml2lua", "Lua-cURL" },
         })
-        use({
-            "~/gitclone/cfstealer",
-            config = function()
-                require("cfstealer").setup({
-                    languages = {
-                        cpp = {
-                            compile = "clang++ {{file}} o.out",
-                            run = "o.out",
-                        },
-                    },
-                })
-            end,
-            rocks = { "Lua-cURL" },
-        })
+        -- use({
+        --     "~/gitclone/cfstealer",
+        --     config = function()
+        --         require("cfstealer").setup({
+        --             languages = {
+        --                 cpp = {
+        --                     compile = "clang++ {{file}} o.out",
+        --                     run = "o.out",
+        --                 },
+        --             },
+        --         })
+        --     end,
+        --     rocks = { "Lua-cURL" },
+        -- })
         use("andweeb/presence.nvim")
     end)
 end
