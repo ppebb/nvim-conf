@@ -33,9 +33,8 @@ function M.load()
         use("rebelot/kanagawa.nvim")
         use({
             "nvim-tree/nvim-tree.lua", -- Filetree
+            requires = { "nvim-tree/nvim-web-devicons" },
             config = function() require("nvim-tree-config").config() end,
-            requires = { "nvim-tree/nvim-web-devicons" }, -- Icons
-            after = "solution-nvim",
         })
         use({
             "hrsh7th/nvim-cmp",

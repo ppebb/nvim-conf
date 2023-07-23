@@ -47,7 +47,7 @@ vim.o.termguicolors = true
 vim.g.cursorhold_updatetime = 1000
 
 vim.o.shell = "/bin/zsh"
-vim.filetype.add({ extension = { csproj = "xml", targets = "xml" } })
+vim.filetype.add({ extension = { csproj = "xml", targets = "xml", ui = "xml" } })
 
 -- vim.notify = require("notify")
 vim.g.better_whitespace_filetypes_blacklist = { "ppebboard", "packer" }

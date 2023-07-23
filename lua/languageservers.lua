@@ -19,6 +19,7 @@ function M.config()
         "html",
         "cssls",
         "jsonls",
+        "lemminx",
     }
 
     if not vim.g.setup_neodev then

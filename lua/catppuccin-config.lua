@@ -34,6 +34,7 @@ function M.config()
                 ["@method.call"] = { fg = colors.blue },
                 ["@event_name"] = { fg = colors.blue },
                 ["@character"] = { fg = colors.green },
+                ["@lsp.type.field_name.cs"] = { fg = colors.sky },
                 ["@namespace"] = { fg = colors.yellow, style = {} },
                 ["@constructor"] = { fg = colors.yellow },
                 ["@lsp.type.class_name.cs"] = { fg = colors.yellow },
