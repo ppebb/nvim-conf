@@ -33,8 +33,10 @@ function M.config()
                 ["@method"] = { fg = colors.blue },
                 ["@method.call"] = { fg = colors.blue },
                 ["@event_name"] = { fg = colors.blue },
+                ["@lsp.type.event.cs"] = { fg = colors.blue },
                 ["@character"] = { fg = colors.green },
                 ["@lsp.type.field_name.cs"] = { fg = colors.sky },
+                ["@lsp.type.fieldName.cs"] = { fg = colors.sky },
                 ["@lsp.type.property_name.cs"] = { fg = colors.sky },
                 ["@namespace"] = { fg = colors.yellow, style = {} },
                 ["@constructor"] = { fg = colors.yellow },
@@ -49,7 +51,7 @@ function M.config()
                 ["@label"] = { fg = colors.teal },
                 ["@label.json"] = { fg = colors.teal },
                 ["@punctuation"] = { fg = colors.overlay2 },
-                ["@field_name"] = { fg = colors.lavender },
+                ["@field_name"] = { fg = colors.sky },
                 ["@local_name"] = { fg = colors.teal },
                 -- Solution Explorer
                 ["SolutionExplorerSolution"] = { fg = colors.mauve },
@@ -57,6 +59,7 @@ function M.config()
                 ["SolutionExplorerFolder"] = { fg = colors.blue },
                 ["SolutionNugetHeader"] = { fg = colors.base, bg = colors.peach, style = { "bold" } },
                 ["SolutionNugetHighlight"] = { fg = colors.sky },
+                ["CursorColumn"] = { bg = "#2a2b3c" },
             }
         end,
     }

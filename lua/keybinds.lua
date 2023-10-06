@@ -8,6 +8,8 @@ function M.load()
     map(";;", "A;<ESC>", "silent")
     imap(";;", "<ESC>A;", "silent")
 
+    nnoremap("fs", ":Telescope live_grep<CR>", "silent")
+
     nnoremap("gel", function() vim.diagnostic.open_float() end, "silent")
     nnoremap("geN", function() vim.diagnostic.get_next() end, "silent")
     nnoremap("geP", function() vim.diagnostic.get_prev() end, "silent")
@@ -22,11 +24,7 @@ function M.load()
         function() blsp.signature_help(nil, { focus = false, focusable = false, border = "single" }) end,
         "silent"
     )
-    nnoremap(
-        "<leader>h",
-        function() Open_Float() end,
-        "silent"
-    )
+    nnoremap("<leader>h", function() Open_Float() end, "silent")
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", function()

@@ -6,16 +6,19 @@ function M.config()
     vim.opt.listchars:append("eol:↴")
 
     local cfg = {
-        show_end_of_line = true,
-        space_char_blankline = " ",
-        show_current_context = true,
-        show_current_context_start = true,
-        filetype_exclude = {
-            "ppebboard",
+        indent = {
+            char = " ",
+        },
+        scope = {
+            enabled = true,
+            show_start = true,
+        },
+        exclude = {
+            filetypes = { "ppebboard" },
         },
     }
 
-    require("indent_blankline").setup(cfg)
+    require("ibl").setup(cfg)
 end
 
 return M
