@@ -8,6 +8,10 @@ function M.config()
         integrations = {
             nvimtree = true,
             treesitter = true,
+            indent_blankline = {
+                enabled = true,
+                scope_color = "text",
+            },
         },
         dim_inactive = {
             enabled = true,

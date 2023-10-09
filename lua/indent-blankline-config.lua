@@ -7,7 +7,9 @@ function M.config()
 
     local cfg = {
         indent = {
-            char = " ",
+            char = "┃",
+            tab_char = { "┃" },
+            smart_indent_cap = true,
         },
         scope = {
             enabled = true,
