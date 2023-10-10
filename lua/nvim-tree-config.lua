@@ -39,6 +39,17 @@ function M.config()
         },
     }
 
+    require("nvim-web-devicons").setup({
+        override_by_extension = {
+            ["dll"] = {
+                icon = "",
+                color = "#6d8086",
+                cterm_color = "66",
+                name = "Dll",
+            },
+        },
+    })
+
     require("nvim-tree").setup(cfg)
 
     vim.api.nvim_create_autocmd("BufEnter", {
