@@ -103,7 +103,7 @@ function M.config()
                 "",
                 "",
                 "Neovim started in " .. StartupTime() .. " ms",
-                "Neovim loaded " .. #vim.tbl_keys(packer_plugins) .. " plugins",
+                "Neovim loaded " .. #vim.tbl_keys(require("pckr.plugin").plugins) .. " plugins",
             },
             highlight = "DashboardFooter",
         },
