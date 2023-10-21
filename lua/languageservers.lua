@@ -28,6 +28,10 @@ function M.config()
     end
     vim.g.setup_neodev = 1
 
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        underline = true,
+    })
+
     vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
         config = config or { border = "single", focus = false, focusable = false }
         config.focus_id = ctx.method
