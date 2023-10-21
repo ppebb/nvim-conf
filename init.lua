@@ -1,6 +1,20 @@
-require("plugins").load()
-require("keybinds").load()
-require("autocmds").load()
+local function bootstrap_pckr()
+  local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
+
+  if not vim.loop.fs_stat(pckr_path) then
+    vim.fn.system({
+      'git',
+      'clone',
+      "--filter=blob:none",
+      'https://github.com/lewis6991/pckr.nvim',
+      pckr_path
+    })
+  end
+
+  vim.opt.rtp:prepend(pckr_path)
+end
+
+bootstrap_pckr()
 
 vim.o.number = true
 vim.o.encoding = "utf-8"
@@ -115,3 +129,7 @@ function Column()
 end
 
 -- vim.opt.statuscolumn = [[%!v:lua.Column()]]
+
+require("plugins").load()
+require("keybinds").load()
+require("autocmds").load()

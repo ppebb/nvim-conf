@@ -110,8 +110,6 @@ function M.config()
     }
 
     require("ppebboard").setup(cfg)
-
-    return cfg
 end
 
 function StartupTime()
