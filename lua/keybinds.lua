@@ -21,7 +21,7 @@ function M.load()
     local blsp = vim.lsp.buf
     nnoremap(
         "<leader><Space>",
-        function() blsp.signature_help(nil, { focusable = true, border = "single" }) end,
+        function() blsp.signature_help() end,
         "silent"
     )
     nnoremap("<leader>h", function() Open_Float() end, "silent")

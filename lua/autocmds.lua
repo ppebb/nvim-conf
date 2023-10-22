@@ -29,13 +29,20 @@ function Open_Float()
         end
     end
 
+
     if Is_Attached(0) then
         local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
         if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
             vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
         else
-            vim.lsp.buf.hover(nil, { focus = false, focusable = false })
+            vim.lsp.buf.hover()
         end
+    end
+end
+
+function FloatingWinKeybind()
+    if (vim.api.nvim_win_get_config(0).relative ~= "") then
+        vim.api.nvim_buf_set_keymap(0, "n", "<ESC><ESC>", ":q<CR>", {})
     end
 end
 
@@ -43,7 +50,7 @@ function M.load()
     vim.cmd([[
         augroup highlight_yank
             autocmd!
-            au TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000}
+            au TextYankPost * silent! lua vim.highlight.on_yank { higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000 }
         augroup END
 
         augroup hover
@@ -60,6 +67,11 @@ function M.load()
         augroup eslintd
             autocmd!
             au VimLeave * lua Kill_EslintD()
+        augroup END
+
+        augroup FloatingWin
+            autocmd!
+            au WinEnter * lua FloatingWinKeybind()
         augroup END
     ]])
 end
