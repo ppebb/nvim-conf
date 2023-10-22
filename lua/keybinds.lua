@@ -21,7 +21,7 @@ function M.load()
     local blsp = vim.lsp.buf
     nnoremap(
         "<leader><Space>",
-        function() blsp.signature_help(nil, { focus = false, focusable = false, border = "single" }) end,
+        function() blsp.signature_help(nil, { focusable = true, border = "single" }) end,
         "silent"
     )
     nnoremap("<leader>h", function() Open_Float() end, "silent")
@@ -62,6 +62,11 @@ function M.load()
     nnoremap("<right>", "<nop>")
 
     nnoremap("<leader><leader>", "<c-^>")
+
+    -- Tab navigation.
+    nnoremap("<leader>tc", "<cmd>tabclose<cr>", { desc = "Close tab page" })
+    nnoremap("<leader>tn", "<cmd>tab split<cr>", { desc = "New tab page" })
+    nnoremap("<leader>to", "<cmd>tabonly<cr>", { desc = "Close other tab pages" })
 
     function Get_Winid(qftype)
         local winid

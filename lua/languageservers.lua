@@ -1,25 +1,162 @@
+local methods = vim.lsp.protocol.Methods
+
 local M = {}
 
+-- Majority of this is stolen from https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua
+local function client_capabilities()
+    return vim.tbl_deep_extend(
+        "force",
+        vim.lsp.protocol.make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities()
+    )
+end
+
+local function on_attach(client, bufnr)
+    if client.supports_method(methods.textDocument_inlayHint) then
+        -- Initial inlay hint display.
+        -- Idk why but without the delay inlay hints aren't displayed at the very start.
+        vim.defer_fn(function()
+            vim.lsp.inlay_hint(bufnr, true)
+        end, 500)
+    end
+
+    if client.supports_method(methods.textDocument_documentSymbol) then
+        require("nvim-navic").attach(client, bufnr)
+    end
+
+    if client.supports_method(methods.textDocument_signatureHelp) then
+        require("lsp-overloads").setup(client, {
+            ui = { border = "single" },
+        })
+    end
+
+    -- I hate lua_ls coloring sorry
+    if client.name == "lua_ls" then
+        client.server_capabilities.semanticTokensProvider = nil
+    end
+end
+
+local md_namespace = vim.api.nvim_create_namespace("ppebfloat")
+
+local function add_inline_highlights(buf)
+    for l, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+        for pattern, hl_group in pairs({
+            ["@%S+"] = "@parameter",
+            ["^%s*(Parameters:)"] = "@text.title",
+            ["^%s*(Return:)"] = "@text.title",
+            ["^%s*(See also:)"] = "@text.title",
+            ["{%S-}"] = "@parameter",
+        }) do
+            local from = 1 ---@type integer?
+            while from do
+                local to
+                from, to = line:find(pattern, from)
+                if from then
+                    vim.api.nvim_buf_set_extmark(buf, md_namespace, l - 1, from - 1, {
+                        end_col = to,
+                        hl_group = hl_group,
+                    })
+                end
+                from = to and to + 1 or nil
+            end
+        end
+    end
+end
+
+local function float_handler(handler, focusable)
+    return function(err, result, ctx, config)
+        local bufnr, winnr = handler(
+            err,
+            result,
+            ctx,
+            vim.tbl_deep_extend("force", config or {}, {
+                border = "single",
+                focusable = focusable,
+                max_height = math.floor(vim.o.lines * 0.5),
+                max_width = math.floor(vim.o.columns * 0.4),
+            })
+        )
+
+        if not bufnr or not winnr then
+            return
+        end
+
+        -- Conceal everything.
+        vim.wo[winnr].concealcursor = "n"
+
+        add_inline_highlights(bufnr)
+
+        -- Add keymaps for opening links.
+        if focusable and not vim.b[bufnr].markdown_keys then
+            vim.keymap.set("n", "K", function()
+                -- Vim help links.
+                local url = (vim.fn.expand("<cWORD>") --[[@as string]]):match("|(%S-)|")
+                if url then
+                    return vim.cmd.help(url)
+                end
+
+                -- Markdown links.
+                local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+                local from, to
+                from, to, url = vim.api.nvim_get_current_line():find("%[.-%]%((%S-)%)")
+                if from and col >= from and col <= to then
+                    vim.system({ "open", url }, nil, function(res)
+                        if res.code ~= 0 then
+                            vim.notify("Failed to open URL" .. url, vim.log.levels.ERROR)
+                        end
+                    end)
+                end
+            end, { buffer = bufnr, silent = true })
+            vim.b[bufnr].markdown_keys = true
+        end
+    end
+end
+local lspconfig = require("lspconfig")
+local function setup_lspconfig(name, config)
+    lspconfig[name].setup(vim.tbl_deep_extend("force", {
+        on_attach = on_attach,
+        capabilities = client_capabilities(),
+    }, config or {}))
+end
+
 function M.config()
-    local lspconfig = require("lspconfig")
     local servers = {
-        "tsserver",
-        "vimls",
-        "rust_analyzer",
-        "zls",
-        -- "ccls",
-        "clangd",
-        "crystalline",
-        "pylsp",
-        "bashls",
-        "teal_ls",
-        "dockerls",
-        "astro",
-        "sourcekit",
-        "html",
-        "cssls",
-        "jsonls",
-        "lemminx",
+        { "tsserver" },
+        { "rust_analyzer" },
+        {
+            "clangd",
+            {
+                capabilities = vim.tbl_deep_extend("force", client_capabilities(), { offsetEncoding = { "utf-16" } })
+            }
+        },
+        { "pylsp" },
+        { "bashls" },
+        { "astro" },
+        { "html" },
+        { "cssls" },
+        { "jsonls" },
+        {
+            "omnisharp",
+            {
+                handlers = { ["textDocument/definition"] = require("omnisharp_extended").handler },
+                cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+            },
+        },
+        {
+            "lua_ls",
+            {
+                settings = {
+                    Lua = {
+                        runtime = {
+                            version = "LuaJit",
+                        },
+                        completion = {
+                            callSnippet = "Replace",
+                        },
+                    },
+                },
+            },
+        },
     }
 
     if not vim.g.setup_neodev then
@@ -28,181 +165,30 @@ function M.config()
     end
     vim.g.setup_neodev = 1
 
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        underline = true,
-    })
-
-    vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-        config = config or { border = "single", focus = false, focusable = false }
-        config.focus_id = ctx.method
-        if not (result and result.contents) then
-            return
-        end
-        local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents, {})
-        markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-        if vim.tbl_isempty(markdown_lines) then
-            return
-        end
-        return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
-    end
-
-    local overrideattach = function(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-            require("nvim-navic").attach(client, bufnr)
-        end
-
-        if client.server_capabilities.signatureHelpProvider then
-            require("lsp-overloads").setup(client, {
-                ui = {
-                    border = "single",
-                },
-            })
-        end
-
-        if client.server_capabilities.documentFormattingProvider or client.name == "omnisharp" then
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = vim.api.nvim_create_augroup("lsp_formatting_" .. client.name, { clear = true }),
-                buffer = bufnr,
-                callback = function()
-                    vim.lsp.buf.format({
-                        filter = function(c) return c.name == "null-ls" or c.name == "omnisharp" end,
-                        bufnr = bufnr,
-                    })
-                end,
-            })
-        end
-
-        -- if client.name == "omnisharp" then
-        --     client.server_capabilities.inlayHintProvider = true
-        --     client.server_capabilities.semanticTokensProvider = {
-        --         full = vim.empty_dict(),
-        --         legend = {
-        --             tokenModifiers = { "static_symbol" },
-        --             tokenTypes = {
-        --                 "comment",
-        --                 "excluded_code",
-        --                 "identifier",
-        --                 "keyword",
-        --                 "keyword_control",
-        --                 "number",
-        --                 "operator",
-        --                 "operator_overloaded",
-        --                 "preprocessor_keyword",
-        --                 "string",
-        --                 "whitespace",
-        --                 "text",
-        --                 "static_symbol",
-        --                 "preprocessor_text",
-        --                 "punctuation",
-        --                 "string_verbatim",
-        --                 "string_escape_character",
-        --                 "class_name",
-        --                 "delegate_name",
-        --                 "enum_name",
-        --                 "interface_name",
-        --                 "module_name",
-        --                 "struct_name",
-        --                 "type_parameter_name",
-        --                 "field_name",
-        --                 "enum_member_name",
-        --                 "constant_name",
-        --                 "local_name",
-        --                 "parameter_name",
-        --                 "method_name",
-        --                 "extension_method_name",
-        --                 "property_name",
-        --                 "event_name",
-        --                 "namespace_name",
-        --                 "label_name",
-        --                 "xml_doc_comment_attribute_name",
-        --                 "xml_doc_comment_attribute_quotes",
-        --                 "xml_doc_comment_attribute_value",
-        --                 "xml_doc_comment_cdata_section",
-        --                 "xml_doc_comment_comment",
-        --                 "xml_doc_comment_delimiter",
-        --                 "xml_doc_comment_entity_reference",
-        --                 "xml_doc_comment_name",
-        --                 "xml_doc_comment_processing_instruction",
-        --                 "xml_doc_comment_text",
-        --                 "xml_literal_attribute_name",
-        --                 "xml_literal_attribute_quotes",
-        --                 "xml_literal_attribute_value",
-        --                 "xml_literal_cdata_section",
-        --                 "xml_literal_comment",
-        --                 "xml_literal_delimiter",
-        --                 "xml_literal_embedded_expression",
-        --                 "xml_literal_entity_reference",
-        --                 "xml_literal_name",
-        --                 "xml_literal_processing_instruction",
-        --                 "xml_literal_text",
-        --                 "regex_comment",
-        --                 "regex_character_class",
-        --                 "regex_anchor",
-        --                 "regex_quantifier",
-        --                 "regex_grouping",
-        --                 "regex_alternation",
-        --                 "regex_text",
-        --                 "regex_self_escaped_character",
-        --                 "regex_other_escape",
-        --             },
-        --         },
-        --         range = true,
-        --     }
-        if client.name == "lua_ls" then
-            client.server_capabilities.semanticTokensProvider = nil
-        end
-    end
-
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
-    for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup({
-            on_attach = overrideattach,
-            capabilities = capabilities,
+    vim.lsp.handlers[methods.textDocument_publishDiagnostics] =
+        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+            underline = true,
         })
+
+    vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
+    vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, false)
+
+    vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
+        contents = vim.lsp.util._normalize_markdown(contents, {
+            width = vim.lsp.util._make_floating_popup_size(contents, opts),
+        })
+        vim.bo[bufnr].filetype = "markdown"
+        vim.treesitter.start(bufnr)
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
+
+        add_inline_highlights(bufnr)
+
+        return contents
     end
 
-    -- C#
-    local pid = vim.fn.getpid()
-    local omnisharp_bin = "omnisharp"
-    lspconfig.omnisharp.setup({
-        handlers = {
-            ["textDocument/definition"] = require("omnisharp_extended").handler,
-        },
-        cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
-
-        on_attach = overrideattach,
-        capabilities = capabilities,
-    })
-
-    -- Tailwind CSS
-    lspconfig.tailwindcss.setup({
-        root_dir = require("lspconfig.util").root_pattern("tailwind.config.js", "tailwind.config.cjs"),
-        on_attach = overrideattach,
-        capabilities = capabilities,
-    })
-
-    -- Zls setting
-    vim.g.zig_fmt_autosave = false
-
-    -- Lua
-    lspconfig.lua_ls.setup({
-        settings = {
-            Lua = {
-                runtime = {
-                    version = "LuaJIT",
-                },
-                completion = {
-                    callSnippet = "Replace",
-                },
-            },
-        },
-
-        on_attach = overrideattach,
-        capabilities = capabilities,
-    })
+    for _, server in ipairs(servers) do
+        setup_lspconfig(server[1], server[2])
+    end
 
     local null_ls = require("null-ls")
     local null_ls_cfg = {
@@ -232,7 +218,7 @@ function M.config()
             --     extra_args = { "--config", vim.fn.expand("~/.config/dprint.json") },
             -- }),
         },
-        on_attach = overrideattach,
+        on_attach = on_attach,
     }
     null_ls.setup(null_ls_cfg)
 end
