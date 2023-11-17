@@ -16,7 +16,7 @@ local function on_attach(client, bufnr)
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
         vim.defer_fn(function()
-            vim.lsp.inlay_hint(bufnr, true)
+            vim.lsp.inlay_hint.enable(bufnr, true)
         end, 500)
     end
 
