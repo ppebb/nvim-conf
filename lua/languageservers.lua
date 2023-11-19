@@ -148,12 +148,12 @@ function M.config()
                 settings = {
                     Lua = {
                         runtime = {
-                            version = "LuaJit",
+                            version = "LuaJit"
                         },
                         completion = {
-                            callSnippet = "Replace",
-                        },
-                    },
+                            callSnippet = "Replace"
+                        }
+                    }
                 },
             },
         },
@@ -171,7 +171,7 @@ function M.config()
         })
 
     vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
-    vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, false)
+    vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
 
     vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
         contents = vim.lsp.util._normalize_markdown(contents, {

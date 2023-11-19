@@ -132,4 +132,4 @@ end
 
 require("plugins").load()
 require("keybinds").load()
-require("autocmds").load()
+require("autocmds")

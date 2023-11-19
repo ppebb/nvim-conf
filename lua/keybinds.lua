@@ -18,13 +18,11 @@ function M.load()
     nnoremap("gep", function() vim.diagnostic.goto_prev() end, "silent")
     nnoremap("gea", function() vim.diagnostic.get() end, "silent")
 
-    local blsp = vim.lsp.buf
     nnoremap(
         "<leader><Space>",
-        function() blsp.signature_help() end,
-        "silent"
+        function() vim.lsp.buf.signature_help() end
     )
-    nnoremap("<leader>h", function() Open_Float() end, "silent")
+    nnoremap("<leader>h", function() require("autocmds").open_float() end, "silent")
 
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", function()
@@ -36,12 +34,12 @@ function M.load()
             vim.cmd(":NvimTreeToggle")
         end
     end, "silent")
-    nnoremap("<F2>", function() blsp.rename() end, "silent")
-    nnoremap("<F8>", function() blsp.type_definition() end, "silent")
-    nnoremap("<F9>", function() blsp.implementation() end, "silent")
-    nnoremap("<F10>", function() blsp.references() end, "silent")
-    nnoremap("<F11>", function() blsp.code_action() end, "silent")
-    nnoremap("<F12>", function() blsp.definition() end, "silent")
+    nnoremap("<F2>", function() vim.lsp.buf.rename() end, "silent")
+    nnoremap("<F8>", function() vim.lsp.buf.type_definition() end, "silent")
+    nnoremap("<F9>", function() vim.lsp.buf.implementation() end, "silent")
+    nnoremap("<F10>", function() vim.lsp.buf.references() end, "silent")
+    nnoremap("<F11>", function() vim.lsp.buf.code_action() end, "silent")
+    nnoremap("<F12>", function() vim.lsp.buf.definition() end, "silent")
 
     nnoremap("gpd", "<CMD>Glance defintions<CR>", "silent")
     nnoremap("gpr", "<CMD>Glance references<CR>", "silent")

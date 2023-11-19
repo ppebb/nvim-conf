@@ -1,15 +1,24 @@
 local M = {}
 
+local api = vim.api
 local job = require("plenary.job")
 
-function Kill_EslintD()
-    job:new({
-        command = "pkill",
-        args = { "eslint_d" },
-    }):start()
-end
+api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = (vim.fn.hlexists("HighlightedYankRegion") > 0 and "HighlightedYankRegion" or "IncSearch"),
+            timeout = 1000
+        })
+    end,
+})
 
-function Is_Attached(bufnr)
+api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+    callback = "w",
+    nested = true,
+    pattern = { "*.rs" }
+})
+
+local function is_attached(bufnr)
     local lsp = rawget(vim, "lsp")
     if lsp then
         for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
@@ -19,7 +28,7 @@ function Is_Attached(bufnr)
     return false
 end
 
-function Open_Float()
+function M.open_float()
     local function is_cursor_above_diagnostic(diagnostics)
         local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
         for _, diagnostic in ipairs(diagnostics) do
@@ -30,7 +39,7 @@ function Open_Float()
     end
 
 
-    if Is_Attached(0) then
+    if is_attached(0) then
         local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
         if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
             vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
@@ -40,40 +49,38 @@ function Open_Float()
     end
 end
 
-function FloatingWinKeybind()
-    if (vim.api.nvim_win_get_config(0).relative ~= "") then
-        vim.api.nvim_buf_set_keymap(0, "n", "<ESC><ESC>", ":q<CR>", {})
+api.nvim_create_autocmd("CursorHold", {
+    callback = function ()
+        M:open_float()
     end
-end
+})
 
-function M.load()
-    vim.cmd([[
-        augroup highlight_yank
-            autocmd!
-            au TextYankPost * silent! lua vim.highlight.on_yank { higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=1000 }
-        augroup END
+local vimspector_session_group = api.nvim_create_augroup("vimspector_session", { clear = true })
+api.nvim_create_autocmd("VimEnter", {
+    command = "silent! VimspectorLoadSession ~/.cache/vimspector",
+    group = vimspector_session_group
+})
 
-        augroup hover
-            autocmd!
-            au CursorHold * silent! lua Open_Float()
-        augroup END
+api.nvim_create_autocmd("VimLeave", {
+    command = "silent! VimspectorMkSession ~/.cache/vimspector",
+    group = vimspector_session_group
+})
 
-        augroup session
-            autocmd!
-            au VimEnter * silent! VimspectorLoadSession ~/.cache/vimspector
-            au VimLeave * silent! VimspectorMkSession ~/.cache/vimspector
-        augroup END
+api.nvim_create_autocmd("VimLeave", {
+    callback = function()
+        job:new({
+            command = "pkill",
+            args = { "eslint_d" },
+        }):start()
+    end
+})
 
-        augroup eslintd
-            autocmd!
-            au VimLeave * lua Kill_EslintD()
-        augroup END
-
-        augroup FloatingWin
-            autocmd!
-            au WinEnter * lua FloatingWinKeybind()
-        augroup END
-    ]])
-end
+-- api.nvim_create_autocmd("WinEnter", {
+--     callback = function()
+--         if (vim.api.nvim_win_get_config(0).relative ~= "") then
+--             vim.api.nvim_buf_set_keymap(0, "n", "<ESC><ESC>", ":q<CR>", {})
+--         end
+--     end
+-- })
 
 return M
