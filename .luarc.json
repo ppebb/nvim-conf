@@ -12,6 +12,7 @@
         "imap",
         "nnoremap",
         "xnoremap",
-        "noremap"
+        "noremap",
+        "nmap"
     ]
 }

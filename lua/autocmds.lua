@@ -13,7 +13,7 @@ api.nvim_create_autocmd("TextYankPost", {
 })
 
 api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-    callback = "w",
+    command = "silent! w",
     nested = true,
     pattern = { "*.rs" }
 })
