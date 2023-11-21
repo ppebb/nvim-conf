@@ -18,12 +18,6 @@ function M.load()
     nnoremap("gep", function() vim.diagnostic.goto_prev() end, "silent")
     nnoremap("gea", function() vim.diagnostic.get() end, "silent")
 
-    nnoremap(
-        "<leader><Space>",
-        function() vim.lsp.buf.signature_help() end
-    )
-    nnoremap("<leader>h", function() require("autocmds").open_float() end, "silent")
-
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
     nnoremap("<F6>", function()
         if vim.g.in_solution then

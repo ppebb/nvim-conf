@@ -2,6 +2,36 @@ local methods = vim.lsp.protocol.Methods
 
 local M = {}
 
+local function is_attached(bufnr)
+    local lsp = rawget(vim, "lsp")
+    if lsp then
+        for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
+            return true
+        end
+    end
+    return false
+end
+
+local function open_float()
+    local function is_cursor_above_diagnostic(diagnostics)
+        local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
+        for _, diagnostic in ipairs(diagnostics) do
+            if diagnostic.col <= cursor_col and diagnostic.end_col > cursor_col then
+                return true
+            end
+        end
+    end
+
+    if is_attached(0) then
+        local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+        if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
+            vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
+        else
+            vim.lsp.buf.hover()
+        end
+    end
+end
+
 -- Majority of this is stolen from https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua
 local function client_capabilities()
     return vim.tbl_deep_extend(
@@ -28,6 +58,21 @@ local function on_attach(client, bufnr)
         require("lsp-overloads").setup(client, {
             ui = { border = "single" },
         })
+
+        nnoremap(
+            "<leader><Space>",
+            function() vim.lsp.buf.signature_help() end
+        )
+    end
+
+    if client.supports_method(methods.textDocument_hover) then
+        vim.api.nvim_create_autocmd("CursorHold", {
+            callback = function ()
+                open_float()
+            end
+        })
+
+        nnoremap("<leader>h", function() open_float() end, "silent")
     end
 
     -- I hate lua_ls coloring sorry
@@ -165,10 +210,7 @@ function M.config()
     end
     vim.g.setup_neodev = 1
 
-    vim.lsp.handlers[methods.textDocument_publishDiagnostics] =
-        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-            underline = true,
-        })
+    vim.diagnostic.config({ underline = true, virtual_text = false });
 
     vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
     vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
