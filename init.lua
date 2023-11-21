@@ -64,8 +64,8 @@ vim.o.shell = "/bin/zsh"
 vim.filetype.add({ extension = { csproj = "xml", targets = "xml", ui = "xml", dll = "dll" } })
 
 -- vim.notify = require("notify")
-vim.g.better_whitespace_filetypes_blacklist = { "ppebboard", "packer" }
-vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/packer/start/vimspector"
+vim.g.better_whitespace_filetypes_blacklist = { "ppebboard" }
+vim.g.vimspector_base_dir = "/home/ppeb/.local/share/nvim/site/pack/pckr/opt/vimspector"
 vim.cmd("sign define vimspectorBP text=⬤ texthl=WarningMsg")
 
 vim.o.autoread = true

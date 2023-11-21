@@ -41,8 +41,8 @@ local function client_capabilities()
     )
 end
 
-local function on_attach(client, bufnr)
-    if client.supports_method(methods.textDocument_inlayHint) then
+local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places because it reports incorrect information
+    if client.supports_method(methods.textDocument_inlayHint) or client.name == "omnisharp" then
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
         vim.defer_fn(function()
@@ -65,7 +65,7 @@ local function on_attach(client, bufnr)
         })
     end
 
-    if client.supports_method(methods.textDocument_hover) then
+    if client.supports_method(methods.textDocument_hover) or client.name == "omnisharp" then
         vim.api.nvim_create_autocmd("CursorHold", {
             callback = open_float,
             buffer = 0,
