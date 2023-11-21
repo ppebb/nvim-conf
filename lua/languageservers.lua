@@ -59,20 +59,22 @@ local function on_attach(client, bufnr)
             ui = { border = "single" },
         })
 
-        nnoremap(
-            "<leader><Space>",
-            function() vim.lsp.buf.signature_help() end
-        )
+        vim.keymap.set("n", "<leader><Space>", vim.lsp.buf.signature_help, {
+            noremap = true,
+            buffer = 0
+        })
     end
 
     if client.supports_method(methods.textDocument_hover) then
         vim.api.nvim_create_autocmd("CursorHold", {
-            callback = function ()
-                open_float()
-            end
+            callback = open_float,
+            buffer = 0,
         })
 
-        nnoremap("<leader>h", function() open_float() end, "silent")
+        vim.keymap.set("n", "<leader>h", open_float, {
+            noremap = true,
+            buffer = 0
+        })
     end
 
     -- I hate lua_ls coloring sorry
