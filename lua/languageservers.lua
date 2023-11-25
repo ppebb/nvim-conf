@@ -98,11 +98,8 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
         { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get }
     }
 
-    print("checking client " .. client.name)
     for _, bind in ipairs(binds) do
-        print("checking " .. bind[1] .. " for keybind " .. bind[2])
         if client.supports_method(bind[1]) then
-            print("success")
             vim.keymap.set("n", bind[2], bind[3], { noremap = true, buffer = 0 })
         end
     end
