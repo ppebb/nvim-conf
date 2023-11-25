@@ -137,7 +137,6 @@ function M.load()
         "mfussenegger/nvim-jdtls", -- Full jdtls support
         "https://bitbucket.org/sw-samuraj/vim-gradle.git", -- Gradle file extension, syntax highlighting, and folding
         "rcarriga/nvim-notify", -- Notification manager
-        "b0o/mapx.nvim", -- Easier keybinds in lua
         {
             "RRethy/nvim-treesitter-endwise", -- Automatically insert end
             requires = "nvim-treesitter/nvim-treesitter",
