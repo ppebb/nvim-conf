@@ -1,4 +1,5 @@
 local methods = vim.lsp.protocol.Methods
+local blsp = vim.lsp.buf
 
 local M = {}
 
@@ -27,7 +28,7 @@ local function open_float()
         if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
             vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
         else
-            vim.lsp.buf.hover()
+            blsp.hover()
         end
     end
 end
@@ -59,7 +60,7 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
             ui = { border = "single" },
         })
 
-        vim.keymap.set("n", "<leader><Space>", vim.lsp.buf.signature_help, {
+        vim.keymap.set("n", "<leader><Space>", blsp.signature_help, {
             noremap = true,
             buffer = 0
         })
@@ -75,6 +76,35 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
             noremap = true,
             buffer = 0
         })
+    end
+
+    -- A bunch of lsp keybinds to set based on what's supported
+    local binds = {
+        { methods.textDocument_hover, "<F2>", blsp.rename },
+        { methods.textDocument_definition, "<F8>", blsp.definition },
+        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>"},
+        { methods.textDocument_implementation, "<F9>", blsp.implementation },
+        { methods.textDocument_implementation, "gpi", "<CMD>Glance implementations<CR>" },
+        { methods.textDocument_references , "<F10>", blsp.references },
+        { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>"},
+        { methods.textDocument_typeDefinition, "gpt", "<CMD>Glance type_definitions<CR>" },
+        { methods.textDocument_codeAction, "<F11>", blsp.code_action },
+        { methods.textDocument_definition, "<F12>", blsp.definition },
+        { methods.textDocument_publishDiagnostics, "gel", vim.diagnostic.open_float },
+        { methods.textDocument_publishDiagnostics, "geN", vim.diagnostic.get_next },
+        { methods.textDocument_publishDiagnostics, "geP", vim.diagnostic.get_prev },
+        { methods.textDocument_publishDiagnostics, "gen", vim.diagnostic.goto_next },
+        { methods.textDocument_publishDiagnostics, "gep", vim.diagnostic.goto_prev },
+        { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get }
+    }
+
+    print("checking client " .. client.name)
+    for _, bind in ipairs(binds) do
+        print("checking " .. bind[1] .. " for keybind " .. bind[2])
+        if client.supports_method(bind[1]) then
+            print("success")
+            vim.keymap.set("n", bind[2], bind[3], { noremap = true, buffer = 0 })
+        end
     end
 
     -- I hate lua_ls coloring sorry

@@ -10,35 +10,8 @@ function M.load()
 
     nnoremap("fs", ":Telescope live_grep<CR>", "silent")
 
-    nnoremap("gel", function() vim.diagnostic.open_float() end, "silent")
-    nnoremap("geN", function() vim.diagnostic.get_next() end, "silent")
-    nnoremap("geP", function() vim.diagnostic.get_prev() end, "silent")
-
-    nnoremap("gen", function() vim.diagnostic.goto_next() end, "silent")
-    nnoremap("gep", function() vim.diagnostic.goto_prev() end, "silent")
-    nnoremap("gea", function() vim.diagnostic.get() end, "silent")
-
     nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
-    nnoremap("<F6>", function()
-        if vim.g.in_solution then
-            require("solution.explorer.window").toggle()
-        elseif vim.api.nvim_buf_get_name(0):find("CompetitiveProgramming") or vim.bo.ft == "cfstealer" then
-            require("cfstealer.window").toggle()
-        else
-            vim.cmd(":NvimTreeToggle")
-        end
-    end, "silent")
-    nnoremap("<F2>", function() vim.lsp.buf.rename() end, "silent")
-    nnoremap("<F8>", function() vim.lsp.buf.type_definition() end, "silent")
-    nnoremap("<F9>", function() vim.lsp.buf.implementation() end, "silent")
-    nnoremap("<F10>", function() vim.lsp.buf.references() end, "silent")
-    nnoremap("<F11>", function() vim.lsp.buf.code_action() end, "silent")
-    nnoremap("<F12>", function() vim.lsp.buf.definition() end, "silent")
-
-    nnoremap("gpd", "<CMD>Glance defintions<CR>", "silent")
-    nnoremap("gpr", "<CMD>Glance references<CR>", "silent")
-    nnoremap("gpi", "<CMD>Glance implementations<CR>", "silent")
-    nnoremap("gpt", "<CMD>Glance type_defintions<CR>", "silent")
+    nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
 
     noremap("<leader>y", [["+y]], "silent")
     noremap("<leader>p", [["+p]], "silent")
@@ -56,9 +29,9 @@ function M.load()
     nnoremap("<leader><leader>", "<c-^>")
 
     -- Tab navigation.
-    nnoremap("<leader>tc", "<cmd>tabclose<cr>", { desc = "Close tab page" })
-    nnoremap("<leader>tn", "<cmd>tab split<cr>", { desc = "New tab page" })
-    nnoremap("<leader>to", "<cmd>tabonly<cr>", { desc = "Close other tab pages" })
+    nnoremap("<leader>tc", "<CMD>tabclose<CR>", { desc = "Close tab page" })
+    nnoremap("<leader>tn", "<CMD>tab split<CR>", { desc = "New tab page" })
+    nnoremap("<leader>to", "<CMD>tabonly<CR>", { desc = "Close other tab pages" })
 
     function Get_Winid(qftype)
         local winid
@@ -107,8 +80,6 @@ function M.load()
         end
         return false
     end
-
-    vim.diagnostic.config({ virtual_text = false, focusble = false, focus = false })
 
     local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
     function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
