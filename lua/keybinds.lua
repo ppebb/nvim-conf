@@ -1,39 +1,33 @@
 local M = {}
 
 function M.load()
-    require("mapx").setup({
-        global = true,
-    })
+    vim.keymap.set("i", ";;", "A;<ESC>", { desc = "Append semicolon to the end of the line" })
+    vim.keymap.set("n", ";;", "<ESC>A:", { desc = "Append semicolon to the end of the line" })
 
-    map(";;", "A;<ESC>", "silent")
-    imap(";;", "<ESC>A;", "silent")
+    vim.keymap.set("n", "fs", "<CMD>Telescope live_grep<CR>")
 
-    nnoremap("fs", ":Telescope live_grep<CR>", "silent")
+    vim.keymap.set("n", "<F5>", "<CMD>UndotreeToggle<CR>");
+    vim.keymap.set("n", "<F6>", "<CMD>NvimTreeToggle<CR>")
 
-    nnoremap("<F5>", ":UndotreeToggle<CR>", "silent")
-    nnoremap("<F6>", ":NvimTreeToggle<CR>", "silent")
+    vim.keymap.set("n", "<leader>y", [["+y]], { noremap = true })
+    vim.keymap.set("n", "<leader>p", [["+p]], { noremap = true })
 
-    noremap("<leader>y", [["+y]], "silent")
-    noremap("<leader>p", [["+p]], "silent")
+    vim.keymap.set("x", "<", "<gv", { noremap = true })
+    vim.keymap.set("x", ">", ">gv", { noremap = true })
 
-    xnoremap("<", "<gv")
-    xnoremap(">", ">gv")
-
-    nnoremap("j", "gj")
-    nnoremap("k", "gk")
-    nnoremap("<up>", "<nop>")
-    nnoremap("<down>", "<nop>")
-    nnoremap("<left>", "<nop>")
-    nnoremap("<right>", "<nop>")
-
-    nnoremap("<leader><leader>", "<c-^>")
+    vim.keymap.set("n", "j", "gj", { noremap = true })
+    vim.keymap.set("n", "k", "gk", { noremap = true })
+    vim.keymap.set("n", "<up>", "<nop>", { noremap = true })
+    vim.keymap.set("n", "<down>", "<nop>", { noremap = true })
+    vim.keymap.set("n", "<left>", "<nop>", { noremap = true })
+    vim.keymap.set("n", "<right>", "<nop>", { noremap = true })
 
     -- Tab navigation.
-    nnoremap("<leader>tc", "<CMD>tabclose<CR>", { desc = "Close tab page" })
-    nnoremap("<leader>tn", "<CMD>tab split<CR>", { desc = "New tab page" })
-    nnoremap("<leader>to", "<CMD>tabonly<CR>", { desc = "Close other tab pages" })
+    vim.keymap.set("n", "<leader>tc", "<CMD>tabclose<CR>", { desc = "Close tab page" })
+    vim.keymap.set("n", "<leader>tn", "<CMD>tab split<CR>", { desc = "New tab page" })
+    vim.keymap.set("n", "<leader>to", "<CMD>tabonly<CR>", { desc = "Close other tab pages" })
 
-    function Get_Winid(qftype)
+    local function get_winid(qftype)
         local winid
         if qftype == "l" then
             winid = vim.fn.getloclist(0, { winid = 0 }).winid
@@ -47,56 +41,37 @@ function M.load()
         end
     end
 
-    function Is_Open(qftype) return Get_Winid(qftype) ~= nil end
+    local function is_open(qftype) return get_winid(qftype) ~= nil end
 
-    function Close(qftype)
-        if Is_Open(qftype) then
+    local function close(qftype)
+        if is_open(qftype) then
             vim.cmd(qftype .. "close")
         end
     end
 
     local yabs = require("yabs")
-    nnoremap("<F17>", function() yabs:run_task("run") end, "silent")
-    nnoremap("bnr", function() yabs:run_task("build") end, "silent")
-    nnoremap("bar", function() yabs:run_task("build_and_run") end, "silent")
-    nmap("<F15>", "<Plug>VimspectorStop", "silent")
-    nmap("<F16>", "<Plug>VimspectorRestart", "silent")
-    nmap("<F18>", "<Plug>VimspectorPause", "silent")
-    nmap("<F21>", "<Plug>VimspectorToggleBreakpoint", "silent")
-    nmap("<leader><F21>", "<Plug>VimspectorToggleConditionalBreakpoint")
-    nmap("<F20>", "<Plug>VimspectorRunToCursor", "silent")
-    nmap("<F22>", "<Plug>VimspectorStepOver", "silent")
-    nmap("<F23>", "<Plug>VimspectorStepInto", "silent")
-    nmap("<F24>", "<Plug>VimspectorStepOut", "silent")
-    nmap("di", "<Plug>VimspectorBalloonEval", "silent")
-    nnoremap("<leader>r", [[:call vimspector#Reset() | :lua Close("c")<CR>]], "silent")
+    vim.keymap.set("n", "<F17>", function() yabs:run_task("run") end)
+    vim.keymap.set("n", "bnr", function() yabs:run_task("build") end)
+    vim.keymap.set("n", "bar", function() yabs:run_task("build_and_run") end)
+    vim.keymap.set("n", "<F15>", "<Plug>VimspectorStop")
+    vim.keymap.set("n", "<F16>", "<Plug>VimspectorRestart")
+    vim.keymap.set("n", "<F18>", "<Plug>VimspectorPause")
+    vim.keymap.set("n", "<F21>", "<Plug>VimspectorToggleBreakpoint")
+    vim.keymap.set("n", "<leader><F21>", "<Plug>VimspectorToggleConditionalBreakpoint")
+    vim.keymap.set("n", "<F20>", "<Plug>VimspectorRunToCursor")
+    vim.keymap.set("n", "<F22>", "<Plug>VimspectorStepOver")
+    vim.keymap.set("n", "<F23>", "<Plug>VimspectorStepInto")
+    vim.keymap.set("n", "<F24>", "<Plug>VimspectorStepOut")
+    vim.keymap.set("n", "di", "<Plug>VimspectorBalloonEval")
+    vim.keymap.set("n", "<leader>r",
+        function()
+            vim.cmd("call vimspector#Reset()")
+            close("c")
+        end,
+        { desc = "Close vimspector and yabs windows" }
+    )
 
-    function Is_Attached(bufnr)
-        local lsp = rawget(vim, "lsp")
-        if lsp then
-            for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
-                return true
-            end
-        end
-        return false
-    end
-
-    local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-    function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = opts.border or "single"
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
-    end
-
-    local Terminal = require("toggleterm.terminal").Terminal
-    local lazygit =
-        Terminal:new({ cmd = "lazygit", hidden = true, direction = "float", float_opts = { border = "single" } })
-
-    local function _lazygit_toggle() lazygit:toggle() end
-
-    nnoremap("<leader>g", function() _lazygit_toggle() end, "silent")
-
-    nnoremap("cts", function() vim.cmd([[ set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab ]]) end, "silent")
+    vim.keymap.set("n", "cts", "set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab", { desc = "Change tabs to 4 spaces" })
 end
 
 return M

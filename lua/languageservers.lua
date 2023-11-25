@@ -78,6 +78,10 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
         })
     end
 
+    if client.supports_method(methods.textDocument_publishDiagnostics) then
+        vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } });
+    end
+
     -- A bunch of lsp keybinds to set based on what's supported
     local binds = {
         { methods.textDocument_hover, "<F2>", blsp.rename },
@@ -185,6 +189,7 @@ local function float_handler(handler, focusable)
         end
     end
 end
+
 local lspconfig = require("lspconfig")
 local function setup_lspconfig(name, config)
     lspconfig[name].setup(vim.tbl_deep_extend("force", {
@@ -238,8 +243,6 @@ function M.config()
         require("neoconf").setup()
     end
     vim.g.setup_neodev = 1
-
-    vim.diagnostic.config({ underline = true, virtual_text = false });
 
     vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
     vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)

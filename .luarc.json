@@ -6,13 +6,5 @@
         "/home/ppeb/.local/share/nvim/site/pack/pckr/opt/neoconf.nvim/types",
         "/home/ppeb/.local/share/nvim/site/pack/pckr/opt/neoconf.nvim/types/lua",
         "${3rd}/luv/library"
-    ],
-    "diagnostics.globals": [
-        "map",
-        "imap",
-        "nnoremap",
-        "xnoremap",
-        "noremap",
-        "nmap"
     ]
 }
