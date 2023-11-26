@@ -1,8 +1,8 @@
 local M = {}
 
 function M.load()
-    vim.keymap.set("i", ";;", "A;<ESC>", { desc = "Append semicolon to the end of the line" })
-    vim.keymap.set("n", ";;", "<ESC>A:", { desc = "Append semicolon to the end of the line" })
+    vim.keymap.set("i", ";;", "<ESC>A;", { desc = "Append semicolon to the end of the line" })
+    vim.keymap.set("n", ";;", "A;<ESC>", { desc = "Append semicolon to the end of the line" })
 
     vim.keymap.set("n", "fs", "<CMD>Telescope live_grep<CR>")
 
