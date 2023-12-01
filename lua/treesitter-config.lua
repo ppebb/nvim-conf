@@ -14,12 +14,14 @@ function M.config()
         },
         autotag = {
             enable = true,
-        },
-        context_commentstring = {
-            enable = true,
-            config = {
-                cs = { __default = "// %s", __multiline = "/* %S */" },
-            },
+        }
+    })
+
+    vim.g.skip_ts_context_commentstring_module = true
+    require("ts_context_commentstring").setup({
+        enable = true,
+        config = {
+            cs = { __default = "// %s", __multiline = "/* %S */" },
         },
     })
 
