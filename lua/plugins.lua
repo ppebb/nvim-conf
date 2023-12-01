@@ -163,6 +163,7 @@ function M.load()
         {
             "JoosepAlviste/nvim-ts-context-commentstring", -- Sets comment string basted on cursor position
             requires = "nvim-treesitter/nvim-treesitter",
+            config = function() require("nvim-ts-context-commentstring-config").config() end,
         },
         "tpope/vim-commentary", -- Comment keybinds
         {
