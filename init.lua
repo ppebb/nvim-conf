@@ -133,3 +133,5 @@ end
 require("plugins").load()
 require("keybinds").load()
 require("autocmds")
+
+vim.o.runtimepath = vim.o.runtimepath:gsub(",/usr/local/lib/nvim", "") .. ",/usr/local/lib/nvim"
