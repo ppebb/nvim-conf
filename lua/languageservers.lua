@@ -84,16 +84,16 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
 
     -- A bunch of lsp keybinds to set based on what's supported
     local binds = {
-        { methods.textDocument_hover, "<F2>", blsp.rename, "omnisharp" },
-        { methods.textDocument_definition, "<F8>", blsp.definition, "omnisharp" },
-        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>"},
+        { methods.textDocument_rename, "<F2>", blsp.rename, "omnisharp" },
+        { methods.textDocument_typeDefinition, "<F8>", blsp.type_definition },
         { methods.textDocument_implementation, "<F9>", blsp.implementation },
         { methods.textDocument_implementation, "gpi", "<CMD>Glance implementations<CR>" },
         { methods.textDocument_references , "<F10>", blsp.references },
         { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>"},
         { methods.textDocument_typeDefinition, "gpt", "<CMD>Glance type_definitions<CR>" },
         { methods.textDocument_codeAction, "<F11>", blsp.code_action, "omnisharp" },
-        { methods.textDocument_definition, "<F12>", blsp.definition },
+        { methods.textDocument_definition, "<F12>", blsp.definition, "omnisharp" },
+        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>", "omnisharp" },
         { methods.textDocument_publishDiagnostics, "gel", vim.diagnostic.open_float },
         { methods.textDocument_publishDiagnostics, "geN", vim.diagnostic.get_next },
         { methods.textDocument_publishDiagnostics, "geP", vim.diagnostic.get_prev },
