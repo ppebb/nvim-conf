@@ -44,17 +44,6 @@ end
 
 local format_augroup = vim.api.nvim_create_augroup("lsp_formatting", { clear = true })
 local function on_attach(client, bufnr)
-    if client.name == "omnisharp" then -- Omnisharp reports capabilities almost completely wrong. I fucking hate this language server
-        client.server_capabilities = vim.tbl_deep_extend("force", client.server_capabilities, {
-            inlayHintProvider = { resolveProvider = true },
-            hoverProvider = true,
-            documentFormattingProvider = true,
-            codeActionProvider = vim.empty_dict(),
-            definitionProvider = true,
-            renameProvider = true,
-        })
-    end
-
     if client.supports_method(methods.textDocument_inlayHint) then
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
@@ -93,12 +82,19 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_formatting) then
-        vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = format_augroup,
-            buffer = bufnr,
-            callback = function() vim.lsp.buf.format({ async = false }) end, -- Scrolls the screen for some reason. https://github.com/neovim/neovim/issues/25370
-        })
+        if not vim.g.disable_format_autocmds then
+            vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = format_augroup,
+                buffer = bufnr,
+                callback = function() vim.lsp.buf.format({ async = false }) end, -- Scrolls the screen for some reason. https://github.com/neovim/neovim/issues/25370
+            })
+
+            vim.api.nvim_buf_create_user_command(0, "NoFormatting", function()
+                vim.api.nvim_clear_autocmds({ group = format_augroup })
+                vim.g.disable_format_autocmds = 1
+            end, {})
+        end
     end
 
     -- A bunch of lsp keybinds to set based on what's supported
@@ -234,13 +230,6 @@ function M.config()
         { "cssls" },
         { "jsonls" },
         {
-            "omnisharp",
-            {
-                handlers = { ["textDocument/definition"] = require("omnisharp_extended").handler },
-                cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
-            },
-        },
-        {
             "lua_ls",
             {
                 settings = {
@@ -256,6 +245,40 @@ function M.config()
             },
         },
     }
+
+    require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
+        dotnet_cmd = "dotnet",
+        on_attach = on_attach,
+        capabilities = client_capabilities(),
+        settings = {
+            ["csharp|completion"] = {
+                ["dotnet_provide_regex_completions"] = true,
+                ["dotnet_show_completion_items_from_unimported_namespaces"] = true,
+                ["dotnet_show_name_completion_suggestions"] = true,
+            },
+            ["csharp|highlighting"] = {
+                ["dotnet_highlight_related_json_components"] = true,
+                ["dotnet_highlight_related_regex_components"] = true,
+            },
+            ["csharp|inlay_hints"] = {
+                ["csharp_enable_inlay_hints_for_implicit_object_creation"] = true,
+                ["csharp_enable_inlay_hints_for_implicit_variable_types"] = true,
+                ["csharp_enable_inlay_hints_for_lambda_parameter_types"] = true,
+                ["csharp_enable_inlay_hints_for_types"] = true,
+                ["dotnet_enable_inlay_hints_for_indexer_parameters"] = true,
+                ["dotnet_enable_inlay_hints_for_literal_parameters"] = true,
+                ["dotnet_enable_inlay_hints_for_object_creation_parameters"] = true,
+                ["dotnet_enable_inlay_hints_for_other_parameters"] = true,
+                ["dotnet_enable_inlay_hints_for_parameters"] = true,
+                ["dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix"] = false,
+                ["dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name"] = false,
+                ["dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent"] = false,
+            },
+            ["navigation"] = {
+                ["dotnet_navigate_to_decompiled_sources"] = true,
+            },
+        },
+    })
 
     if not vim.g.setup_neodev then
         require("neodev").setup()

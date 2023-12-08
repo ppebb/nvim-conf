@@ -15,12 +15,14 @@ function M.load()
             requires = {
                 "folke/neodev.nvim", -- Lua lsp config for nvim
                 "folke/neoconf.nvim", -- Lua lsp config manager
-                "Hoffs/omnisharp-extended-lsp.nvim", -- Omnisharp decompilation
                 "hrsh7th/nvim-cmp",
                 "jose-elias-alvarez/null-ls.nvim", -- Linter management
+                "~/gitclone/roslyn.nvim/",
             },
             config = function() require("languageservers").config() end,
         },
+        "mfussenegger/nvim-jdtls", -- Full jdtls support
+        "~/gitclone/roslyn.nvim/",
         "puremourning/vimspector", -- Debugger
         "jbyuki/one-small-step-for-vimkind", -- Lua debugging
         "tpope/vim-sleuth", -- Automatic indent settings
@@ -133,8 +135,6 @@ function M.load()
             requires = { "nvim-lua/plenary.nvim" },
             config = function() require("yabs-config").config() end,
         },
-        "Hoffs/omnisharp-extended-lsp.nvim", -- Omnisharp extensions
-        "mfussenegger/nvim-jdtls", -- Full jdtls support
         "https://bitbucket.org/sw-samuraj/vim-gradle.git", -- Gradle file extension, syntax highlighting, and folding
         "rcarriga/nvim-notify", -- Notification manager
         {
