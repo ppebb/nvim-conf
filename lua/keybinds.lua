@@ -6,7 +6,7 @@ function M.load()
 
     vim.keymap.set("n", "fs", "<CMD>Telescope live_grep<CR>")
 
-    vim.keymap.set("n", "<F5>", "<CMD>UndotreeToggle<CR>");
+    vim.keymap.set("n", "<F5>", "<CMD>UndotreeToggle<CR>")
     vim.keymap.set("n", "<F6>", "<CMD>NvimTreeToggle<CR>")
 
     vim.keymap.set("n", "<leader>y", [["+y]], { noremap = true })
@@ -63,15 +63,17 @@ function M.load()
     vim.keymap.set("n", "<F23>", "<Plug>VimspectorStepInto")
     vim.keymap.set("n", "<F24>", "<Plug>VimspectorStepOut")
     vim.keymap.set("n", "di", "<Plug>VimspectorBalloonEval")
-    vim.keymap.set("n", "<leader>r",
-        function()
-            vim.cmd("call vimspector#Reset()")
-            close("c")
-        end,
-        { desc = "Close vimspector and yabs windows" }
-    )
+    vim.keymap.set("n", "<leader>r", function()
+        vim.cmd("call vimspector#Reset()")
+        close("c")
+    end, { desc = "Close vimspector and yabs windows" })
 
-    vim.keymap.set("n", "cts", "set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab", { desc = "Change tabs to 4 spaces" })
+    vim.keymap.set(
+        "n",
+        "cts",
+        "set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab",
+        { desc = "Change tabs to 4 spaces" }
+    )
 end
 
 return M

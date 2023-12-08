@@ -7,7 +7,7 @@ api.nvim_create_autocmd("TextYankPost", {
     callback = function()
         vim.highlight.on_yank({
             higroup = (vim.fn.hlexists("HighlightedYankRegion") > 0 and "HighlightedYankRegion" or "IncSearch"),
-            timeout = 1000
+            timeout = 1000,
         })
     end,
 })
@@ -15,18 +15,18 @@ api.nvim_create_autocmd("TextYankPost", {
 api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
     command = "silent! w",
     nested = true,
-    pattern = { "*.rs" }
+    pattern = { "*.rs" },
 })
 
 local vimspector_session_group = api.nvim_create_augroup("vimspector_session", { clear = true })
 api.nvim_create_autocmd("VimEnter", {
     command = "silent! VimspectorLoadSession ~/.cache/vimspector",
-    group = vimspector_session_group
+    group = vimspector_session_group,
 })
 
 api.nvim_create_autocmd("VimLeave", {
     command = "silent! VimspectorMkSession ~/.cache/vimspector",
-    group = vimspector_session_group
+    group = vimspector_session_group,
 })
 
 api.nvim_create_autocmd("VimLeave", {
@@ -35,7 +35,7 @@ api.nvim_create_autocmd("VimLeave", {
             command = "pkill",
             args = { "eslint_d" },
         }):start()
-    end
+    end,
 })
 
 -- api.nvim_create_autocmd("WinEnter", {

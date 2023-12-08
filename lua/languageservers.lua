@@ -42,13 +42,23 @@ local function client_capabilities()
     )
 end
 
-local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places because it reports incorrect information
-    if client.supports_method(methods.textDocument_inlayHint) or client.name == "omnisharp" then
+local format_augroup = vim.api.nvim_create_augroup("lsp_formatting", { clear = true })
+local function on_attach(client, bufnr)
+    if client.name == "omnisharp" then -- Omnisharp reports capabilities almost completely wrong. I fucking hate this language server
+        client.server_capabilities = vim.tbl_deep_extend("force", client.server_capabilities, {
+            inlayHintProvider = { resolveProvider = true },
+            hoverProvider = true,
+            documentFormattingProvider = true,
+            codeActionProvider = vim.empty_dict(),
+            definitionProvider = true,
+            renameProvider = true,
+        })
+    end
+
+    if client.supports_method(methods.textDocument_inlayHint) then
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
-        vim.defer_fn(function()
-            vim.lsp.inlay_hint.enable(bufnr, true)
-        end, 500)
+        vim.defer_fn(function() vim.lsp.inlay_hint.enable(bufnr, true) end, 500)
     end
 
     if client.supports_method(methods.textDocument_documentSymbol) then
@@ -62,11 +72,11 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
 
         vim.keymap.set("n", "<leader><Space>", blsp.signature_help, {
             noremap = true,
-            buffer = 0
+            buffer = 0,
         })
     end
 
-    if client.supports_method(methods.textDocument_hover) or client.name == "omnisharp" then
+    if client.supports_method(methods.textDocument_hover) then
         vim.api.nvim_create_autocmd("CursorHold", {
             callback = open_float,
             buffer = 0,
@@ -74,36 +84,45 @@ local function on_attach(client, bufnr) -- Hardcode omnisharp in a couple places
 
         vim.keymap.set("n", "<leader>h", open_float, {
             noremap = true,
-            buffer = 0
+            buffer = 0,
         })
     end
 
     if client.supports_method(methods.textDocument_publishDiagnostics) then
-        vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } });
+        vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } })
+    end
+
+    if client.supports_method(methods.textDocument_formatting) then
+        vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = format_augroup,
+            buffer = bufnr,
+            callback = function() vim.lsp.buf.format({ async = false }) end, -- Scrolls the screen for some reason. https://github.com/neovim/neovim/issues/25370
+        })
     end
 
     -- A bunch of lsp keybinds to set based on what's supported
     local binds = {
-        { methods.textDocument_rename, "<F2>", blsp.rename, "omnisharp" },
+        { methods.textDocument_rename, "<F2>", blsp.rename },
         { methods.textDocument_typeDefinition, "<F8>", blsp.type_definition },
         { methods.textDocument_implementation, "<F9>", blsp.implementation },
         { methods.textDocument_implementation, "gpi", "<CMD>Glance implementations<CR>" },
-        { methods.textDocument_references , "<F10>", blsp.references },
-        { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>"},
+        { methods.textDocument_references, "<F10>", blsp.references },
+        { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>" },
         { methods.textDocument_typeDefinition, "gpt", "<CMD>Glance type_definitions<CR>" },
-        { methods.textDocument_codeAction, "<F11>", blsp.code_action, "omnisharp" },
+        { methods.textDocument_codeAction, "<F11>", blsp.code_action },
         { methods.textDocument_definition, "<F12>", blsp.definition, "omnisharp" },
-        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>", "omnisharp" },
+        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>" },
         { methods.textDocument_publishDiagnostics, "gel", vim.diagnostic.open_float },
         { methods.textDocument_publishDiagnostics, "geN", vim.diagnostic.get_next },
         { methods.textDocument_publishDiagnostics, "geP", vim.diagnostic.get_prev },
         { methods.textDocument_publishDiagnostics, "gen", vim.diagnostic.goto_next },
         { methods.textDocument_publishDiagnostics, "gep", vim.diagnostic.goto_prev },
-        { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get }
+        { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get },
     }
 
     for _, bind in ipairs(binds) do
-        if client.supports_method(bind[1]) or client.name == bind[4] then
+        if client.supports_method(bind[1]) then
             vim.keymap.set("n", bind[2], bind[3], { noremap = true, buffer = 0 })
         end
     end
@@ -205,8 +224,8 @@ function M.config()
         {
             "clangd",
             {
-                capabilities = vim.tbl_deep_extend("force", client_capabilities(), { offsetEncoding = { "utf-16" } })
-            }
+                capabilities = vim.tbl_deep_extend("force", client_capabilities(), { offsetEncoding = { "utf-16" } }),
+            },
         },
         { "pylsp" },
         { "bashls" },
@@ -227,12 +246,12 @@ function M.config()
                 settings = {
                     Lua = {
                         runtime = {
-                            version = "LuaJit"
+                            version = "LuaJit",
                         },
                         completion = {
-                            callSnippet = "Replace"
-                        }
-                    }
+                            callSnippet = "Replace",
+                        },
+                    },
                 },
             },
         },
