@@ -17,6 +17,7 @@ end
 bootstrap_pckr()
 
 vim.o.number = true
+vim.o.relativenumber = true
 vim.o.encoding = "utf-8"
 vim.cmd("syntax off")
 
