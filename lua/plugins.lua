@@ -237,6 +237,10 @@ function M.load()
         --     rocks = { "Lua-cURL" },
         -- },
         "andweeb/presence.nvim", -- Discord rpc
+        {
+            "ckolkey/ts-node-action",
+            requires = { "nvim-treesitter/nvim-treesitter" },
+        },
     })
 end
 

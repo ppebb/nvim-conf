@@ -328,6 +328,8 @@ function M.config()
             null_ls.builtins.code_actions.shellcheck,
             null_ls.builtins.diagnostics.shellcheck,
 
+            null_ls.builtins.code_actions.ts_node_action,
+
             -- C#
             -- null_ls.builtins.formatting.dprint.with({
             --     filetypes = { "cs" },
