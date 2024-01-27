@@ -17,7 +17,7 @@ function M.load()
                 "folke/neoconf.nvim", -- Lua lsp config manager
                 "hrsh7th/nvim-cmp",
                 "jose-elias-alvarez/null-ls.nvim", -- Linter management
-                "~/gitclone/roslyn.nvim/",
+                "jmederosalvarado/roslyn.nvim/",
             },
             config = function() require("languageservers").config() end,
         },

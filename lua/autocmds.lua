@@ -2,6 +2,7 @@ local M = {}
 
 local api = vim.api
 local job = require("plenary.job")
+local uv = vim.uv
 
 api.nvim_create_autocmd("TextYankPost", {
     callback = function()
@@ -12,9 +13,27 @@ api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+local timer
 api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-    command = "silent! w",
+    callback = function()
+        if timer then
+            uv.timer_stop(timer)
+            timer = nil
+        end
+
+        timer = vim.defer_fn(function() vim.cmd("silent! write") end, 2000)
+    end,
     nested = true,
+    pattern = { "*.rs" },
+})
+
+api.nvim_create_autocmd("InsertEnter", {
+    callback = function()
+        if timer then
+            uv.timer_stop(timer)
+            timer = nil
+        end
+    end,
     pattern = { "*.rs" },
 })
 
