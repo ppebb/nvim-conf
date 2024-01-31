@@ -74,6 +74,8 @@ function M.load()
         "set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab",
         { desc = "Change tabs to 4 spaces" }
     )
+
+    vim.keymap.set("n", "K", require("ts-node-action").node_action)
 end
 
 return M

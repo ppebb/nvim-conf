@@ -238,9 +238,10 @@ function M.load()
         -- },
         "andweeb/presence.nvim", -- Discord rpc
         {
-            "ckolkey/ts-node-action",
+            "ckolkey/ts-node-action", -- Node actions
             requires = { "nvim-treesitter/nvim-treesitter" },
         },
+        "junegunn/vim-easy-align", -- Alignment
     })
 end
 
