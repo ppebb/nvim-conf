@@ -82,7 +82,7 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_formatting) then
-        if not vim.g.disable_format_autocmds then
+        if not vim.g.disable_format_autocmds and not client.name == "clangd" then
             vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
                 group = format_augroup,
