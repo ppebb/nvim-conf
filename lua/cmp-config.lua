@@ -11,14 +11,16 @@ function M.config()
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
     end
 
+    local window_cfg = vim.tbl_deep_extend("force", cmp.config.window.bordered(), { border = "single" })
+
     local cfg = {
         snippet = {
             expand = function(args) require("luasnip").lsp_expand(args.body) end,
         },
-        -- window = {
-        --     completion = cmp.config.window.bordered(),
-        --     documentation = cmp.config.window.bordered(),
-        -- },
+        window = {
+            completion = window_cfg,
+            documentation = window_cfg,
+        },
         formatting = {
             format = lspkind.cmp_format(),
         },

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local methods = vim.lsp.protocol.Methods
 local blsp = vim.lsp.buf
 
@@ -56,7 +57,10 @@ local function on_attach(client, bufnr)
 
     if client.supports_method(methods.textDocument_signatureHelp) then
         require("lsp-overloads").setup(client, {
-            ui = { border = "single" },
+            ui = {
+                border = "single",
+                floating_window_above_cur_line = true,
+            },
         })
 
         vim.keymap.set("n", "<leader><Space>", blsp.signature_help, {
@@ -82,7 +86,7 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_formatting) then
-        if not vim.g.disable_format_autocmds and not client.name == "clangd" then
+        if not vim.g.disable_format_autocmds then
             vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
                 group = format_augroup,
@@ -265,7 +269,7 @@ function M.config()
                 ["csharp_enable_inlay_hints_for_implicit_variable_types"] = true,
                 ["csharp_enable_inlay_hints_for_lambda_parameter_types"] = true,
                 ["csharp_enable_inlay_hints_for_types"] = true,
-                ["dotnet_enable_inlay_hints_for_indexer_parameters"] = true,
+                ["dotnet_enable_inlay_hints_for_indexer_parameters"] = false,
                 ["dotnet_enable_inlay_hints_for_literal_parameters"] = true,
                 ["dotnet_enable_inlay_hints_for_object_creation_parameters"] = true,
                 ["dotnet_enable_inlay_hints_for_other_parameters"] = true,
@@ -301,6 +305,32 @@ function M.config()
 
         return contents
     end
+
+    -- Update mappings when registering dynamic capabilities.
+    local register_capability = vim.lsp.handlers[methods.client_registerCapability]
+    vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
+        local client = vim.lsp.get_client_by_id(ctx.client_id)
+        if not client then
+            return
+        end
+
+        on_attach(client, vim.api.nvim_get_current_buf())
+
+        return register_capability(err, res, ctx)
+    end
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+        desc = "Configure LSP keymaps",
+        callback = function(args)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+            if not client then
+                return
+            end
+
+            on_attach(client, args.buf)
+        end,
+    })
 
     for _, server in ipairs(servers) do
         setup_lspconfig(server[1], server[2])
