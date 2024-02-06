@@ -48,6 +48,8 @@ function M.config()
                 ["@lsp.type.enum_name.cs"] = { fg = colors.yellow },
                 ["@lsp.type.delegate_name.cs"] = { fg = colors.yellow },
                 ["@lsp.type.namespace_name.cs"] = { fg = colors.yellow },
+                ["@lsp.type.namespace.cs"] = { fg = colors.yellow },
+                ["@lsp.mod.callable.rust"] = { fg = colors.blue },
                 ["@class_name"] = { fg = colors.yellow },
                 ["@variable"] = { fg = colors.teal },
                 ["@label"] = { fg = colors.teal },
