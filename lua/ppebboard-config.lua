@@ -118,6 +118,10 @@ function StartupTime()
 
     local startup_time_file = io.open(startup_file_path) and io.open(startup_file_path):read("*all") or nil
 
+    if not startup_time_file then
+        return "unknown"
+    end
+
     local startup_time = startup_file_path and tonumber(startup_time_file:match(startup_time_pattern)) or nil
 
     io.open(startup_file_path, "w"):close()
