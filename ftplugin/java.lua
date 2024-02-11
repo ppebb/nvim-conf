@@ -1,6 +1,16 @@
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 
 local workspace_dir = "/home/ppeb/.jdtlsproj/" .. project_name
+
+local function find_eclipse()
+    local files = vim.fn.glob("/home/ppeb/.local/share/nvim/mason/packages/jdtls/plugins/*")
+    local start_idx, _ =
+        files:find("/home/ppeb/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_", nil, true)
+    local end_idx, _ = files:find("\n", start_idx)
+
+    return files:sub(start_idx, end_idx - 1)
+end
+
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local config = {
     -- The command that starts the language server
@@ -25,7 +35,7 @@ local config = {
 
         -- 💀
         "-jar",
-        "/home/ppeb/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar",
+        find_eclipse(),
         -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
         -- Must point to the                                                     Change this to
         -- eclipse.jdt.ls installation                                           the actual version
