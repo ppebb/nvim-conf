@@ -65,4 +65,9 @@ api.nvim_create_autocmd("VimLeave", {
 --     end
 -- })
 
+api.nvim_create_autocmd("FileType", {
+    command = "wincmd L",
+    pattern = "help",
+})
+
 return M

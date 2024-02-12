@@ -244,6 +244,11 @@ function M.config()
                         completion = {
                             callSnippet = "Replace",
                         },
+                        diagnostics = {
+                            globals = {
+                                "vim",
+                            },
+                        },
                     },
                 },
             },
