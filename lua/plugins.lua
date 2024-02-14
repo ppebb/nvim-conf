@@ -242,6 +242,10 @@ function M.load()
             requires = { "nvim-treesitter/nvim-treesitter" },
         },
         "junegunn/vim-easy-align", -- Alignment
+        {
+            "b0o/incline.nvim", -- Floating statuslines
+            config = function() require("incline-config").config() end,
+        },
     })
 end
 
