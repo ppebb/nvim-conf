@@ -84,6 +84,7 @@ return {
                     ["dotnet_navigate_to_decompiled_sources"] = true,
                 },
             },
+            on_attach = function() end, -- Blank function. Should be called in another autocmd anyway
         })
 
         if not vim.g.setup_neodev then
