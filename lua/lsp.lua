@@ -182,7 +182,7 @@ local function float_handler(handler, focusable)
         -- Conceal everything.
         vim.wo[winnr].concealcursor = "n"
 
-        add_inline_highlights(bufnr)
+        vim.lsp.util.stylize_markdown(bufnr, vim.api.nvim_buf_get_lines(bufnr, 0, -1, false))
 
         -- Add keymaps for opening links.
         if focusable and not vim.b[bufnr].markdown_keys then
@@ -214,14 +214,26 @@ vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.ho
 vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
 
 vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
+    vim.bo[bufnr].modifiable = true
+
     contents = vim.lsp.util._normalize_markdown(contents, {
         width = vim.lsp.util._make_floating_popup_size(contents, opts),
     })
+
+    -- Markdown is stupid and only works if if perfectly matches. There should be an alias or something
+    for i = 1, #contents do
+        contents[i] = contents[i]:gsub("```csharp", "```c_sharp")
+    end
+
+    -- TODO: Get rid of the ``` and ``` blocks because they make really bad spacing
+
     vim.bo[bufnr].filetype = "markdown"
     vim.treesitter.start(bufnr)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
 
     add_inline_highlights(bufnr)
+
+    vim.bo[bufnr].modifiable = false
 
     return contents
 end
