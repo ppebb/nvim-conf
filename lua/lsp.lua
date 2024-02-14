@@ -4,6 +4,15 @@ local blsp = vim.lsp.buf
 
 local M = {}
 
+function M.client_capabilities(extra_config)
+    return vim.tbl_deep_extend(
+        "force",
+        vim.lsp.protocol.make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities(),
+        extra_config or {}
+    )
+end
+
 local function is_attached(bufnr)
     local lsp = rawget(vim, "lsp")
     if lsp then
@@ -35,14 +44,6 @@ local function open_float()
 end
 
 -- Majority of this is stolen from https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua
-local function client_capabilities()
-    return vim.tbl_deep_extend(
-        "force",
-        vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities()
-    )
-end
-
 local format_augroup = vim.api.nvim_create_augroup("lsp_formatting", { clear = true })
 local function on_attach(client, bufnr)
     if client.supports_method(methods.textDocument_inlayHint) then
@@ -209,171 +210,46 @@ local function float_handler(handler, focusable)
     end
 end
 
-local lspconfig = require("lspconfig")
-local function setup_lspconfig(name, config)
-    lspconfig[name].setup(vim.tbl_deep_extend("force", {
-        on_attach = on_attach,
-        capabilities = client_capabilities(),
-    }, config or {}))
+vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
+vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
+
+vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
+    contents = vim.lsp.util._normalize_markdown(contents, {
+        width = vim.lsp.util._make_floating_popup_size(contents, opts),
+    })
+    vim.bo[bufnr].filetype = "markdown"
+    vim.treesitter.start(bufnr)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
+
+    add_inline_highlights(bufnr)
+
+    return contents
 end
 
-function M.config()
-    local servers = {
-        { "tsserver" },
-        { "rust_analyzer" },
-        {
-            "clangd",
-            {
-                capabilities = vim.tbl_deep_extend("force", client_capabilities(), { offsetEncoding = { "utf-16" } }),
-            },
-        },
-        { "pylsp" },
-        { "bashls" },
-        { "astro" },
-        { "html" },
-        { "cssls" },
-        { "jsonls" },
-        {
-            "lua_ls",
-            {
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = "LuaJit",
-                        },
-                        completion = {
-                            callSnippet = "Replace",
-                        },
-                        diagnostics = {
-                            globals = {
-                                "vim",
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    }
-
-    require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
-        dotnet_cmd = "dotnet",
-        on_attach = on_attach,
-        capabilities = client_capabilities(),
-        settings = {
-            ["csharp|completion"] = {
-                ["dotnet_provide_regex_completions"] = true,
-                ["dotnet_show_completion_items_from_unimported_namespaces"] = true,
-                ["dotnet_show_name_completion_suggestions"] = true,
-            },
-            ["csharp|highlighting"] = {
-                ["dotnet_highlight_related_json_components"] = true,
-                ["dotnet_highlight_related_regex_components"] = true,
-            },
-            ["csharp|inlay_hints"] = {
-                ["csharp_enable_inlay_hints_for_implicit_object_creation"] = true,
-                ["csharp_enable_inlay_hints_for_implicit_variable_types"] = true,
-                ["csharp_enable_inlay_hints_for_lambda_parameter_types"] = true,
-                ["csharp_enable_inlay_hints_for_types"] = true,
-                ["dotnet_enable_inlay_hints_for_indexer_parameters"] = false,
-                ["dotnet_enable_inlay_hints_for_literal_parameters"] = true,
-                ["dotnet_enable_inlay_hints_for_object_creation_parameters"] = true,
-                ["dotnet_enable_inlay_hints_for_other_parameters"] = true,
-                ["dotnet_enable_inlay_hints_for_parameters"] = true,
-                ["dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix"] = false,
-                ["dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name"] = false,
-                ["dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent"] = false,
-            },
-            ["navigation"] = {
-                ["dotnet_navigate_to_decompiled_sources"] = true,
-            },
-        },
-    })
-
-    if not vim.g.setup_neodev then
-        require("neodev").setup()
-        require("neoconf").setup()
-    end
-    vim.g.setup_neodev = 1
-
-    vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
-    vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
-
-    vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
-        contents = vim.lsp.util._normalize_markdown(contents, {
-            width = vim.lsp.util._make_floating_popup_size(contents, opts),
-        })
-        vim.bo[bufnr].filetype = "markdown"
-        vim.treesitter.start(bufnr)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
-
-        add_inline_highlights(bufnr)
-
-        return contents
+-- Update mappings when registering dynamic capabilities.
+local register_capability = vim.lsp.handlers[methods.client_registerCapability]
+vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
+    local client = vim.lsp.get_client_by_id(ctx.client_id)
+    if not client then
+        return
     end
 
-    -- Update mappings when registering dynamic capabilities.
-    local register_capability = vim.lsp.handlers[methods.client_registerCapability]
-    vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
-        local client = vim.lsp.get_client_by_id(ctx.client_id)
+    on_attach(client, vim.api.nvim_get_current_buf())
+
+    return register_capability(err, res, ctx)
+end
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    desc = "Configure LSP keymaps",
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+
         if not client then
             return
         end
 
-        on_attach(client, vim.api.nvim_get_current_buf())
-
-        return register_capability(err, res, ctx)
-    end
-
-    vim.api.nvim_create_autocmd("LspAttach", {
-        desc = "Configure LSP keymaps",
-        callback = function(args)
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-            if not client then
-                return
-            end
-
-            on_attach(client, args.buf)
-        end,
-    })
-
-    for _, server in ipairs(servers) do
-        setup_lspconfig(server[1], server[2])
-    end
-
-    local null_ls = require("null-ls")
-    local null_ls_cfg = {
-        sources = {
-            -- All
-            null_ls.builtins.diagnostics.editorconfig_checker.with({ command = "editorconfig-checker" }),
-
-            -- JS, TS, React
-            null_ls.builtins.code_actions.eslint_d,
-            null_ls.builtins.diagnostics.eslint_d,
-            null_ls.builtins.formatting.eslint_d,
-
-            -- Lua
-            null_ls.builtins.diagnostics.selene,
-            null_ls.builtins.formatting.stylua,
-
-            -- Rust
-            null_ls.builtins.formatting.rustfmt,
-
-            -- Shell
-            null_ls.builtins.code_actions.shellcheck,
-            null_ls.builtins.diagnostics.shellcheck,
-
-            null_ls.builtins.code_actions.ts_node_action,
-
-            -- C#
-            -- null_ls.builtins.formatting.dprint.with({
-            --     filetypes = { "cs" },
-            --     extra_args = { "--config", vim.fn.expand("~/.config/dprint.json") },
-            -- }),
-        },
-        on_attach = on_attach,
-    }
-    null_ls.setup(null_ls_cfg)
-end
+        on_attach(client, args.buf)
+    end,
+})
 
 return M
