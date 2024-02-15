@@ -1,3 +1,5 @@
+local api = vim.api
+
 return {
     "nvim-tree/nvim-tree.lua", -- Filetree
     requires = { "nvim-tree/nvim-web-devicons" },
@@ -53,13 +55,38 @@ return {
 
         require("nvim-tree").setup(cfg)
 
-        vim.api.nvim_create_autocmd("BufEnter", {
-            nested = true,
+        -- Automatically close the tabpage when nvim tree is the last window open
+        vim.api.nvim_create_autocmd("QuitPre", {
             callback = function()
-                if #vim.api.nvim_list_wins() == 1 and vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil then
-                    vim.cmd("quit")
+                local tree_wins = {}
+                local floating_wins = {}
+                local wins = vim.api.nvim_list_wins()
+
+                for _, win in ipairs(wins) do
+                    local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+                    if bufname:match("NvimTree_") ~= nil then
+                        table.insert(tree_wins, win)
+                    end
+                    if vim.api.nvim_win_get_config(win).relative ~= "" then
+                        table.insert(floating_wins, win)
+                    end
+                end
+
+                if 1 == #wins - #floating_wins - #tree_wins then
+                    -- Should quit, so we close all invalid windows.
+                    for _, w in ipairs(tree_wins) do
+                        vim.api.nvim_win_close(w, true)
+                    end
                 end
             end,
         })
+
+        local nvim_tree_api = require("nvim-tree.api")
+
+        -- Automatically open files created in nvimtree
+        nvim_tree_api.events.subscribe(
+            nvim_tree_api.events.Event.FileCreated,
+            function(file) vim.cmd("edit " .. file.fname) end
+        )
     end,
 }

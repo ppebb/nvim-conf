@@ -1,6 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
-local methods = vim.lsp.protocol.Methods
+local api = vim.api
 local blsp = vim.lsp.buf
+local methods = vim.lsp.protocol.Methods
 
 local M = {}
 
@@ -25,7 +26,7 @@ end
 
 local function open_float()
     local function is_cursor_above_diagnostic(diagnostics)
-        local cursor_col = vim.api.nvim_win_get_cursor(0)[2]
+        local cursor_col = api.nvim_win_get_cursor(0)[2]
         for _, diagnostic in ipairs(diagnostics) do
             if diagnostic.col <= cursor_col and diagnostic.end_col > cursor_col then
                 return true
@@ -34,7 +35,7 @@ local function open_float()
     end
 
     if is_attached(0) then
-        local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+        local diagnostics = vim.diagnostic.get(0, { lnum = api.nvim_win_get_cursor(0)[1] - 1 })
         if #diagnostics > 0 and is_cursor_above_diagnostic(diagnostics) then
             vim.diagnostic.open_float(nil, { focus = false, focusable = false, scope = "cursor" })
         else
@@ -44,7 +45,7 @@ local function open_float()
 end
 
 -- Majority of this is stolen from https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua
-local format_augroup = vim.api.nvim_create_augroup("lsp_formatting", { clear = true })
+local format_augroup = api.nvim_create_augroup("lsp_formatting", { clear = true })
 local function on_attach(client, bufnr)
     if client.supports_method(methods.textDocument_inlayHint) then
         -- Initial inlay hint display.
@@ -71,7 +72,7 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_hover) then
-        vim.api.nvim_create_autocmd("CursorHold", {
+        api.nvim_create_autocmd("CursorHold", {
             callback = open_float,
             buffer = 0,
         })
@@ -88,15 +89,15 @@ local function on_attach(client, bufnr)
 
     if client.supports_method(methods.textDocument_formatting) then
         if not vim.g.disable_format_autocmds then
-            vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
+            api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
+            api.nvim_create_autocmd("BufWritePre", {
                 group = format_augroup,
                 buffer = bufnr,
                 callback = function() vim.lsp.buf.format({ async = false }) end, -- Scrolls the screen for some reason. https://github.com/neovim/neovim/issues/25370
             })
 
-            vim.api.nvim_buf_create_user_command(0, "NoFormatting", function()
-                vim.api.nvim_clear_autocmds({ group = format_augroup })
+            api.nvim_buf_create_user_command(0, "NoFormatting", function()
+                api.nvim_clear_autocmds({ group = format_augroup })
                 vim.g.disable_format_autocmds = 1
             end, {})
         end
@@ -134,10 +135,10 @@ local function on_attach(client, bufnr)
     end
 end
 
-local md_namespace = vim.api.nvim_create_namespace("ppebfloat")
+local md_namespace = api.nvim_create_namespace("ppebfloat")
 
 local function add_inline_highlights(buf)
-    for l, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+    for l, line in ipairs(api.nvim_buf_get_lines(buf, 0, -1, false)) do
         for pattern, hl_group in pairs({
             ["@%S+"] = "@parameter",
             ["^%s*(Parameters:)"] = "@text.title",
@@ -150,7 +151,7 @@ local function add_inline_highlights(buf)
                 local to
                 from, to = line:find(pattern, from)
                 if from then
-                    vim.api.nvim_buf_set_extmark(buf, md_namespace, l - 1, from - 1, {
+                    api.nvim_buf_set_extmark(buf, md_namespace, l - 1, from - 1, {
                         end_col = to,
                         hl_group = hl_group,
                     })
@@ -183,7 +184,7 @@ local function float_handler(handler, focusable)
         vim.wo[winnr].concealcursor = "n"
 
         vim.bo[bufnr].modifiable = true
-        vim.lsp.util.stylize_markdown(bufnr, vim.api.nvim_buf_get_lines(bufnr, 0, -1, false))
+        vim.lsp.util.stylize_markdown(bufnr, api.nvim_buf_get_lines(bufnr, 0, -1, false), {})
         vim.bo[bufnr].modifiable = false
 
         -- Add keymaps for opening links.
@@ -196,9 +197,9 @@ local function float_handler(handler, focusable)
                 end
 
                 -- Markdown links.
-                local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+                local col = api.nvim_win_get_cursor(0)[2] + 1
                 local from, to
-                from, to, url = vim.api.nvim_get_current_line():find("%[.-%]%((%S-)%)")
+                from, to, url = api.nvim_get_current_line():find("%[.-%]%((%S-)%)")
                 if from and col >= from and col <= to then
                     vim.system({ "xdg-open", url }, nil, function(res)
                         if res.code ~= 0 then
@@ -220,6 +221,20 @@ vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
         width = vim.lsp.util._make_floating_popup_size(contents, opts),
     })
 
+    -- Html escape sequences stolen from default impl
+    contents = vim.tbl_map(function(line)
+        local escapes = {
+            ["&gt;"] = ">",
+            ["&lt;"] = "<",
+            ["&quot;"] = '"',
+            ["&apos;"] = "'",
+            ["&ensp;"] = " ",
+            ["&emsp;"] = " ",
+            ["&amp;"] = "&",
+        }
+        return (string.gsub(line, "&[^ ;]+;", escapes))
+    end, contents)
+
     -- Markdown is stupid and only works if if perfectly matches. There should be an alias or something
     for i = 1, #contents do
         contents[i] = contents[i]:gsub("```csharp", "```c_sharp")
@@ -229,7 +244,7 @@ vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
 
     vim.bo[bufnr].filetype = "markdown"
     vim.treesitter.start(bufnr)
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
+    api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
 
     add_inline_highlights(bufnr)
 
@@ -244,12 +259,12 @@ vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
         return
     end
 
-    on_attach(client, vim.api.nvim_get_current_buf())
+    on_attach(client, api.nvim_get_current_buf())
 
     return register_capability(err, res, ctx)
 end
 
-vim.api.nvim_create_autocmd("LspAttach", {
+api.nvim_create_autocmd("LspAttach", {
     desc = "Configure LSP keymaps",
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)

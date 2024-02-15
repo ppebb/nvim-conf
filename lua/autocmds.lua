@@ -1,6 +1,5 @@
-local M = {}
-
 local api = vim.api
+local nvim_tree_api = require("nvim-tree.api")
 local job = require("plenary.job")
 local uv = vim.uv
 
@@ -57,17 +56,11 @@ api.nvim_create_autocmd("VimLeave", {
     end,
 })
 
--- api.nvim_create_autocmd("WinEnter", {
---     callback = function()
---         if (vim.api.nvim_win_get_config(0).relative ~= "") then
---             vim.api.nvim_buf_set_keymap(0, "n", "<ESC><ESC>", ":q<CR>", {})
---         end
---     end
--- })
-
 api.nvim_create_autocmd("FileType", {
-    command = "wincmd L",
     pattern = "help",
+    callback = function()
+        vim.cmd("wincmd L")
+        api.nvim_set_option_value("cursorcolumn", false, { scope = "local" })
+        api.nvim_set_option_value("cursorline", false, { scope = "local" })
+    end,
 })
-
-return M
