@@ -59,6 +59,8 @@ return {
                     ["@punctuation"] = { fg = colors.overlay2 },
                     ["@field_name"] = { fg = colors.sky },
                     ["@local_name"] = { fg = colors.teal },
+                    -- Luatab
+                    ["TabLineFill"] = { bg = colors.crust },
                     -- Solution Explorer
                     ["SolutionExplorerSolution"] = { fg = colors.mauve },
                     ["SolutionExplorerProject"] = { fg = colors.green },
