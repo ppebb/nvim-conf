@@ -1,6 +1,7 @@
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.encoding = "utf-8"
+vim.cmd("set nobomb")
 vim.cmd("syntax off")
 
 vim.o.backspace = "indent,eol,start"
