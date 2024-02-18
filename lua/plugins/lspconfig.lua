@@ -4,7 +4,7 @@ return {
         "folke/neodev.nvim", -- Lua lsp config for nvim
         "folke/neoconf.nvim", -- Lua lsp config manager
         "hrsh7th/nvim-cmp",
-        "jose-elias-alvarez/null-ls.nvim", -- Linter management
+        "nvimtools/none-ls.nvim", -- Linter management
         "jmederosalvarado/roslyn.nvim/", -- Make roslyn-lsp not broken
     },
     config = function()
