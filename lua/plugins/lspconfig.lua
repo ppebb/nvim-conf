@@ -1,3 +1,14 @@
+local function custom_servers()
+    require("lspconfig.configs").msbuild_project_tools_server = {
+        default_config = {
+            cmd = { "MSBuildProjectTools.LanguageServer.Host" },
+            filetypes = { "csproj", "targets" },
+            name = "MSBuild Project Tools",
+            root_dir = require("lspconfig.util").root_pattern(".git", "*.sln"),
+        },
+    }
+end
+
 return {
     "neovim/nvim-lspconfig", -- LSP Config
     requires = {
@@ -9,6 +20,9 @@ return {
     },
     config = function()
         local lspconfig = require("lspconfig")
+
+        custom_servers()
+
         local client_capabilities = require("lsp").client_capabilities
         local function setup_lspconfig(name, config)
             lspconfig[name].setup(vim.tbl_deep_extend("force", {
@@ -51,6 +65,7 @@ return {
                     },
                 },
             },
+            { "msbuild_project_tools_server" },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special

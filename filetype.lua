@@ -1,7 +1,7 @@
 vim.filetype.add({
     extension = {
-        csproj = "xml",
-        targets = "xml",
+        sln = "solution",
+        csproj = "csproj",
         ui = "xml",
         dll = "dll",
     },
