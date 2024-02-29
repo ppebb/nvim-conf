@@ -55,7 +55,3 @@ vim.o.autoread = true
 vim.o.scrolloff = 1
 vim.o.sidescroll = 1
 vim.o.sidescrolloff = 2
-
-vim.o.runtimepath = vim.o.runtimepath:gsub(",/usr/local/lib/nvim", "") .. ",/usr/local/lib/nvim"
-vim.o.runtimepath = vim.o.runtimepath .. ",/home/ppeb/.local/share/nvim/roslyn"
-vim.o.runtimepath = vim.o.runtimepath .. ",/home/ppeb/gitclone/msbuild-project-tools-server/out/language-server"

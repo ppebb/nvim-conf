@@ -64,3 +64,11 @@ api.nvim_create_autocmd("FileType", {
         api.nvim_set_option_value("cursorline", false, { scope = "local" })
     end,
 })
+
+api.nvim_create_autocmd("FileType", {
+    pattern = "csproj",
+    callback = function()
+        vim.o.filetype = "xml"
+        vim.cmd("syntax on")
+    end,
+})

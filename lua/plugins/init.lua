@@ -61,6 +61,7 @@ local plugins = {
     "nvim-neotest/neotest", -- Testing framework
     "andweeb/presence.nvim", -- Discord rpc
     "junegunn/vim-easy-align", -- Alignment
+    "rafcamlet/nvim-luapad",
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
     r("nvim-treesitter/playground", "nvim-treesitter/nvim-treesitter"), -- Check capture groups and view tree
     r("nvim-treesitter/nvim-treesitter-context", "nvim-treesitter/nvim-treesitter"), -- Show current function or class at top of window
