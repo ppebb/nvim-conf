@@ -132,20 +132,20 @@ return {
                 null_ls.builtins.diagnostics.editorconfig_checker.with({ command = "editorconfig-checker" }),
 
                 -- JS, TS, React
-                null_ls.builtins.code_actions.eslint_d,
-                null_ls.builtins.diagnostics.eslint_d,
-                null_ls.builtins.formatting.eslint_d,
+                -- null_ls.builtins.code_actions.eslint_d,
+                -- null_ls.builtins.diagnostics.eslint_d,
+                -- null_ls.builtins.formatting.eslint_d,
 
                 -- Lua
                 null_ls.builtins.diagnostics.selene,
                 null_ls.builtins.formatting.stylua,
 
                 -- Rust
-                null_ls.builtins.formatting.rustfmt,
+                -- null_ls.builtins.formatting.rustfmt,
 
                 -- Shell
-                null_ls.builtins.code_actions.shellcheck,
-                null_ls.builtins.diagnostics.shellcheck,
+                -- null_ls.builtins.code_actions.shellcheck,
+                -- null_ls.builtins.diagnostics.shellcheck,
 
                 null_ls.builtins.code_actions.ts_node_action,
 
