@@ -50,7 +50,7 @@ local function on_attach(client, bufnr)
     if client.supports_method(methods.textDocument_inlayHint) then
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
-        vim.defer_fn(function() vim.lsp.inlay_hint.enable(bufnr, true) end, 500)
+        vim.defer_fn(function() vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end, 500)
     end
 
     if client.supports_method(methods.textDocument_documentSymbol) then

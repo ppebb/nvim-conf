@@ -80,13 +80,5 @@ return {
                 end
             end,
         })
-
-        local nvim_tree_api = require("nvim-tree.api")
-
-        -- Automatically open files created in nvimtree
-        nvim_tree_api.events.subscribe(
-            nvim_tree_api.events.Event.FileCreated,
-            function(file) vim.cmd("edit " .. file.fname) end
-        )
     end,
 }

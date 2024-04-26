@@ -26,6 +26,7 @@ return {
                     -- Treesitter / Semantic tokens
                     ["@keyword"] = identifier,
                     ["@keyword.function"] = identifier,
+                    ["@function.macro"] = identifier,
                     ["@keyword.return"] = identifier,
                     ["@keyword.operator"] = identifier,
                     ["@keyword.storage.c_sharp"] = identifier,
