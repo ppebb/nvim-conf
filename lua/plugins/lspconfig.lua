@@ -80,6 +80,7 @@ return {
             },
             { "msbuild_project_tools_server" },
             { "sourcekit" },
+            { "crystalline" },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special

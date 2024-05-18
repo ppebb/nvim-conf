@@ -20,14 +20,15 @@ return {
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 
-        parser_config.xml = {
+        parser_config.crystal = {
             install_info = {
-                url = "https://github.com/dorgnarg/tree-sitter-xml",
-                files = { "src/parser.c" },
+                url = "https://github.com/keidax/tree-sitter-crystal",
+                files = { "src/parser.c", "src/scanner.c" },
                 branch = "main",
-                location = "tree-sitter-xml/xml",
             },
-            filetype = "xml",
+            filetype = "crystal",
         }
+
+        vim.treesitter.language.register("ruby", "crystal")
     end,
 }
