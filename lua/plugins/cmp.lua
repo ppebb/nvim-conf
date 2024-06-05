@@ -40,6 +40,7 @@ return {
                 { name = "luasnip", option = { use_show_condition = false } },
                 { name = "path" },
                 { name = "buffer" },
+                { name = "lazydev", group_index = 0 },
             }),
             mapping = cmp.mapping.preset.insert({
                 ["<C-b>"] = cmp.mapping.scroll_docs(-4),

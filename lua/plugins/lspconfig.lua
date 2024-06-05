@@ -12,11 +12,12 @@ end
 return {
     "neovim/nvim-lspconfig", -- LSP Config
     requires = {
-        "folke/neodev.nvim", -- Lua lsp config for nvim
+        "folke/lazydev.nvim", -- Lua lsp config for nvim
         "folke/neoconf.nvim", -- Lua lsp config manager
         "hrsh7th/nvim-cmp",
         "nvimtools/none-ls.nvim", -- Linter management
         "jmederosalvarado/roslyn.nvim/", -- Make roslyn-lsp not broken
+        "Bilal2453/luvit-meta", -- vim.uv typings
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -79,7 +80,6 @@ return {
                 },
             },
             { "msbuild_project_tools_server" },
-            { "sourcekit" },
             { "crystalline" },
         }
 
@@ -117,11 +117,11 @@ return {
             on_attach = function() end, -- Blank function. Should be called in another autocmd anyway
         })
 
-        if not vim.g.setup_neodev then
-            require("neodev").setup()
+        if not vim.g.setup_lazydev then
+            require("lazydev").setup({ path = "luvit-meta/library", words = { "vim%.uv" } })
             require("neoconf").setup()
         end
-        vim.g.setup_neodev = 1
+        vim.g.setup_lazydev = 1
 
         for _, server in ipairs(servers) do
             setup_lspconfig(server[1], server[2])
