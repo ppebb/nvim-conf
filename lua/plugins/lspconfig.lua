@@ -118,7 +118,17 @@ return {
         })
 
         if not vim.g.setup_lazydev then
-            require("lazydev").setup({ path = "luvit-meta/library", words = { "vim%.uv" } })
+            require("lazydev").setup({
+                library = {
+                    {
+                        path = "luvit-meta/library",
+                        words = { "vim%.uv" },
+                    },
+                    {
+                        path = "~/.luarocks/share/lua/5.4/",
+                    },
+                },
+            })
             require("neoconf").setup()
         end
         vim.g.setup_lazydev = 1

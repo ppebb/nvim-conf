@@ -72,10 +72,10 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_hover) then
-        api.nvim_create_autocmd("CursorHold", {
-            callback = open_float,
-            buffer = 0,
-        })
+        -- api.nvim_create_autocmd("CursorHold", {
+        --     callback = open_float,
+        --     buffer = 0,
+        -- })
 
         vim.keymap.set("n", "<leader>h", open_float, {
             noremap = true,

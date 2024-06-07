@@ -1,5 +1,4 @@
 local api = vim.api
-local nvim_tree_api = require("nvim-tree.api")
 local job = require("plenary.job")
 local uv = vim.uv
 
