@@ -1,5 +1,4 @@
 local api = vim.api
-local job = require("plenary.job")
 local uv = vim.uv
 
 api.nvim_create_autocmd("TextYankPost", {
@@ -44,15 +43,6 @@ api.nvim_create_autocmd("VimEnter", {
 api.nvim_create_autocmd("VimLeave", {
     command = "silent! VimspectorMkSession ~/.cache/vimspector",
     group = vimspector_session_group,
-})
-
-api.nvim_create_autocmd("VimLeave", {
-    callback = function()
-        job:new({
-            command = "pkill",
-            args = { "eslint_d" },
-        }):start()
-    end,
 })
 
 api.nvim_create_autocmd("FileType", {

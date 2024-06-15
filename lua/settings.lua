@@ -55,3 +55,5 @@ vim.o.autoread = true
 vim.o.scrolloff = 1
 vim.o.sidescroll = 1
 vim.o.sidescrolloff = 2
+
+vim.o.ignorecase = true

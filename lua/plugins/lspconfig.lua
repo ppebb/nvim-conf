@@ -16,6 +16,7 @@ return {
         "folke/neoconf.nvim", -- Lua lsp config manager
         "hrsh7th/nvim-cmp",
         "nvimtools/none-ls.nvim", -- Linter management
+        "nvimtools/none-ls-extras.nvim",
         "jmederosalvarado/roslyn.nvim/", -- Make roslyn-lsp not broken
         "Bilal2453/luvit-meta", -- vim.uv typings
     },
@@ -80,7 +81,7 @@ return {
                 },
             },
             { "msbuild_project_tools_server" },
-            { "crystalline" },
+            { "gopls" },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
@@ -144,20 +145,13 @@ return {
                 null_ls.builtins.diagnostics.editorconfig_checker.with({ command = "editorconfig-checker" }),
 
                 -- JS, TS, React
-                -- null_ls.builtins.code_actions.eslint_d,
-                -- null_ls.builtins.diagnostics.eslint_d,
-                -- null_ls.builtins.formatting.eslint_d,
+                require("none-ls.code_actions.eslint"),
+                require("none-ls.diagnostics.eslint"),
+                require("none-ls.formatting.eslint"),
 
                 -- Lua
                 null_ls.builtins.diagnostics.selene,
                 null_ls.builtins.formatting.stylua,
-
-                -- Rust
-                -- null_ls.builtins.formatting.rustfmt,
-
-                -- Shell
-                -- null_ls.builtins.code_actions.shellcheck,
-                -- null_ls.builtins.diagnostics.shellcheck,
 
                 null_ls.builtins.code_actions.ts_node_action,
 
