@@ -47,6 +47,11 @@ end
 -- Majority of this is stolen from https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/lsp.lua
 local format_augroup = api.nvim_create_augroup("lsp_formatting", { clear = true })
 local function on_attach(client, bufnr)
+    -- If this isn't stopped then none-ls attaches and constantly runs
+    if api.nvim_get_option_value("ft", { buf = bufnr }) == "NvimTree" then
+        vim.lsp.buf_detach_client(bufnr, client.id)
+    end
+
     if client.supports_method(methods.textDocument_inlayHint) then
         -- Initial inlay hint display.
         -- Idk why but without the delay inlay hints aren't displayed at the very start.
