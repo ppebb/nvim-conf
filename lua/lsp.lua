@@ -17,7 +17,7 @@ end
 local function is_attached(bufnr)
     local lsp = rawget(vim, "lsp")
     if lsp then
-        for _, _ in pairs(lsp.buf_get_clients(bufnr)) do
+        for _, _ in pairs(lsp.get_clients({ bufnr = bufnr })) do
             return true
         end
     end
@@ -113,13 +113,13 @@ local function on_attach(client, bufnr)
         { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>" },
         { methods.textDocument_typeDefinition, "gpt", "<CMD>Glance type_definitions<CR>" },
         { methods.textDocument_codeAction, "<F11>", blsp.code_action },
-        { methods.textDocument_definition, "<F12>", blsp.definition, "omnisharp" },
+        { methods.textDocument_definition, "<F12>", blsp.definition },
         { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>" },
         { methods.textDocument_publishDiagnostics, "gel", vim.diagnostic.open_float },
         { methods.textDocument_publishDiagnostics, "geN", vim.diagnostic.get_next },
         { methods.textDocument_publishDiagnostics, "geP", vim.diagnostic.get_prev },
-        { methods.textDocument_publishDiagnostics, "gen", vim.diagnostic.goto_next },
-        { methods.textDocument_publishDiagnostics, "gep", vim.diagnostic.goto_prev },
+        { methods.textDocument_publishDiagnostics, "gen", function() vim.diagnostic.jump({ count = 1, float = true }) end },
+        { methods.textDocument_publishDiagnostics, "gep", function() vim.diagnostic.jump({ count =  - 1, float = true }) end },
         { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get },
     }
 
