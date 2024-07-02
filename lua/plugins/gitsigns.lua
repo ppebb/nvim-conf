@@ -3,7 +3,7 @@ return {
     config = function()
         require("gitsigns").setup({
             signs = {
-                untracked = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+                untracked = { text = "│" },
             },
             sign_priority = 1,
             signcolumn = true,

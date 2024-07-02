@@ -154,12 +154,6 @@ return {
                 null_ls.builtins.formatting.stylua,
 
                 null_ls.builtins.code_actions.ts_node_action,
-
-                -- C#
-                -- null_ls.builtins.formatting.dprint.with({
-                --     filetypes = { "cs" },
-                --     extra_args = { "--config", vim.fn.expand("~/.config/dprint.json") },
-                -- }),
             },
         }
         null_ls.setup(null_ls_cfg)

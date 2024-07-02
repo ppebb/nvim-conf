@@ -34,6 +34,7 @@ return {
                     ["@constructor.c_sharp"] = { fg = colors.yellow },
                     ["@constant.builtin"] = identifier,
                     ["@type.builtin"] = identifier,
+                    ["@type.builtin.c"] = identifier,
                     ["@type.qualifier"] = identifier,
                     ["@storageclass"] = identifier,
                     ["@boolean"] = identifier,

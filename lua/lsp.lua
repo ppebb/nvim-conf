@@ -77,11 +77,6 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_hover) then
-        -- api.nvim_create_autocmd("CursorHold", {
-        --     callback = open_float,
-        --     buffer = 0,
-        -- })
-
         vim.keymap.set("n", "<leader>h", open_float, {
             noremap = true,
             buffer = 0,
@@ -92,13 +87,13 @@ local function on_attach(client, bufnr)
         vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } })
     end
 
-    if client.supports_method(methods.textDocument_formatting) then
+    if client.supports_method(methods.textDocument_formatting) and client.name ~= "lua_ls" then
         if not vim.g.disable_format_autocmds then
             api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
             api.nvim_create_autocmd("BufWritePre", {
                 group = format_augroup,
                 buffer = bufnr,
-                callback = function() vim.lsp.buf.format({ async = false }) end, -- Scrolls the screen for some reason. https://github.com/neovim/neovim/issues/25370
+                callback = function() vim.lsp.buf.format({ async = false }) end,
             })
 
             api.nvim_buf_create_user_command(0, "NoFormatting", function()

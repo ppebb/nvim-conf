@@ -59,8 +59,6 @@ local plugins = {
     "rcarriga/nvim-notify", -- Notification manager
     "tpope/vim-commentary", -- Comment keybinds
     "nvim-neotest/neotest", -- Testing framework
-    "andweeb/presence.nvim", -- Discord rpc
-    "junegunn/vim-easy-align", -- Alignment
     "rafcamlet/nvim-luapad",
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
     r("nvim-treesitter/playground", "nvim-treesitter/nvim-treesitter"), -- Check capture groups and view tree
