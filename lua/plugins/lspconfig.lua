@@ -17,7 +17,7 @@ return {
         "hrsh7th/nvim-cmp",
         "nvimtools/none-ls.nvim", -- Linter management
         "nvimtools/none-ls-extras.nvim",
-        "jmederosalvarado/roslyn.nvim/", -- Make roslyn-lsp not broken
+        "seblj/roslyn.nvim", -- Make roslyn-lsp not broken
         "Bilal2453/luvit-meta", -- vim.uv typings
     },
     config = function()

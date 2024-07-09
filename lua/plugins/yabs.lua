@@ -22,6 +22,14 @@ return {
                         },
                     },
                 },
+                c = {
+                    tasks = {
+                        build = {
+                            command = "make",
+                            output = "quickfix",
+                        },
+                    },
+                },
             },
             tasks = {
                 run = {

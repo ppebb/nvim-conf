@@ -4,6 +4,7 @@ vim.filetype.add({
         csproj = "csproj",
         ui = "xml",
         dll = "dll",
+        h = "c",
     },
     filename = {
         [".vimspector.json"] = "jsonc",

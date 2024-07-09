@@ -68,8 +68,13 @@ end, { desc = "Close vimspector and yabs windows" })
 vim.keymap.set(
     "n",
     "cts",
-    "set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab",
+    ":set ts=2 sts=2 noet | retab! | set ts=4 sts=4 et | retab",
     { desc = "Change tabs to 4 spaces" }
 )
 
 vim.keymap.set("n", "K", require("ts-node-action").node_action)
+
+vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
