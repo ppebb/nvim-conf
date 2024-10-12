@@ -33,7 +33,7 @@ return {
         end
 
         local servers = {
-            { "tsserver" },
+            { "ts_ls" },
             {
                 "rust_analyzer",
                 {

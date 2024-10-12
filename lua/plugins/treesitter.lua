@@ -27,5 +27,6 @@ return {
         }
 
         vim.treesitter.language.register("ruby", "crystal")
+        vim.treesitter.language.register("xml", "csproj")
     end,
 }
