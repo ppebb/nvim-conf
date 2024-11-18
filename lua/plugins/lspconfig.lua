@@ -82,6 +82,10 @@ return {
             },
             { "msbuild_project_tools_server" },
             { "gopls" },
+            {
+                "powershell_es",
+                { bundle_path = "/home/ppeb/.local/share/nvim/mason/packages/powershell-editor-services/" },
+            },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
