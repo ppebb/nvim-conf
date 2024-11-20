@@ -104,24 +104,26 @@ local function on_attach(client, bufnr)
     end
 
     -- A bunch of lsp keybinds to set based on what's supported
+    -- stylua: ignore start
     local binds = {
-        { methods.textDocument_rename, "<F2>", blsp.rename },
-        { methods.textDocument_typeDefinition, "<F8>", blsp.type_definition },
-        { methods.textDocument_implementation, "<F9>", blsp.implementation },
-        { methods.textDocument_implementation, "gpi", "<CMD>Glance implementations<CR>" },
-        { methods.textDocument_references, "<F10>", blsp.references },
-        { methods.textDocument_references, "gpr", "<CMD>Glance references<CR>" },
-        { methods.textDocument_typeDefinition, "gpt", "<CMD>Glance type_definitions<CR>" },
-        { methods.textDocument_codeAction, "<F11>", blsp.code_action },
-        { methods.textDocument_definition, "<F12>", blsp.definition },
-        { methods.textDocument_definition, "gpd", "<CMD>Glance definitions<CR>" },
-        { methods.textDocument_publishDiagnostics, "gel", vim.diagnostic.open_float },
-        { methods.textDocument_publishDiagnostics, "geN", vim.diagnostic.get_next },
-        { methods.textDocument_publishDiagnostics, "geP", vim.diagnostic.get_prev },
-        { methods.textDocument_publishDiagnostics, "gen", function() vim.diagnostic.jump({ count = 1, float = true }) end },
-        { methods.textDocument_publishDiagnostics, "gep", function() vim.diagnostic.jump({ count =  - 1, float = true }) end },
-        { methods.textDocument_publishDiagnostics, "gea", vim.diagnostic.get },
+        { methods.textDocument_rename,             "<F2>",  blsp.rename },
+        { methods.textDocument_typeDefinition,     "<F8>",  blsp.type_definition },
+        { methods.textDocument_implementation,     "<F9>",  blsp.implementation },
+        { methods.textDocument_implementation,     "gpi",   "<CMD>Glance implementations<CR>" },
+        { methods.textDocument_references,         "<F10>", blsp.references },
+        { methods.textDocument_references,         "gpr",   "<CMD>Glance references<CR>" },
+        { methods.textDocument_typeDefinition,     "gpt",   "<CMD>Glance type_definitions<CR>" },
+        { methods.textDocument_codeAction,         "<F11>", blsp.code_action },
+        { methods.textDocument_definition,         "<F12>", blsp.definition },
+        { methods.textDocument_definition,         "gpd",   "<CMD>Glance definitions<CR>" },
+        { methods.textDocument_publishDiagnostics, "gel",   vim.diagnostic.open_float },
+        { methods.textDocument_publishDiagnostics, "geN",   vim.diagnostic.get_next },
+        { methods.textDocument_publishDiagnostics, "geP",   vim.diagnostic.get_prev },
+        { methods.textDocument_publishDiagnostics, "gen",   function() vim.diagnostic.jump({ count = 1, float = true }) end, },
+        { methods.textDocument_publishDiagnostics, "gep",   function() vim.diagnostic.jump({ count = -1, float = true }) end, },
+        { methods.textDocument_publishDiagnostics, "gea",   vim.diagnostic.get },
     }
+    -- stylua: ignore end
 
     for _, bind in ipairs(binds) do
         if client.supports_method(bind[1]) then
@@ -163,18 +165,13 @@ local function add_inline_highlights(buf)
 end
 
 local function float_handler(handler, focusable)
-    return function(err, result, ctx, config)
-        local bufnr, winnr = handler(
-            err,
-            result,
-            ctx,
-            vim.tbl_deep_extend("force", config or {}, {
-                border = "single",
-                focusable = focusable,
-                max_height = math.floor(vim.o.lines * 0.5),
-                max_width = math.floor(vim.o.columns * 0.4),
-            })
-        )
+    return function(config)
+        local bufnr, winnr = handler(vim.tbl_deep_extend("force", config or {}, {
+            border = "single",
+            focusable = focusable,
+            max_height = math.floor(vim.o.lines * 0.5),
+            max_width = math.floor(vim.o.columns * 0.4),
+        }))
 
         if not bufnr or not winnr then
             return
@@ -213,8 +210,8 @@ local function float_handler(handler, focusable)
     end
 end
 
-vim.lsp.handlers[methods.textDocument_hover] = float_handler(vim.lsp.handlers.hover, true)
-vim.lsp.handlers[methods.textDocument_signatureHelp] = float_handler(vim.lsp.handlers.signature_help, true)
+vim.lsp.buf.hover = float_handler(vim.lsp.buf.hover, true)
+vim.lsp.buf.signature_help = float_handler(vim.lsp.buf.signature_help, true)
 
 vim.lsp.util.stylize_markdown = function(bufnr, contents, opts)
     contents = vim.lsp.util._normalize_markdown(contents, {
