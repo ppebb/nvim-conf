@@ -87,7 +87,12 @@ local function on_attach(client, bufnr)
         vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } })
     end
 
-    if client.supports_method(methods.textDocument_formatting) and client.name ~= "lua_ls" then
+    if
+        (
+            client.supports_method(methods.textDocument_formatting)
+            or client.server_capabilities.documentFormattingProvider
+        ) and client.name ~= "lua_ls"
+    then
         if not vim.g.disable_format_autocmds then
             api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
             api.nvim_create_autocmd("BufWritePre", {
