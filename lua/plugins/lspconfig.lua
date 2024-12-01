@@ -19,6 +19,8 @@ return {
         "nvimtools/none-ls-extras.nvim",
         "seblj/roslyn.nvim", -- Make roslyn-lsp not broken
         "Bilal2453/luvit-meta", -- vim.uv typings
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim"
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -80,7 +82,7 @@ return {
                     },
                 },
             },
-            { "msbuild_project_tools_server" },
+            { "msbuild_project_tools_server", nil, true },
             { "gopls" },
             { "nginx_language_server" },
         }
@@ -158,5 +160,16 @@ return {
             },
         }
         null_ls.setup(null_ls_cfg)
+
+        local ensure = {}
+        for _, server in ipairs(servers) do
+            if not server[3] then
+                table.insert(ensure, server[1])
+            end
+        end
+
+        require("mason-lspconfig").setup({
+            ensure_installed = ensure
+        })
     end,
 }

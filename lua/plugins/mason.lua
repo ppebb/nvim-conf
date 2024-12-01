@@ -1,6 +1,5 @@
 return {
     "williamboman/mason.nvim", -- Package manager for tools
-    requires = { "williamboman/mason-lspconfig.nvim" },
     config = function()
         require("mason").setup({
             registries = {
@@ -8,6 +7,5 @@ return {
                 "github:Crashdummyy/mason-registry",
             },
         })
-        require("mason-lspconfig").setup()
     end,
 }
