@@ -20,7 +20,7 @@ return {
         "seblj/roslyn.nvim", -- Make roslyn-lsp not broken
         "Bilal2453/luvit-meta", -- vim.uv typings
         "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim"
+        "williamboman/mason-lspconfig.nvim",
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -85,6 +85,7 @@ return {
             { "msbuild_project_tools_server", nil, true },
             { "gopls" },
             { "nginx_language_server" },
+            { "texlab" },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
@@ -169,7 +170,7 @@ return {
         end
 
         require("mason-lspconfig").setup({
-            ensure_installed = ensure
+            ensure_installed = ensure,
         })
     end,
 }
