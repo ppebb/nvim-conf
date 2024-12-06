@@ -1,5 +1,4 @@
 local api = vim.api
-local uv = vim.uv
 
 api.nvim_create_autocmd("TextYankPost", {
     callback = function()
@@ -8,30 +7,6 @@ api.nvim_create_autocmd("TextYankPost", {
             timeout = 1000,
         })
     end,
-})
-
-local timer
-api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-    callback = function()
-        if timer then
-            uv.timer_stop(timer)
-            timer = nil
-        end
-
-        timer = vim.defer_fn(function() vim.cmd("silent! noautocmd write") end, 2000)
-    end,
-    nested = true,
-    pattern = { "*.rs" },
-})
-
-api.nvim_create_autocmd("InsertEnter", {
-    callback = function()
-        if timer then
-            uv.timer_stop(timer)
-            timer = nil
-        end
-    end,
-    pattern = { "*.rs" },
 })
 
 local vimspector_session_group = api.nvim_create_augroup("vimspector_session", { clear = true })
@@ -52,9 +27,4 @@ api.nvim_create_autocmd("FileType", {
         api.nvim_set_option_value("cursorcolumn", false, { scope = "local" })
         api.nvim_set_option_value("cursorline", false, { scope = "local" })
     end,
-})
-
-api.nvim_create_autocmd("BufWritePost", {
-    pattern = "*.tex",
-    callback = function() vim.cmd(":VimtexCompile") end,
 })
