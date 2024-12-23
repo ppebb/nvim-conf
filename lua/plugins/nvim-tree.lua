@@ -2,7 +2,7 @@ local api = vim.api
 
 return {
     "nvim-tree/nvim-tree.lua", -- Filetree
-    requires = { "nvim-tree/nvim-web-devicons" },
+    requires = { "nvim-tree/nvim-web-devicons", "~/gitclone/solution-nvim" },
     config = function()
         local cfg = {
             open_on_tab = true,
@@ -40,6 +40,7 @@ return {
             trash = {
                 cmd = "trash-put",
             },
+            on_attach = require("solution.integrations.nvim-tree").on_attach,
         }
 
         require("nvim-web-devicons").setup({
