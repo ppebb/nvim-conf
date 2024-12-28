@@ -48,8 +48,6 @@ end
 
 local yabs = require("yabs")
 vim.keymap.set("n", "<F17>", function() yabs:run_task("run") end)
-vim.keymap.set("n", "bnr", function() yabs:run_task("build") end)
-vim.keymap.set("n", "bar", function() yabs:run_task("build_and_run") end)
 vim.keymap.set("n", "<F15>", "<Plug>VimspectorStop")
 vim.keymap.set("n", "<F16>", "<Plug>VimspectorRestart")
 vim.keymap.set("n", "<F18>", "<Plug>VimspectorPause")
