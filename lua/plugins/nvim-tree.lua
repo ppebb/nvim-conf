@@ -62,18 +62,18 @@ return {
         require("nvim-tree").setup(cfg)
 
         -- Automatically close the tabpage when nvim tree is the last window open
-        vim.api.nvim_create_autocmd("QuitPre", {
+        api.nvim_create_autocmd("QuitPre", {
             callback = function()
                 local tree_wins = {}
                 local floating_wins = {}
-                local wins = vim.api.nvim_list_wins()
+                local wins = api.nvim_list_wins()
 
                 for _, win in ipairs(wins) do
-                    local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+                    local bufname = api.nvim_buf_get_name(api.nvim_win_get_buf(win))
                     if bufname:match("NvimTree_") ~= nil then
                         table.insert(tree_wins, win)
                     end
-                    if vim.api.nvim_win_get_config(win).relative ~= "" then
+                    if api.nvim_win_get_config(win).relative ~= "" then
                         table.insert(floating_wins, win)
                     end
                 end
@@ -81,7 +81,7 @@ return {
                 if 1 == #wins - #floating_wins - #tree_wins then
                     -- Should quit, so we close all invalid windows.
                     for _, w in ipairs(tree_wins) do
-                        vim.api.nvim_win_close(w, true)
+                        api.nvim_win_close(w, true)
                     end
                 end
             end,
