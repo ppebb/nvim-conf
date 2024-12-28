@@ -40,7 +40,12 @@ return {
             trash = {
                 cmd = "trash-put",
             },
-            on_attach = require("solution.integrations.nvim-tree").on_attach,
+            on_attach = function(bufnr)
+                local ntapi = require("nvim-tree.api")
+                ntapi.config.mappings.default_on_attach(bufnr)
+
+                require("solution.integrations.nvim-tree").on_attach(bufnr)
+            end,
         }
 
         require("nvim-web-devicons").setup({
