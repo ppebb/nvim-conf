@@ -54,6 +54,7 @@ return {
                 "clangd",
                 {
                     capabilities = client_capabilities({ offsetEncoding = { "utf-16" } }),
+                    cmd = { "clangd", "-header-insertion=never" },
                 },
             },
             { "pylsp" },
