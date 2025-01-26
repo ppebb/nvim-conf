@@ -52,11 +52,11 @@ local function on_attach(client, bufnr)
     --     vim.lsp.buf_detach_client(bufnr, client.id)
     -- end
 
-    if client.supports_method(methods.textDocument_inlayHint) then
-        -- Initial inlay hint display.
-        -- Idk why but without the delay inlay hints aren't displayed at the very start.
-        vim.defer_fn(function() vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end, 500)
-    end
+    -- if client.supports_method(methods.textDocument_inlayHint) then
+    --     -- Initial inlay hint display.
+    --     -- Idk why but without the delay inlay hints aren't displayed at the very start.
+    --     vim.defer_fn(function() vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end, 500)
+    -- end
 
     if client.supports_method(methods.textDocument_documentSymbol) then
         require("nvim-navic").attach(client, bufnr)

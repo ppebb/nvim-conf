@@ -54,7 +54,7 @@ return {
                 "clangd",
                 {
                     capabilities = client_capabilities({ offsetEncoding = { "utf-16" } }),
-                    cmd = { "clangd", "-header-insertion=never" },
+                    -- cmd = { "clangd", "-header-insertion=never" },
                 },
             },
             { "pylsp" },
@@ -85,7 +85,7 @@ return {
             },
             { "msbuild_project_tools_server", nil, true },
             { "gopls" },
-            { "nginx_language_server" },
+            -- { "nginx_language_server" },
             { "texlab" },
         }
 
