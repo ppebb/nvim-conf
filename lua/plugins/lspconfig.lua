@@ -150,9 +150,9 @@ return {
                 null_ls.builtins.diagnostics.editorconfig_checker.with({ command = "editorconfig-checker" }),
 
                 -- JS, TS, React
-                require("none-ls.code_actions.eslint"),
-                require("none-ls.diagnostics.eslint"),
-                require("none-ls.formatting.eslint"),
+                require("none-ls.code_actions.eslint_d"),
+                require("none-ls.diagnostics.eslint_d"),
+                require("none-ls.formatting.eslint_d"),
 
                 -- Lua
                 null_ls.builtins.diagnostics.selene,

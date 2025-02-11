@@ -6,6 +6,10 @@ vim.keymap.set("n", "fs", "<CMD>Telescope live_grep<CR>")
 vim.keymap.set("n", "<F5>", "<CMD>UndotreeToggle<CR>")
 vim.keymap.set("n", "<F6>", "<CMD>NvimTreeToggle<CR>")
 
+-- When pasting, delete and send to the blackhole buffer
+vim.keymap.set("v", "p", [["_dP]], { noremap = true })
+vim.keymap.set("v", "d", [["_d]], { noremap = true })
+
 vim.keymap.set("n", "<leader>y", [["+y]], { noremap = true })
 vim.keymap.set("n", "<leader>p", [["+p]], { noremap = true })
 
