@@ -1,5 +1,5 @@
 return {
-    "anuvyklack/pretty-fold.nvim", -- Foldtext custmization and preview
+    "bbjornstad/pretty-fold.nvim", -- Foldtext custmization and preview
     requires = {
         "anuvyklack/keymap-amend.nvim",
         "anuvyklack/fold-preview.nvim",
