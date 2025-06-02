@@ -29,9 +29,13 @@ return {
 
         local client_capabilities = require("lsp").client_capabilities
         local function setup_lspconfig(name, config)
-            lspconfig[name].setup(vim.tbl_deep_extend("force", {
-                capabilities = client_capabilities(),
-            }, config or {}))
+            vim.lsp.enable(name)
+            vim.lsp.config(
+                name,
+                vim.tbl_deep_extend("force", {
+                    capabilities = client_capabilities(),
+                }, config or {})
+            )
         end
 
         local servers = {
