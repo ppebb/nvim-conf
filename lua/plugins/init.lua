@@ -65,14 +65,14 @@ local plugins = {
     r("nvim-treesitter/nvim-treesitter-context", "nvim-treesitter/nvim-treesitter"), -- Show current function or class at top of window
     r("metiulekm/nvim-treesitter-endwise", "nvim-treesitter/nvim-treesitter"), -- Automatically insert end
     r("ckolkey/ts-node-action", "nvim-treesitter/nvim-treesitter"), -- Node actions
-    c("DNLHC/glance.nvim", function() require("glance").setup({}) end), -- Show definitions in preview windows
+    c("DNLHC/glance.nvim", function() require("glance").setup() end), -- Show definitions in preview windows
     c("folke/todo-comments.nvim", function() require("todo-comments").setup() end), -- Show todo comments in a project
     c("luukvbaal/stabilize.nvim", function() require("stabilize").setup() end), -- Stabilize window open/close events
     c("alvarosevilla95/luatab.nvim", function() require("luatab").setup() end), -- Tabline
     c("~/gitclone/haste-nvim", function() require("haste").setup({ setclip = true }) end), -- Upload current buffer to haste
     c("norcalli/nvim-colorizer.lua", function() require("colorizer").setup() end), -- Highlight colors
     c("kylechui/nvim-surround", function() require("nvim-surround").setup() end), -- Surround delimiters
-    c("danymat/neogen", function() require("neogen").setup() end), -- Easy annotations
+    c("danymat/neogen", function() require("neogen").setup({}) end), -- Easy annotations
     c("lewis6991/spellsitter.nvim", function() require("spellsitter").setup({ enable = true }) end), -- Spellchecking
     c("asiryk/auto-hlsearch.nvim", function() require("auto-hlsearch").setup() end), -- Clear search highlight
 }
