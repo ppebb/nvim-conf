@@ -88,7 +88,24 @@ return {
                 },
             },
             { "msbuild_project_tools_server", nil, true },
-            { "gopls" },
+            {
+                "gopls",
+                {
+                    settings = {
+                        gopls = {
+                            experimentalPostfixCompletions = true,
+                            analyses = {
+                                unusedparams = true,
+                                shadow = true,
+                            },
+                            staticcheck = true,
+                        },
+                    },
+                    init_options = {
+                        usePlaceholders = true,
+                    },
+                },
+            },
             -- { "nginx_language_server" },
             { "texlab" },
         }
