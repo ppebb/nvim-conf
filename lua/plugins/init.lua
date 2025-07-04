@@ -63,7 +63,7 @@ local plugins = {
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
     r("nvim-treesitter/playground", "nvim-treesitter/nvim-treesitter"), -- Check capture groups and view tree
     r("nvim-treesitter/nvim-treesitter-context", "nvim-treesitter/nvim-treesitter"), -- Show current function or class at top of window
-    r("metiulekm/nvim-treesitter-endwise", "nvim-treesitter/nvim-treesitter"), -- Automatically insert end
+    r("RRethy/nvim-treesitter-endwise", "nvim-treesitter/nvim-treesitter"), -- Automatically insert end
     r("ckolkey/ts-node-action", "nvim-treesitter/nvim-treesitter"), -- Node actions
     c("DNLHC/glance.nvim", function() require("glance").setup() end), -- Show definitions in preview windows
     c("folke/todo-comments.nvim", function() require("todo-comments").setup() end), -- Show todo comments in a project
