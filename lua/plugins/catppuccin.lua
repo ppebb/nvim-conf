@@ -25,6 +25,7 @@ return {
                 return {
                     -- Treesitter / Semantic tokens
                     ["@keyword"] = identifier,
+                    ["Keyword"] = identifier,
                     ["@keyword.function"] = identifier,
                     ["@function.macro"] = identifier,
                     ["@keyword.return"] = identifier,
@@ -40,7 +41,9 @@ return {
                     ["@boolean"] = identifier,
                     ["@operator"] = identifier,
                     ["@include"] = identifier,
+                    ["Include"] = identifier,
                     ["@repeat"] = identifier,
+                    ["Repeat"] = identifier,
                     ["@method"] = { fg = colors.blue },
                     ["@method.call"] = { fg = colors.blue },
                     ["@event_name"] = { fg = colors.blue },
