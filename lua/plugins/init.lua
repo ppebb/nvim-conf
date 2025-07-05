@@ -70,7 +70,7 @@ local plugins = {
     c("luukvbaal/stabilize.nvim", function() require("stabilize").setup() end), -- Stabilize window open/close events
     c("alvarosevilla95/luatab.nvim", function() require("luatab").setup() end), -- Tabline
     c("~/gitclone/haste-nvim", function() require("haste").setup({ setclip = true }) end), -- Upload current buffer to haste
-    c("norcalli/nvim-colorizer.lua", function() require("colorizer").setup() end), -- Highlight colors
+    c("catgoose/nvim-colorizer.lua", function() require("colorizer").setup() end), -- Highlight colors
     c("kylechui/nvim-surround", function() require("nvim-surround").setup() end), -- Surround delimiters
     c("danymat/neogen", function() require("neogen").setup({}) end), -- Easy annotations
     c("lewis6991/spellsitter.nvim", function() require("spellsitter").setup({ enable = true }) end), -- Spellchecking
