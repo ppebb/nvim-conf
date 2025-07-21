@@ -108,7 +108,7 @@ return {
             },
             -- { "nginx_language_server" },
             { "texlab" },
-            { "gdscript" },
+            { "gdscript", nil, true },
         }
 
         require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
