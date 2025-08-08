@@ -9,7 +9,7 @@ api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
             timer = nil
         end
 
-        timer = vim.defer_fn(function() vim.cmd("silent! noautocmd write") end, 2000)
+        timer = vim.defer_fn(function() vim.cmd("silent write") end, 2000)
     end,
     nested = true,
     pattern = { "*.rs" },

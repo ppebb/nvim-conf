@@ -48,6 +48,7 @@ return {
                             diagnostics = {
                                 disabled = {
                                     "needless_return",
+                                    "unlinked-file",
                                 },
                             },
                         },
