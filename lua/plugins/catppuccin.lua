@@ -63,6 +63,7 @@ return {
                     ["@label.go"] = { fg = colors.peach },
                     ["@class_name"] = { fg = colors.yellow },
                     ["@variable"] = { fg = colors.teal },
+                    ["@variable.member.lua"] = { fg = colors.lavender },
                     ["@label"] = { fg = colors.teal },
                     ["@label.json"] = { fg = colors.teal },
                     ["@punctuation"] = { fg = colors.overlay2 },
