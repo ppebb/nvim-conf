@@ -20,7 +20,7 @@ return {
                 "c_sharp",
                 "cmake",
                 "cpp",
-                "crystal",
+                -- "crystal",
                 "css",
                 "csv",
                 "diff",
@@ -69,18 +69,18 @@ return {
             },
         })
 
-        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        -- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 
-        parser_config.crystal = {
-            install_info = {
-                url = "https://github.com/keidax/tree-sitter-crystal",
-                files = { "src/parser.c", "src/scanner.c" },
-                branch = "main",
-            },
-            filetype = "crystal",
-        }
+        -- parser_config.crystal = {
+        --     install_info = {
+        --         url = "https://github.com/keidax/tree-sitter-crystal",
+        --         files = { "src/parser.c", "src/scanner.c" },
+        --         branch = "main",
+        --     },
+        --     filetype = "crystal",
+        -- }
 
-        vim.treesitter.language.register("ruby", "crystal")
+        -- vim.treesitter.language.register("ruby", "crystal")
         vim.treesitter.language.register("xml", "csproj")
     end,
 }
