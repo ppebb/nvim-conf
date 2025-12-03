@@ -71,6 +71,7 @@ return {
             {
                 "lua_ls",
                 {
+                    root_markers = { { "selene.toml", "stylua.toml" }, ".git" },
                     settings = {
                         Lua = {
                             runtime = {
