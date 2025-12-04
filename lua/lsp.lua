@@ -52,17 +52,17 @@ local function on_attach(client, bufnr)
     --     vim.lsp.buf_detach_client(bufnr, client.id)
     -- end
 
-    -- if client.supports_method(methods.textDocument_inlayHint) then
+    -- if client:supports_method(methods.textDocument_inlayHint) then
     --     -- Initial inlay hint display.
     --     -- Idk why but without the delay inlay hints aren't displayed at the very start.
     --     vim.defer_fn(function() vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end, 500)
     -- end
 
-    if client.supports_method(methods.textDocument_documentSymbol) then
+    if client:supports_method(methods.textDocument_documentSymbol) then
         require("nvim-navic").attach(client, bufnr)
     end
 
-    if client.supports_method(methods.textDocument_signatureHelp) then
+    if client:supports_method(methods.textDocument_signatureHelp) then
         require("lsp-overloads").setup(client, {
             ui = {
                 border = "single",
@@ -76,20 +76,20 @@ local function on_attach(client, bufnr)
         })
     end
 
-    if client.supports_method(methods.textDocument_hover) then
+    if client:supports_method(methods.textDocument_hover) then
         vim.keymap.set("n", "<leader>h", open_float, {
             noremap = true,
             buffer = 0,
         })
     end
 
-    if client.supports_method(methods.textDocument_publishDiagnostics) then
+    if client:supports_method(methods.textDocument_publishDiagnostics) then
         vim.diagnostic.config({ underline = true, virtual_text = false, float = { border = "single" } })
     end
 
     if
         (
-            client.supports_method(methods.textDocument_formatting)
+            client:supports_method(methods.textDocument_formatting)
             or client.server_capabilities.documentFormattingProvider
         ) and client.name ~= "lua_ls"
     then
@@ -131,7 +131,7 @@ local function on_attach(client, bufnr)
     -- stylua: ignore end
 
     for _, bind in ipairs(binds) do
-        if client.supports_method(bind[1]) then
+        if client:supports_method(bind[1]) then
             vim.keymap.set("n", bind[2], bind[3], { noremap = true, buffer = 0 })
         end
     end
