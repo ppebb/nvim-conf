@@ -23,6 +23,7 @@ return {
             custom_highlights = function(colors)
                 local identifier = { fg = colors.mauve, style = { "italic" } }
                 return {
+                    ["Exception"] = identifier,
                     -- Treesitter / Semantic tokens
                     ["@keyword"] = identifier,
                     ["Keyword"] = identifier,
