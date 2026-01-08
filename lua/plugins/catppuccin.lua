@@ -57,6 +57,7 @@ return {
                     ["@lsp.type.struct_name.cs"] = { fg = colors.yellow },
                     ["@lsp.type.interface_name.cs"] = { fg = colors.yellow },
                     ["@lsp.type.enum_name.cs"] = { fg = colors.yellow },
+                    ["@lsp.type.enumMember"] = { fg = colors.peach },
                     ["@lsp.type.enumMember.java"] = { fg = colors.peach },
                     ["@lsp.type.delegate_name.cs"] = { fg = colors.yellow },
                     ["@constant.java"] = { fg = colors.peach },
