@@ -50,12 +50,16 @@ local function close(qftype)
     end
 end
 
+vim.keymap.set("n", "<leader>br", ":BuildAndRun<CR>")
+vim.keymap.set("n", "<leader>bnr", ":Build<CR>")
+
 local yabs = require("yabs")
 vim.keymap.set("n", "<F17>", function() yabs:run_task("run") end)
 vim.keymap.set("n", "<F15>", "<Plug>VimspectorStop")
 vim.keymap.set("n", "<F16>", "<Plug>VimspectorRestart")
 vim.keymap.set("n", "<F18>", "<Plug>VimspectorPause")
 vim.keymap.set("n", "<F21>", "<Plug>VimspectorToggleBreakpoint")
+vim.keymap.set("n", "<leader>bp", "<Plug>VimspectorToggleBreakpoint")
 vim.keymap.set("n", "<leader><F21>", "<Plug>VimspectorToggleConditionalBreakpoint")
 vim.keymap.set("n", "<F20>", "<Plug>VimspectorRunToCursor")
 vim.keymap.set("n", "<F22>", "<Plug>VimspectorStepOver")

@@ -32,6 +32,7 @@ return {
                     ["@keyword.return"] = identifier,
                     ["@keyword.operator"] = identifier,
                     ["@keyword.storage.c_sharp"] = identifier,
+                    ["@keyword.import.c"] = identifier,
                     ["@variable.builtin"] = identifier,
                     ["@constructor.c_sharp"] = { fg = colors.yellow },
                     ["@constant.builtin"] = identifier,
