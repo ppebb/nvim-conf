@@ -20,6 +20,20 @@ api.nvim_create_autocmd("VimLeave", {
     group = vimspector_session_group,
 })
 
+api.nvim_create_autocmd("User", {
+    pattern = "VimspectorUICreated",
+    group = vimspector_session_group,
+    callback = function(_)
+        local vimspector_wins = vim.g.vimspector_session_windows
+
+        if not vimspector_wins.watches then
+            return
+        end
+
+        api.nvim_win_set_width(vimspector_wins.watches, 50)
+    end,
+})
+
 api.nvim_create_autocmd("FileType", {
     pattern = "help",
     callback = function()
