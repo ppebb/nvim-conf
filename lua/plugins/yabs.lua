@@ -40,9 +40,17 @@ return {
                     command = function()
                         yabs:run_task("build", {
                             on_exit = vim.schedule_wrap(function(_, exit_code)
-                                if exit_code == 0 then
-                                    yabs:run_task("run")
+                                if exit_code ~= 0 then
+                                    return
                                 end
+
+                                local timer = vim.uv.new_timer()
+
+                                if not timer then
+                                    return
+                                end
+
+                                timer:start(500, 0, vim.schedule_wrap(function() yabs:run_task("run") end))
                             end),
                         })
                     end,

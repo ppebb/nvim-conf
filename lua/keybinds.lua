@@ -68,7 +68,21 @@ vim.keymap.set("n", "<F24>", "<Plug>VimspectorStepOut")
 vim.keymap.set("n", "di", "<Plug>VimspectorBalloonEval")
 vim.keymap.set("n", "<leader>r", function()
     vim.cmd("call vimspector#Reset()")
-    close("c")
+
+    -- If the qflist is open now, then close it and do not start a timer.
+    if is_open("c") then
+        close("c")
+        return
+    end
+
+    -- Otherwise wait for vimspector to close before resetting the qflist
+    local timer = vim.uv.new_timer()
+
+    if not timer then
+        return
+    end
+
+    timer:start(500, 0, vim.schedule_wrap(function() close("c") end))
 end, { desc = "Close vimspector and yabs windows" })
 
 vim.keymap.set(
