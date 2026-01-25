@@ -57,10 +57,6 @@ return {
         })
 
         ins_right({
-            "encoding",
-        })
-
-        ins_right({
             "fileformat",
         })
 
