@@ -84,6 +84,9 @@ return {
                     ["SolutionNugetHeader"] = { fg = colors.base, bg = colors.peach, style = { "bold" } },
                     ["SolutionNugetHighlight"] = { fg = colors.sky },
                     ["CursorColumn"] = { bg = "#2a2b3c" },
+                    -- Incline
+                    ["InclineNormal"] = { bg = colors.surface1 },
+                    ["InclineNormalNC"] = { bg = colors.surface1 },
                 }
             end,
         }
