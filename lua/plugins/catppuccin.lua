@@ -38,6 +38,7 @@ return {
                     ["@constant.builtin"] = identifier,
                     ["@type.builtin"] = identifier,
                     ["@type.builtin.c"] = identifier,
+                    ["@function.builtin.bash"] = identifier,
                     ["@type.qualifier"] = identifier,
                     ["@storageclass"] = identifier,
                     ["@boolean"] = identifier,
