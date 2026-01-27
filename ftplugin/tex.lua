@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function() vim.cmd(":VimtexCompile") end,
 })
 
-vim.api.nvim_create_autocmd("CursorHold", {
+vim.api.nvim_create_autocmd("TextChanged", {
     pattern = "*.tex",
     nested = true,
     callback = function() vim.cmd(":write") end,
