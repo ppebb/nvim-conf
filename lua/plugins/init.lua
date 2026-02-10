@@ -75,6 +75,7 @@ local plugins = {
     c("danymat/neogen", function() require("neogen").setup({}) end), -- Easy annotations
     c("lewis6991/spellsitter.nvim", function() require("spellsitter").setup({ enable = true }) end), -- Spellchecking
     c("asiryk/auto-hlsearch.nvim", function() require("auto-hlsearch").setup() end), -- Clear search highlight
+    { "nvimtools/none-ls.nvim", requires = { "nvimtools/none-ls-extras.nvim", "nvim-lua/plenary.nvim" } },
 }
 
 -- Files should return their paq table
