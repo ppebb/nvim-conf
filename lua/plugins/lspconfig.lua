@@ -23,8 +23,6 @@ return {
         "williamboman/mason-lspconfig.nvim",
     },
     config = function()
-        local lspconfig = require("lspconfig")
-
         custom_servers()
 
         local client_capabilities = require("lsp").client_capabilities
