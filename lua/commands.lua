@@ -9,3 +9,5 @@ api.nvim_create_user_command("LightMode", function()
     vim.cmd("colorscheme catppuccin-latte")
     vim.cmd("hi CursorColumn guibg=#e9ebf1")
 end, {})
+
+api.nvim_create_user_command("DarkMode", function() vim.cmd("colorscheme catppuccin-mocha") end, {})
