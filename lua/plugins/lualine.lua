@@ -12,7 +12,7 @@ return {
                 lualine_x = {},
             },
             options = {
-                theme = "catppuccin",
+                theme = "catppuccin-mocha",
             },
         }
 
