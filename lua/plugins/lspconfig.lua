@@ -109,41 +109,43 @@ return {
             -- { "nginx_language_server" },
             { "texlab" },
             { "gdscript", nil, true },
+            {
+                "roslyn",
+                {
+                    settings = {
+                        ["csharp|completion"] = {
+                            ["dotnet_provide_regex_completions"] = true,
+                            ["dotnet_show_completion_items_from_unimported_namespaces"] = true,
+                            ["dotnet_show_name_completion_suggestions"] = true,
+                        },
+                        ["csharp|highlighting"] = {
+                            ["dotnet_highlight_related_json_components"] = true,
+                            ["dotnet_highlight_related_regex_components"] = true,
+                        },
+                        ["csharp|inlay_hints"] = {
+                            ["csharp_enable_inlay_hints_for_implicit_object_creation"] = true,
+                            ["csharp_enable_inlay_hints_for_implicit_variable_types"] = true,
+                            ["csharp_enable_inlay_hints_for_lambda_parameter_types"] = true,
+                            ["csharp_enable_inlay_hints_for_types"] = true,
+                            ["dotnet_enable_inlay_hints_for_indexer_parameters"] = false,
+                            ["dotnet_enable_inlay_hints_for_literal_parameters"] = true,
+                            ["dotnet_enable_inlay_hints_for_object_creation_parameters"] = true,
+                            ["dotnet_enable_inlay_hints_for_other_parameters"] = true,
+                            ["dotnet_enable_inlay_hints_for_parameters"] = true,
+                            ["dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix"] = false,
+                            ["dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name"] = false,
+                            ["dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent"] = false,
+                        },
+                        ["navigation"] = {
+                            ["dotnet_navigate_to_decompiled_sources"] = true,
+                        },
+                    },
+                },
+                true, -- Do not ensure installed
+            },
         }
 
-        require("roslyn").setup({ -- Roslyn lsp specific setup because it's quirky and special
-            dotnet_cmd = "dotnet",
-            capabilities = client_capabilities(),
-            settings = {
-                ["csharp|completion"] = {
-                    ["dotnet_provide_regex_completions"] = true,
-                    ["dotnet_show_completion_items_from_unimported_namespaces"] = true,
-                    ["dotnet_show_name_completion_suggestions"] = true,
-                },
-                ["csharp|highlighting"] = {
-                    ["dotnet_highlight_related_json_components"] = true,
-                    ["dotnet_highlight_related_regex_components"] = true,
-                },
-                ["csharp|inlay_hints"] = {
-                    ["csharp_enable_inlay_hints_for_implicit_object_creation"] = true,
-                    ["csharp_enable_inlay_hints_for_implicit_variable_types"] = true,
-                    ["csharp_enable_inlay_hints_for_lambda_parameter_types"] = true,
-                    ["csharp_enable_inlay_hints_for_types"] = true,
-                    ["dotnet_enable_inlay_hints_for_indexer_parameters"] = false,
-                    ["dotnet_enable_inlay_hints_for_literal_parameters"] = true,
-                    ["dotnet_enable_inlay_hints_for_object_creation_parameters"] = true,
-                    ["dotnet_enable_inlay_hints_for_other_parameters"] = true,
-                    ["dotnet_enable_inlay_hints_for_parameters"] = true,
-                    ["dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix"] = false,
-                    ["dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name"] = false,
-                    ["dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent"] = false,
-                },
-                ["navigation"] = {
-                    ["dotnet_navigate_to_decompiled_sources"] = true,
-                },
-            },
-            on_attach = function() end, -- Blank function. Should be called in another autocmd anyway
-        })
+        require("roslyn").setup()
 
         if not vim.g.setup_lazydev then
             require("lazydev").setup({
