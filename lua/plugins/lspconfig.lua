@@ -143,6 +143,18 @@ return {
                 },
                 true, -- Do not ensure installed
             },
+            {
+                "slang-server",
+                {
+                    cmd = { "slang-server" },
+                    root_markers = { ".git", ".slang" },
+                    filetypes = {
+                        "systemverilog",
+                        "verilog",
+                    },
+                },
+                true,
+            },
         }
 
         require("roslyn").setup()
