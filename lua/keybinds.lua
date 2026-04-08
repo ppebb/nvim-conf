@@ -18,6 +18,8 @@ vim.keymap.set("x", ">", ">gv", { noremap = true })
 
 vim.keymap.set("n", "j", "gj", { noremap = true })
 vim.keymap.set("n", "k", "gk", { noremap = true })
+vim.keymap.set("v", "j", "gj", { noremap = true })
+vim.keymap.set("v", "k", "gk", { noremap = true })
 vim.keymap.set("n", "<up>", "<nop>", { noremap = true })
 vim.keymap.set("n", "<down>", "<nop>", { noremap = true })
 vim.keymap.set("n", "<left>", "<nop>", { noremap = true })
