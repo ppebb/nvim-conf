@@ -67,6 +67,7 @@ return {
                     ["@lsp.type.namespace.cs"] = { fg = colors.yellow },
                     ["@lsp.mod.callable.rust"] = { fg = colors.blue },
                     ["@label.go"] = { fg = colors.peach },
+                    ["@lsp.typemod.type.defaultLibrary.go"] = identifier,
                     ["@class_name"] = { fg = colors.yellow },
                     ["@variable"] = { fg = colors.teal },
                     ["@variable.member"] = { fg = colors.lavender },
