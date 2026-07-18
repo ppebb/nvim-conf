@@ -38,8 +38,6 @@ end
 -- To compact the list below
 local function c(plugin, config) return { plugin, config = config } end
 
-local function r(plugin, requires) return { plugin, requires = requires } end
-
 -- Plugins with no configuration, do not need to be automatically loaded from a file
 local plugins = {
     "mfussenegger/nvim-jdtls", -- Full jdtls support
@@ -60,11 +58,10 @@ local plugins = {
     "tpope/vim-commentary", -- Comment keybinds
     "nvim-neotest/neotest", -- Testing framework
     "rafcamlet/nvim-luapad",
+    "nvim-treesitter/nvim-treesitter-context",
+    "RRethy/nvim-treesitter-endwise",
+    "ckolkey/ts-node-action",
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
-    r("nvim-treesitter/playground", "nvim-treesitter/nvim-treesitter"), -- Check capture groups and view tree
-    r("nvim-treesitter/nvim-treesitter-context", "nvim-treesitter/nvim-treesitter"), -- Show current function or class at top of window
-    r("RRethy/nvim-treesitter-endwise", "nvim-treesitter/nvim-treesitter"), -- Automatically insert end
-    r("ckolkey/ts-node-action", "nvim-treesitter/nvim-treesitter"), -- Node actions
     c("DNLHC/glance.nvim", function() require("glance").setup() end), -- Show definitions in preview windows
     c("folke/todo-comments.nvim", function() require("todo-comments").setup() end), -- Show todo comments in a project
     c("luukvbaal/stabilize.nvim", function() require("stabilize").setup() end), -- Stabilize window open/close events

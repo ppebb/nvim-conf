@@ -1,18 +1,7 @@
 return {
-    "nvim-treesitter/nvim-treesitter", -- Treesitter, duh
-    run = ":TSUpdate",
+    "romus204/tree-sitter-manager.nvim", -- nvim-treesitter replacement
     config = function()
-        require("nvim-treesitter.configs").setup({
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = {
-                enable = false,
-            },
-            endwise = {
-                enable = true,
-            },
+        local cfg = {
             ensure_installed = {
                 "asm",
                 "bash",
@@ -50,7 +39,6 @@ return {
                 "markdown_inline",
                 "meson",
                 "nginx",
-                "powershell",
                 "python",
                 "query",
                 "ron",
@@ -67,20 +55,9 @@ return {
                 "xml",
                 "yaml",
             },
-        })
+            highlight = true,
+        }
 
-        -- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-
-        -- parser_config.crystal = {
-        --     install_info = {
-        --         url = "https://github.com/keidax/tree-sitter-crystal",
-        --         files = { "src/parser.c", "src/scanner.c" },
-        --         branch = "main",
-        --     },
-        --     filetype = "crystal",
-        -- }
-
-        -- vim.treesitter.language.register("ruby", "crystal")
-        vim.treesitter.language.register("xml", "csproj")
+        require("tree-sitter-manager").setup(cfg)
     end,
 }
