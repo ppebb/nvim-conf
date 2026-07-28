@@ -56,6 +56,14 @@ return {
                 "yaml",
             },
             highlight = true,
+            languages = {
+                cmake = {
+                    install_info = {
+                        url = "https://github.com/tree-sitter-grammars/tree-sitter-make",
+                        queries = "queries",
+                    },
+                },
+            },
         }
 
         require("tree-sitter-manager").setup(cfg)
