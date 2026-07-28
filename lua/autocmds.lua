@@ -30,7 +30,12 @@ api.nvim_create_autocmd("User", {
             return
         end
 
-        api.nvim_win_set_width(vimspector_wins.watches, 50)
+        local timer = vim.uv.new_timer()
+        if timer == nil then
+            return
+        end
+
+        timer:start(200, 0, vim.schedule_wrap(function() api.nvim_win_set_width(vimspector_wins.watches, 50) end))
     end,
 })
 
