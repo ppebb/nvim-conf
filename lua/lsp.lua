@@ -63,8 +63,9 @@ local function on_attach(client, bufnr)
     end
 
     if client:supports_method(methods.textDocument_signatureHelp) then
-        vim.keymap.set("n", "<leader><Space>", blsp.signature_help, {
+        vim.keymap.set("n", "<leader><Space>", "<cmd>LspOverloads signature<CR>", {
             noremap = true,
+            silent = true,
             buffer = 0,
         })
     end
