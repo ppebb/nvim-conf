@@ -63,13 +63,6 @@ local function on_attach(client, bufnr)
     end
 
     if client:supports_method(methods.textDocument_signatureHelp) then
-        require("lsp-overloads").setup(client, {
-            ui = {
-                border = "single",
-                floating_window_above_cur_line = true,
-            },
-        })
-
         vim.keymap.set("n", "<leader><Space>", blsp.signature_help, {
             noremap = true,
             buffer = 0,

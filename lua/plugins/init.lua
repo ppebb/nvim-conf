@@ -45,7 +45,6 @@ local plugins = {
     "jbyuki/one-small-step-for-vimkind", -- Lua debugging
     "tpope/vim-sleuth", -- Automatic indent settings
     "ntpeters/vim-better-whitespace", -- Whitespace highlighting
-    "Issafalcon/lsp-overloads.nvim", -- Sig help
     "andymass/vim-matchup", -- Better %
     "mbbill/undotree", -- Undo window
     "nvim-lua/plenary.nvim", -- Lua helper functions
@@ -62,6 +61,7 @@ local plugins = {
     "RRethy/nvim-treesitter-endwise",
     "ckolkey/ts-node-action",
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
+    c("Issafalcon/lsp-overloads.nvim", function() require("lsp-overloads").setup() end), -- Sig help
     c("DNLHC/glance.nvim", function() require("glance").setup() end), -- Show definitions in preview windows
     c("folke/todo-comments.nvim", function() require("todo-comments").setup() end), -- Show todo comments in a project
     c("luukvbaal/stabilize.nvim", function() require("stabilize").setup() end), -- Stabilize window open/close events
