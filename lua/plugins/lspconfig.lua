@@ -98,7 +98,6 @@ return {
                                 unusedparams = true,
                                 shadow = true,
                             },
-                            staticcheck = true,
                         },
                     },
                     init_options = {
