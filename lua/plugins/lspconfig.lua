@@ -37,7 +37,18 @@ return {
         end
 
         local servers = {
-            { "ts_ls" },
+            {
+                "ts_ls",
+                {
+                    init_options = {
+                        preferences = {
+                            includeCompletionsForModuleExports = true,
+                            includeCompletionsForImportStatements = true,
+                            importModuleSpecifierPreference = "non-relative",
+                        },
+                    },
+                },
+            },
             {
                 "rust_analyzer",
                 {
