@@ -14,6 +14,8 @@ return {
                     enabled = true,
                     scope_color = "text",
                 },
+                cmp = true,
+                gitsigns = true,
             },
             dim_inactive = {
                 enabled = true,
