@@ -67,7 +67,7 @@ return {
                     else
                         fallback()
                     end
-                end),
+                end, { "i", "s" }),
                 ["C-h"] = cmp.mapping(function(fallback)
                     if luasnip.expand_or_jumpable() then
                         luasnip.expand_or_jump()
