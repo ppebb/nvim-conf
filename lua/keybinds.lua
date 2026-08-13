@@ -1,7 +1,9 @@
 vim.keymap.set("i", ";;", "<ESC>A;", { desc = "Append semicolon to the end of the line" })
 vim.keymap.set("n", ";;", "A;<ESC>", { desc = "Append semicolon to the end of the line" })
 
-vim.keymap.set("n", "fs", "<CMD>Telescope live_grep<CR>")
+local fzf = require("fzf-lua")
+vim.keymap.set("n", "fs", function() fzf.live_grep() end)
+vim.keymap.set("n", "fd", function() fzf.files() end)
 
 vim.keymap.set("n", "<F5>", "<CMD>UndotreeToggle<CR>")
 vim.keymap.set("n", "<F6>", "<CMD>NvimTreeToggle<CR>")
