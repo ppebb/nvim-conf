@@ -16,6 +16,7 @@ return {
                 },
                 cmp = true,
                 gitsigns = true,
+                dashboard = true,
             },
             dim_inactive = {
                 enabled = true,
