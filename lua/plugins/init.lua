@@ -59,7 +59,6 @@ local plugins = {
     "nvim-treesitter/nvim-treesitter-context",
     "RRethy/nvim-treesitter-endwise",
     "ckolkey/ts-node-action",
-    "ibhagwan/fzf-lua",
     --- Anything bigger than 2 fields that fit in the above methods shouldn't go here
     c("Issafalcon/lsp-overloads.nvim", function() require("lsp-overloads").setup() end), -- Sig help
     c("DNLHC/glance.nvim", function() require("glance").setup() end), -- Show definitions in preview windows
