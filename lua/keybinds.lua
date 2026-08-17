@@ -93,8 +93,3 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "K", require("ts-node-action").node_action)
-
-vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
