@@ -28,11 +28,11 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function() vim.cmd(":VimtexCompile") end,
 })
 
--- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
---     pattern = "*.tex",
---     nested = true,
---     callback = function() vim.cmd(":write") end,
--- })
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    pattern = "*.tex",
+    nested = true,
+    callback = function() vim.cmd(":write") end,
+})
 
 -- TODO: Make this work
 vim.api.nvim_create_autocmd("VimLeavePre", {
