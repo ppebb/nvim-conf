@@ -8,6 +8,8 @@ vim.keymap.set("n", "<F6>", "<CMD>NvimTreeToggle<CR>")
 vim.keymap.set("v", "p", [["_dP]], { noremap = true })
 vim.keymap.set("v", "d", [["_d]], { noremap = true })
 
+vim.keymap.set("n", "-", "<nop>")
+
 vim.keymap.set("n", "<leader>y", [["+y]], { noremap = true })
 vim.keymap.set("n", "<leader>p", [["+p]], { noremap = true })
 
