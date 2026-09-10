@@ -58,6 +58,11 @@ local function on_attach(client, bufnr)
     --     vim.defer_fn(function() vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end, 500)
     -- end
 
+    -- TODO: Find some way to make this delcarative like the rest of my lsp config
+    if client.name == "jdtls" then
+        client.server_capabilities.documentFormattingProvider = nil
+    end
+
     if client:supports_method(methods.textDocument_documentSymbol) then
         require("nvim-navic").attach(client, bufnr)
     end

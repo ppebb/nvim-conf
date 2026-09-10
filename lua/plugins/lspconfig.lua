@@ -200,6 +200,11 @@ return {
                 require("none-ls.diagnostics.eslint_d"),
                 require("none-ls.formatting.eslint_d"),
 
+                -- Clang-format is handled by clangd for any other language
+                null_ls.builtins.formatting.clang_format.with({
+                    filetypes = { "java" },
+                }),
+
                 -- Lua
                 null_ls.builtins.diagnostics.selene,
                 null_ls.builtins.formatting.stylua,
