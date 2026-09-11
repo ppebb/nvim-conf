@@ -2,7 +2,7 @@ local api = vim.api
 
 api.nvim_create_autocmd("TextYankPost", {
     callback = function()
-        vim.highlight.on_yank({
+        vim.hl.hl_op({
             higroup = (vim.fn.hlexists("HighlightedYankRegion") > 0 and "HighlightedYankRegion" or "IncSearch"),
             timeout = 1000,
         })
