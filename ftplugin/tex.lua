@@ -9,19 +9,8 @@ local vimtex_ftplugin = vim.fn.stdpath("data") .. "/site/pack/pckr/opt/vimtex/ft
 
 vim.cmd("source " .. vimtex_ftplugin)
 
--- vim.api.nvim_create_autocmd("BufWritePre", {
---     pattern = "*.tex",
---     callback = function(args)
---         local Job = require("plenary.job")
-
---         Job:new({
---             command = "tex-fmt",
---             args = { args.file },
---         }):sync()
-
---         vim.cmd("checktime")
---     end,
--- })
+-- Enable syntax highlighting for tex buffers. Has to be scheduled or it doesn't work
+vim.schedule(function() vim.bo[vim.api.nvim_get_current_buf()].syntax = "ON" end)
 
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = "*.tex",
@@ -34,7 +23,6 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
     callback = function() vim.cmd(":write") end,
 })
 
--- TODO: Make this work
 vim.api.nvim_create_autocmd("VimLeavePre", {
     pattern = "*.tex",
     callback = function()
@@ -42,8 +30,7 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 
         Job:new({
             command = "bash",
-            args = { "-c", "'if pidof zathura > /dev/null; then; killall zathura; fi'" },
-            cwd = "/usr/bin",
-        }):sync() -- or start()
+            args = { "-c", "if pidof zathura > /dev/null; then killall zathura; fi" },
+        }):sync()
     end,
 })
