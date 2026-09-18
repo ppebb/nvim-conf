@@ -7,7 +7,7 @@ vim.cmd("syntax off")
 vim.o.backspace = "indent,eol,start"
 vim.o.autoindent = true
 vim.cmd([[filetype plugin indent on]])
-vim.o.textwidth = 0
+vim.o.textwidth = 120
 vim.o.title = true
 
 vim.o.tabstop = 4
