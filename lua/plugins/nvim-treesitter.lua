@@ -1,5 +1,6 @@
 return {
-    "romus204/tree-sitter-manager.nvim", -- nvim-treesitter replacement
+    "nvim-treesitter/nvim-treesitter", -- nvim-treesitter replacement
+    run = ":TSUpdate",
     config = function()
         local cfg = {
             ensure_installed = {
@@ -55,17 +56,20 @@ return {
                 "xml",
                 "yaml",
             },
-            highlight = true,
-            languages = {
-                cmake = {
-                    install_info = {
-                        url = "https://github.com/tree-sitter-grammars/tree-sitter-make",
-                        queries = "queries",
-                    },
-                },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
+            indent = {
+                enable = false,
+            },
+            endwise = {
+                enable = true,
             },
         }
 
-        require("tree-sitter-manager").setup(cfg)
+        vim.treesitter.language.register("xml", "csproj")
+
+        require("nvim-treesitter").setup(cfg)
     end,
 }
