@@ -1,3 +1,18 @@
+local ft_parser_map = {
+    sh = "bash",
+    tex = "latex",
+}
+
+local function get_parser(filetype)
+    local parser = ft_parser_map[filetype]
+
+    if parser ~= nil then
+        return parser
+    end
+
+    return filetype
+end
+
 return {
     "nvim-treesitter/nvim-treesitter", -- nvim-treesitter replacement
     run = ":TSUpdate",
@@ -64,7 +79,7 @@ return {
         vim.api.nvim_create_autocmd("FileType", {
             pattern = { "*" },
             callback = function(opts)
-                if vim.treesitter.get_parser(opts.buf, vim.bo.filetype, nil) ~= nil then
+                if vim.treesitter.get_parser(opts.buf, get_parser(vim.bo.filetype), nil) ~= nil then
                     vim.treesitter.start(opts.buf)
                     vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
                     vim.wo[0][0].foldmethod = "expr"
