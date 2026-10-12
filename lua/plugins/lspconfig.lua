@@ -165,6 +165,7 @@ return {
                 },
                 true,
             },
+            { "asm_lsp" },
         }
 
         require("roslyn").setup()
@@ -210,6 +211,9 @@ return {
                 null_ls.builtins.formatting.stylua,
 
                 null_ls.builtins.code_actions.ts_node_action,
+
+                -- Asm
+                null_ls.builtins.formatting.asmfmt,
             },
         }
         null_ls.setup(null_ls_cfg)
