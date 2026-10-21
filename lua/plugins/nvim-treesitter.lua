@@ -1,6 +1,7 @@
 local ft_parser_map = {
     sh = "bash",
     tex = "latex",
+    cs = "c_sharp",
 }
 
 local function get_parser(filetype)
