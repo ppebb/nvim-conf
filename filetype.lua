@@ -7,6 +7,7 @@ vim.filetype.add({
         h = "c",
         svg = "html",
         notes = "notes",
+        inc = "asm",
     },
     filename = {
         [".vimspector.json"] = "jsonc",
