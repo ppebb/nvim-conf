@@ -1,19 +1,24 @@
 return {
     "petertriho/nvim-scrollbar", -- Scrollbar
+    branch = "refactor/v2",
     requires = { "kevinhwang91/nvim-hlslens", "catppuccin/nvim" },
     config = function()
         local colors = require("catppuccin.palettes").get_palette()
 
-        local cfg = {
-            handle = {
-                color = colors.crust,
+        require("scrollbar").setup({
+            exclude = {
+                filetypes = {
+                    NvimTree = true,
+                },
             },
-            handlers = {
-                search = true,
+            scrollbar = {
+                track = {
+                    highlight = { bg = colors.mantle },
+                },
+                thumb = {
+                    highlight = { bg = colors.surface0 },
+                },
             },
-        }
-
-        require("scrollbar").setup(cfg)
-        require("scrollbar.handlers.search").setup()
+        })
     end,
 }
