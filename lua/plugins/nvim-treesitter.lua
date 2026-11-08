@@ -2,6 +2,7 @@ local ft_parser_map = {
     sh = "bash",
     tex = "latex",
     cs = "c_sharp",
+    typescriptreact = "tsx",
 }
 
 local function get_parser(filetype)
