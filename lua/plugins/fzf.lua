@@ -6,6 +6,9 @@ return {
         vim.keymap.set("n", "fs", function() fzf.live_grep() end)
         vim.keymap.set("n", "fd", function() fzf.files() end)
 
-        fzf.setup({ "telescope" })
+        fzf.setup({
+            "telescope",
+            defaults = { no_hide = true },
+        })
     end,
 }
