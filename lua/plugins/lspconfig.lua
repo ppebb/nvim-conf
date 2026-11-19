@@ -10,15 +10,15 @@ local function custom_servers()
 end
 
 return {
-    "neovim/nvim-lspconfig", -- LSP Config
+    "neovim/nvim-lspconfig",      -- LSP Config
     requires = {
-        "folke/lazydev.nvim", -- Lua lsp config for nvim
-        "folke/neoconf.nvim", -- Lua lsp config manager
+        "folke/lazydev.nvim",     -- Lua lsp config for nvim
+        "folke/neoconf.nvim",     -- Lua lsp config manager
         "hrsh7th/nvim-cmp",
         "nvimtools/none-ls.nvim", -- Linter management
         "nvimtools/none-ls-extras.nvim",
-        "seblj/roslyn.nvim", -- Make roslyn-lsp not broken
-        "Bilal2453/luvit-meta", -- vim.uv typings
+        "seblj/roslyn.nvim",      -- Make roslyn-lsp not broken
+        "Bilal2453/luvit-meta",   -- vim.uv typings
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
     },
@@ -71,7 +71,22 @@ return {
                     -- cmd = { "clangd", "-header-insertion=never" },
                 },
             },
-            { "pylsp" },
+            {
+                "pylsp",
+                {
+                    settings = {
+                        pylsp = {
+                            plugins = {
+                                pycodestyle = {
+                                    enabled = false,
+                                    ignore = { "E501", "E231" },
+                                    maxLineLength = 120,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
             { "bashls" },
             { "astro" },
             { "html" },
@@ -118,7 +133,7 @@ return {
             },
             -- { "nginx_language_server" },
             { "texlab" },
-            { "gdscript", nil, true },
+            { "gdscript",                     nil, true },
             {
                 "roslyn",
                 {
